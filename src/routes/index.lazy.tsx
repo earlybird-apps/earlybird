@@ -1,6 +1,6 @@
 // import { Button } from "@/components/ui/button";
 import { Button } from "@/components/ui/button";
-import { client } from "@/triplit/client";
+import { client } from "../../triplit/client";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@triplit/react";
 
