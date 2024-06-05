@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { client } from "../../triplit/client";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@triplit/react";
+import { user } from "../../triplit/user";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
-const query = client.query("todos");
+const query = client.query("budgets");
 
 function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
@@ -25,20 +26,20 @@ function Index() {
       ) : (
         <ul>
           {/* TODO: Remove ! */}
-          {Array.from(results!).map(([id, todo]) => (
-            <li key={id}>{todo.title}</li>
+          {Array.from(results!).map(([id, budget]) => (
+            <li key={id}>{budget.name}</li>
           ))}
         </ul>
       )}
       <Button
         onClick={async () => {
-          await client.insert("todos", {
-            title: `Random To Do #${getRandomInt(100)}`,
-            description: "This is a random To Do",
+          await client.insert("budgets", {
+            name: `Random Budget #${getRandomInt(100)}`,
+            user_id: import.meta.env.VITE_USER_ID,
           });
         }}
       >
-        Add a random To Do
+        Add a random Budget
       </Button>
     </div>
   );

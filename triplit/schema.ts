@@ -12,4 +12,32 @@ export const schema = {
       description: S.String(),
     }),
   },
+  users: {
+    schema: S.Schema({
+      id: S.Id(),
+      name: S.String(),
+    }),
+  },
+  budgets: {
+    schema: S.Schema({
+      id: S.Id(),
+      name: S.String(),
+      user_id: S.String(),
+      user: S.RelationById("users", "$user_id")
+    }),
+    rules: {
+      read: {
+        'author-is-user': {
+          description: 'Users can only view budgets they own',
+          filter: [['user_id', '=', '$session.SESSION_USER_ID']],
+        },
+      },
+      write: {
+        'author-is-user': {
+          description: 'Users can only edit their own budgets',
+          filter: [['user_id', '=', '$session.SESSION_USER_ID']],
+        },
+      },
+    },
+  }
 } satisfies ClientSchema;

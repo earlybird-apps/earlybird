@@ -5,5 +5,4 @@ export const client = new TriplitClient({
     schema,
     storage: "indexeddb",
     serverUrl: import.meta.env.VITE_TRIPLIT_SERVER_URL,
-    token: import.meta.env.VITE_TRIPLIT_TOKEN,
 });
