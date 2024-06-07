@@ -1,8 +1,7 @@
-import { client } from "../../triplit/client";
 import { useQuery } from "@triplit/react";
-
-const query = client.query("accounts");
+import { useTriplitClient } from "./useTriplitClient";
 
 export function useAccounts() {
-  return useQuery(client, query);
+  const { client } = useTriplitClient();
+  return useQuery(client, client.query("accounts"));
 }
