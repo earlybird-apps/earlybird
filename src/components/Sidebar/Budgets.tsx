@@ -6,13 +6,13 @@ import {
   DropdownItem,
   DropdownLabel,
   DropdownDivider,
-} from "./ui/dropdown";
-import { SidebarItem, SidebarLabel } from "./ui/sidebar";
+} from "../ui/dropdown";
+import { SidebarItem, SidebarLabel } from "../ui/sidebar";
 import { useBudgets } from "@/hooks/useBudgets";
 import clsx from "clsx";
 import { FolderIcon } from "@heroicons/react/24/outline";
 
-export const BudgetsDropdown = () => {
+export const Budgets = () => {
   const { results = [], fetching } = useBudgets();
 
   return (
