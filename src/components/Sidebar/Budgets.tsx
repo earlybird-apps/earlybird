@@ -33,7 +33,11 @@ export const Budgets = () => {
       <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
         {/* TODO: Display something when there are no options */}
         {Array.from(results?.values() || []).map((option) => (
-          <DropdownItem key={option.id} href={`/${option.id}`}>
+          <DropdownItem
+            key={option.id}
+            href="/$budgetId"
+            params={{ budgetId: option.id }}
+          >
             <DropdownLabel>{option.name}</DropdownLabel>
           </DropdownItem>
         ))}

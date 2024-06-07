@@ -20,7 +20,8 @@ export function Profile() {
         <ChevronUpIcon />
       </DropdownButton>
       <DropdownMenu className="min-w-64" anchor="top start">
-        <DropdownItem href="/logout">
+        <DropdownItem href="/">
+          {/* TODO: Enable Logout */}
           <ArrowRightEndOnRectangleIcon />
           <DropdownLabel>Logout</DropdownLabel>
         </DropdownItem>
