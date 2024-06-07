@@ -32,7 +32,7 @@ export const BudgetsDropdown = () => {
       </DropdownButton>
       <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
         {Array.from(results || []).map(([id, budget]) => (
-          <DropdownItem key={id}>
+          <DropdownItem key={id} href="/">
             <DropdownLabel>{budget.name}</DropdownLabel>
           </DropdownItem>
         ))}

@@ -39,5 +39,27 @@ export const schema = {
         },
       },
     },
+  },
+  accounts: {
+    schema: S.Schema({
+      id: S.Id(),
+      name: S.String(),
+      budget_id: S.String(),
+      budget: S.RelationById("budgets", "$budget_id"),
+    }),
+    rules: {
+      read: {
+        'author-is-user': {
+          description: 'Users can only view accounts they own',
+          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        },
+      },
+      write: {
+        'author-is-user': {
+          description: 'Users can only edit their own accounts',
+          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        },
+      },
+    },
   }
 } satisfies ClientSchema;
