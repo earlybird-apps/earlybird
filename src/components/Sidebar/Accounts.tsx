@@ -21,15 +21,13 @@ export function Accounts() {
         </span>
       </SidebarHeading>
       {!fetching && accounts.length === 0 && (
-        <SidebarItem className="text-gray-700" disabled>
-          No accounts
-        </SidebarItem>
+        <SidebarItem disabled>No accounts</SidebarItem>
       )}
       {accounts.map((account) => (
         <SidebarItem
           key={account.id}
-          href="/accounts"
-          className="flex justify-between"
+          href="/account/$id"
+          params={{ id: account.id }}
         >
           <span>{account.name}</span>
           <Currency value={account.balance} className="ms-auto" />
