@@ -1,9 +1,14 @@
 import { useAccounts } from "@/hooks/useAccounts";
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
-import clsx from "clsx";
-import { SidebarHeading, SidebarItem } from "../ui/sidebar";
+import {
+  SidebarHeading,
+  SidebarItem,
+  SidebarLabel,
+  SidebarSection,
+} from "../ui/sidebar";
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { Currency } from "../Currency";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export function Accounts() {
   const { budget } = useCurrentBudget();
@@ -11,17 +16,16 @@ export function Accounts() {
   const accounts = Array.from(results?.values() || []);
 
   return (
-    <>
+    <SidebarSection>
       <SidebarHeading>
         <span className="flex justify-between">
-          Accounts{" "}
-          <ArrowPathIcon
-            className={clsx(fetching ? "w-3 animate-spin" : "hidden")}
-          />
+          Accounts {fetching && <ArrowPathIcon className="w-3 animate-spin" />}
         </span>
       </SidebarHeading>
       {!fetching && accounts.length === 0 && (
-        <SidebarItem disabled>No accounts</SidebarItem>
+        <SidebarItem disabled>
+          <SidebarLabel>No accounts</SidebarLabel>
+        </SidebarItem>
       )}
       {accounts.map((account) => (
         <SidebarItem
@@ -29,10 +33,16 @@ export function Accounts() {
           href="/account/$id"
           params={{ id: account.id }}
         >
-          <span>{account.name}</span>
+          <SidebarLabel>{account.name}</SidebarLabel>
           <Currency value={account.balance} className="ms-auto" />
         </SidebarItem>
       ))}
-    </>
+      <SidebarItem>
+        <SidebarLabel className="text-gray-700 text-xs">
+          Add Account
+        </SidebarLabel>
+        <PlusIcon className="w-3 h-3" />
+      </SidebarItem>
+    </SidebarSection>
   );
 }
