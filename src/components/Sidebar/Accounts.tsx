@@ -2,9 +2,12 @@ import { useAccounts } from "@/hooks/useAccounts";
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import { SidebarHeading, SidebarItem } from "../ui/sidebar";
+import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 
 export function Accounts() {
-  const { results, fetching } = useAccounts();
+  const { budget } = useCurrentBudget();
+  const { results, fetching } = useAccounts({ budgetId: budget?.id });
+  const accounts = Array.from(results?.values() || []);
 
   return (
     <>
@@ -16,9 +19,13 @@ export function Accounts() {
           />
         </span>
       </SidebarHeading>
-
-      {Array.from(results || []).map(([id, account]) => (
-        <SidebarItem key={id} href="/accounts">
+      {!fetching && accounts.length === 0 && (
+        <SidebarItem className="text-gray-700" disabled>
+          No accounts
+        </SidebarItem>
+      )}
+      {accounts.map((account) => (
+        <SidebarItem key={account.id} href="/accounts">
           {account.name}
         </SidebarItem>
       ))}
