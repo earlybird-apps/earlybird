@@ -12,9 +12,14 @@ import { Accounts } from "./Accounts";
 import { Budgets } from "./Budgets";
 import { Profile } from "./Profile";
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+import { useConnectionStatus } from "@triplit/react";
+import { Badge } from "../ui/badge";
+import { useTriplitClient } from "@/hooks/useTriplitClient";
 
 export function Sidebar() {
   const { budget } = useCurrentBudget();
+  const { client } = useTriplitClient();
+  const status = useConnectionStatus(client);
   return (
     <BaseSidebar>
       <SidebarHeader>
@@ -37,7 +42,10 @@ export function Sidebar() {
       <SidebarBody>
         <Accounts />
       </SidebarBody>
-      <SidebarFooter>
+      <SidebarFooter className="space-y-3">
+        {status === "CLOSED" && (
+          <Badge className="justify-center">Working offline</Badge>
+        )}
         <Profile />
       </SidebarFooter>
     </BaseSidebar>
