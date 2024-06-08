@@ -44,6 +44,7 @@ export const schema = {
     schema: S.Schema({
       id: S.Id(),
       name: S.String(),
+      balance: S.Number({ default: 0 }),
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
     }),

@@ -3,6 +3,7 @@ import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import clsx from "clsx";
 import { SidebarHeading, SidebarItem } from "../ui/sidebar";
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+import { Currency } from "../Currency";
 
 export function Accounts() {
   const { budget } = useCurrentBudget();
@@ -25,8 +26,13 @@ export function Accounts() {
         </SidebarItem>
       )}
       {accounts.map((account) => (
-        <SidebarItem key={account.id} href="/accounts">
-          {account.name}
+        <SidebarItem
+          key={account.id}
+          href="/accounts"
+          className="flex justify-between"
+        >
+          <span>{account.name}</span>
+          <Currency value={account.balance} className="ms-auto" />
         </SidebarItem>
       ))}
     </>
