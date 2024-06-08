@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: Inter;
+    src: url(/src/assets/Inter.ttf);
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(/src/assets/RobotoMono.ttf);
+  }
+  @font-face {
+    font-family: "Roboto Mono";
+    src: url(/src/assets/RobotoMono-Italic.ttf);
+    font-style: italic;
+  }
+}
