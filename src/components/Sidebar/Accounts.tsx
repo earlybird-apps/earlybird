@@ -22,11 +22,6 @@ export function Accounts() {
           Accounts {fetching && <ArrowPathIcon className="w-3 animate-spin" />}
         </span>
       </SidebarHeading>
-      {!fetching && accounts.length === 0 && (
-        <SidebarItem disabled>
-          <SidebarLabel>No accounts</SidebarLabel>
-        </SidebarItem>
-      )}
       {accounts.map((account) => (
         <SidebarItem
           key={account.id}
