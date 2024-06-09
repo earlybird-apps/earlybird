@@ -20,6 +20,7 @@ export function Sidebar() {
   const { budget } = useCurrentBudget();
   const { client } = useTriplitClient();
   const status = useConnectionStatus(client);
+  // TODO: move data fetching out of here
   return (
     <BaseSidebar>
       <SidebarHeader>
