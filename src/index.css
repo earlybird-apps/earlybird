@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    @apply bg-zinc-100;
+  }
   @font-face {
     font-family: Inter;
     src: url(/src/assets/Inter.ttf);
