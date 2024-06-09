@@ -18,11 +18,9 @@ export function CategoryTable(props: { categories: Category[] }) {
       </TableHead>
       <TableBody>
         {props.categories.map((category) => (
-          <>
-            <TableRow key={category.name} className="align-center">
-              <TableCell className="font-medium">{category.name}</TableCell>
-            </TableRow>
-          </>
+          <TableRow key={category.id} className="align-center">
+            <TableCell className="font-medium">{category.name}</TableCell>
+          </TableRow>
         ))}
       </TableBody>
     </Table>
