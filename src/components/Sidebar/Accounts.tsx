@@ -16,7 +16,7 @@ export function Accounts() {
   const accounts = Array.from(results?.values() || []);
 
   return (
-    <SidebarSection card>
+    <SidebarSection className="lg:border lg:rounded-xl lg:p-2 lg:bg-slate-50">
       <SidebarHeading>
         <span className="flex justify-between">
           Accounts {fetching && <ArrowPathIcon className="w-3 animate-spin" />}
