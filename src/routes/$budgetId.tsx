@@ -81,7 +81,11 @@ function Budget() {
       </div>
       {results && results?.size === 0 && <EmptyCategories />}
       {results && results?.size > 0 && (
-        <CategoryTable categories={Array.from(results.values())} />
+        <CategoryTable
+          categories={Array.from(results.values())}
+          month={month}
+          year={year}
+        />
       )}
     </div>
   );
