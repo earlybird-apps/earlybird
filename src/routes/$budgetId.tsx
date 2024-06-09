@@ -73,7 +73,7 @@ function Budget() {
     <div className="space-y-4 flex flex-col">
       <div className="flex justify-between items-center">
         <Heading
-          className={clsx(!isThisMonth(selectedMonth) && "text-slate-500")}
+          className={clsx(!isThisMonth(selectedMonth) && "!text-gray-500")}
         >
           {format(selectedMonth, "MMM yyy")}
         </Heading>
