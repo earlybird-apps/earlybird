@@ -61,16 +61,21 @@ export function SidebarFooter({
 
 export function SidebarSection({
   className,
+  card = false,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
-  let id = useId();
+}: React.ComponentPropsWithoutRef<"div"> & { card?: boolean }) {
+  const id = useId();
 
   return (
     <LayoutGroup id={id}>
       <div
         {...props}
         data-slot="section"
-        className={clsx(className, "flex flex-col gap-0.5")}
+        className={clsx(
+          className,
+          "flex flex-col gap-0.5",
+          card && "border rounded-xl p-2 bg-slate-50"
+        )}
       />
     </LayoutGroup>
   );
