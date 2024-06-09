@@ -4,7 +4,10 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ]
+      ],
+      "@db/*": [
+        "./triplit/*"
+      ],
     },
     "target": "ES2020",
     "useDefineForClassFields": true,

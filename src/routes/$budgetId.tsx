@@ -1,7 +1,7 @@
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { createFileRoute, notFound } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { client } from "../../triplit/client";
+import { client } from "@db/client";
 import { z } from "zod";
 import { Heading } from "@/components/ui/heading";
 import { CategoryTable } from "@/components/CategoryTable";

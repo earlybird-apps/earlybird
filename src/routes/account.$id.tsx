@@ -1,5 +1,5 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { client } from "../../triplit/client";
+import { client } from "@db/client";
 import { z } from "zod";
 
 export const Route = createFileRoute("/account/$id")({

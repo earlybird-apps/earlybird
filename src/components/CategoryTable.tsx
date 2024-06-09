@@ -6,7 +6,7 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
-import { Category } from "../../triplit/types";
+import { Category } from "@db/types";
 
 export function CategoryTable(props: { categories: Category[] }) {
   return (

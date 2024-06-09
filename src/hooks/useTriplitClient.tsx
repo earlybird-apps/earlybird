@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { client } from "../../triplit/client";
+import { client } from "@db/client";
 
 const TriplitContext = createContext({ client });
 

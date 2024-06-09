@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { client } from "../triplit/client";
+import { client } from "@db/client";
 import "./index.css";
 
 import { RouterProvider, createRouter } from "@tanstack/react-router";
