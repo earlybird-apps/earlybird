@@ -33,18 +33,26 @@ export default function seed(): BulkInsert<typeof schema> {
     transactions: [{
       amount: 1200,
       account_id: "1",
+      category_id: "1",
+      date: new Date(2024, 5, 1),
     },
     {
       amount: -200,
       account_id: "1",
+      category_id: "1",
+      date: new Date(2024, 5, 6),
     },
     {
       amount: 4000,
       account_id: "2",
+      category_id: "2",
+      date: new Date(2024, 5, 1),
     },
     {
       amount: 1000,
       account_id: "2",
+      category_id: "2",
+      date: new Date(2024, 5, 8),
     }],
     categories: [{
       id: "1",
