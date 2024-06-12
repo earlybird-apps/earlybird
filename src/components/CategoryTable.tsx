@@ -13,9 +13,9 @@ export function CategoryTable(props: {
       <TableHead>
         <TableRow>
           <TableHeader>Category</TableHeader>
-          <TableHeader>Assigned</TableHeader>
-          <TableHeader>Activity</TableHeader>
-          <TableHeader>Available</TableHeader>
+          <TableHeader className="text-center">Assigned</TableHeader>
+          <TableHeader className="text-center">Activity</TableHeader>
+          <TableHeader className="text-end">Available</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>

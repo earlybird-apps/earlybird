@@ -25,13 +25,13 @@ export function CategoryRow({
   return (
     <TableRow>
       <TableCell>{categoryName}</TableCell>
-      <TableCell>
+      <TableCell className="text-center">
         <Currency value={snapshot?.assigned || 0} />
       </TableCell>
-      <TableCell>
+      <TableCell className="text-center">
         <Currency value={snapshot?.activity || 0} />
       </TableCell>
-      <TableCell>
+      <TableCell className="text-end">
         <Currency value={snapshot?.available || 0} />
       </TableCell>
     </TableRow>
