@@ -10,6 +10,9 @@ import { EmptyCategories } from "@/components/EmptyCategories";
 import { format, addMonths, isThisMonth } from "date-fns";
 import { MonthNav } from "@/components/MonthNav";
 import clsx from "clsx";
+import { useSnapshot } from "@/hooks/useSnapshot";
+import { ReadyToAssign } from "@/components/ReadyToAssign";
+import { AllAssigned } from "@/components/AllAssigned";
 
 export const Route = createFileRoute("/$budgetId")({
   parseParams: (params) => ({
@@ -41,6 +44,13 @@ function Budget() {
 
   const selectedMonth = useMemo(() => new Date(year, month, 1), [month, year]);
   const currentDate = useMemo(() => new Date(), []);
+
+  const { snapshot } = useSnapshot({
+    month,
+    year,
+    currentDate,
+    budgetId: budget.id,
+  });
 
   useEffect(() => {
     if (budget) setBudget(budget);
@@ -80,6 +90,10 @@ function Budget() {
         </Heading>
         <MonthNav onSelect={handleDateChange} />
       </div>
+      {snapshot && snapshot?.available !== 0 && (
+        <ReadyToAssign value={snapshot.available} />
+      )}
+      {snapshot && snapshot.available === 0 && <AllAssigned />}
       {results && results?.size === 0 && <EmptyCategories />}
       {results && results?.size > 0 && (
         <CategoryTable
