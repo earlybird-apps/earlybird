@@ -1,6 +1,6 @@
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { client } from "@db/client";
 import { z } from "zod";
 import { Heading } from "@/components/ui/heading";
@@ -39,7 +39,8 @@ function Budget() {
   const navigate = useNavigate();
   const { results } = useCategories();
 
-  const selectedMonth = new Date(year, month, 1);
+  const selectedMonth = useMemo(() => new Date(year, month, 1), [month, year]);
+  const currentDate = useMemo(() => new Date(), []);
 
   useEffect(() => {
     if (budget) setBudget(budget);
@@ -85,6 +86,7 @@ function Budget() {
           categories={Array.from(results.values())}
           month={month}
           year={year}
+          currentDate={currentDate}
         />
       )}
     </div>
