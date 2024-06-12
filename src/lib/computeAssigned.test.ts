@@ -191,27 +191,3 @@ describe("computeAssigned", () => {
         expect(computeAssigned(assignments, { month: 1, year: 2024 })).toEqual({ givenMonth: -1, total: -2 });
     });
 });
-
-/*
-when computing historical info
-activity should equal the sum of all transactions in the given month
-total activity should equal the sum of all transactions before the given month, inclusive
-
-
----
-
-when computing current info
-activity should equal the sum of all transactions in the given month and before the current date
-total activity should equal the sum of all transactions before the current date, inclusive
-
-assigned should equal the sum of all assignments in the given month
-total assigned should equal the sum of all assignments before the given month, inclusive
----
-
-when computing future info
-activity should equal the sum of all transactions in the given month and before the current date (which should be 0 for future months, logically)
-total activity should equal the sum of all transactions before the current date, inclusive
-
-assigned should equal the sum of all assignments in the given month
-total assigned should equal the sum of all assignments before the given month, inclusive
-*/
