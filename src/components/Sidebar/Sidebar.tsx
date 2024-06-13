@@ -15,6 +15,7 @@ import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useConnectionStatus } from "@triplit/react";
 import { Badge } from "../ui/badge";
 import { useTriplitClient } from "@/hooks/useTriplitClient";
+import { Transactions } from "./Transactions";
 
 export function Sidebar() {
   const { budget } = useCurrentBudget();
@@ -42,6 +43,7 @@ export function Sidebar() {
       </SidebarHeader>
       <SidebarBody>
         <Accounts />
+        <Transactions />
       </SidebarBody>
       <SidebarFooter className="space-y-3">
         {status === "CLOSED" && (

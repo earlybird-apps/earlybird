@@ -1,21 +1,31 @@
 import { useQuery } from "@triplit/react";
 import { client } from "@db/client";
-import { lastDayOfMonth } from "date-fns";
 
 interface QueryTransactionsProps {
-  categoryId: string;
-  month: number;
-  year: number;
+  categoryId?: string;
+  budgetId?: string;
+  accountIds?: string[];
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+  includeAccount?: boolean;
+  limit?: number;
 }
 
 export const useTransactions = (props: QueryTransactionsProps) => {
-  const startOfMonth = new Date(props.year, props.month, 1);
-  const endOfMonth = lastDayOfMonth(startOfMonth);
-  return useQuery(
-    client,
-    client
-      .query("transactions")
-      .where("category_id", "=", props.categoryId)
-      .where(["date", ">=", startOfMonth], ["date", "<=", endOfMonth])
-  );
+  const query = client.query("transactions");
+
+  if (props.categoryId) query.where("category_id", "=", props.categoryId);
+  if (props.budgetId) query.where("account.budget_id", "=", props.budgetId);
+  if (props.accountIds) query.where("account_id", "in", props.accountIds);
+  if (props.limit) query.limit(props.limit);
+  if (props.dateRange)
+    query.where(
+      ["date", ">=", props.dateRange.start],
+      ["date", "<=", props.dateRange.end]
+    );
+  if (props.includeAccount === true) query.include("account");
+
+  return useQuery(client, query);
 };
