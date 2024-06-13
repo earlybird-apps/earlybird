@@ -12,10 +12,10 @@ export function CategoryTable(props: {
     <Table className="table-auto">
       <TableHead>
         <TableRow>
-          <TableHeader>Category</TableHeader>
-          <TableHeader className="text-center">Assigned</TableHeader>
-          <TableHeader className="text-center">Activity</TableHeader>
-          <TableHeader className="text-end">Available</TableHeader>
+          <TableHeader className="w-[33%]">Category</TableHeader>
+          <TableHeader className="w-[23%]">Assigned</TableHeader>
+          <TableHeader className="w-[23%]">Activity</TableHeader>
+          <TableHeader className="w-[23%] text-end">Available</TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>

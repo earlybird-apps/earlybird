@@ -1,6 +1,8 @@
 import { TableRow, TableCell } from "./ui/table";
 import { Currency } from "./Currency";
 import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
+import { Button } from "./ui/button";
+import { ArrowsRightLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
 
 export function CategoryRow({
   categoryName,
@@ -24,11 +26,23 @@ export function CategoryRow({
 
   return (
     <TableRow>
-      <TableCell>{categoryName}</TableCell>
-      <TableCell className="text-center">
-        <Currency value={snapshot?.assigned || 0} />
+      <TableCell className="group">
+        <div className="gap-x-2 flex items-center min-h-10 justify-between">
+          <span>{categoryName}</span>
+          <Button plain>
+            <PencilIcon className="w-2 h-2 group-hover:block hidden" />
+          </Button>
+        </div>
       </TableCell>
-      <TableCell className="text-center">
+      <TableCell className="group">
+        <div className="gap-x-2 flex items-center mx-auto min-h-10 justify-between">
+          <Currency value={snapshot?.assigned || 0} />
+          <Button plain>
+            <ArrowsRightLeftIcon className="w-2 h-2 group-hover:block hidden" />
+          </Button>
+        </div>
+      </TableCell>
+      <TableCell className="group">
         <Currency value={snapshot?.activity || 0} />
       </TableCell>
       <TableCell className="text-end">
