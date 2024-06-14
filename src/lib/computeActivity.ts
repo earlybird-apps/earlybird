@@ -14,7 +14,7 @@ type DateOptions = {
     limitDate: Date,
 }
 
-export const computeActivity = (transactions: Transaction[], dateOptions: DateOptions): ComputedActivity => {
+export const computeActivity = (transactions: Pick<Transaction, "date" | "amount">[], dateOptions: DateOptions): ComputedActivity => {
     if (transactions.length === 0) return { total: 0, givenMonth: 0 };
 
     const targetDate = lastDayOfMonth(new Date(dateOptions.targetYear, dateOptions.targetMonth, 1));

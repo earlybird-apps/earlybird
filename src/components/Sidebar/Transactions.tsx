@@ -9,21 +9,14 @@ import {
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { Currency } from "../Currency";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { useMemo } from "react";
-import { Transaction } from "@db/types";
 
 export function Transactions() {
   const { budget } = useCurrentBudget();
-  const { results, fetching } = useTransactions({
+  const { transactions, fetching } = useTransactions({
     budgetId: budget?.id,
     limit: 3,
     includeAccount: true,
   });
-
-  const transactions: Transaction[] = useMemo(
-    () => Array.from(results?.values() || []),
-    [results]
-  );
 
   return (
     <SidebarSection className="lg:border lg:rounded-xl lg:p-2 lg:bg-slate-50">
@@ -33,7 +26,7 @@ export function Transactions() {
           {fetching && <ArrowPathIcon className="w-3 animate-spin" />}
         </span>
       </SidebarHeading>
-      {transactions.map((transaction) => (
+      {transactions?.map((transaction) => (
         <SidebarItem
           key={transaction.id}
           href="/account/$id"

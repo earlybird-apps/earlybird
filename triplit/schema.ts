@@ -62,9 +62,10 @@ export const schema = {
       amount: S.Number(),
       date: S.Date(),
       account_id: S.String(),
+      memo: S.Optional(S.String()),
       account: S.RelationById("accounts", "$account_id"),
       category_id: S.Optional(S.String()),
-      category: S.RelationById("categories", "$id"),
+      category: S.RelationById("categories", "$category_id"),
     }),
     rules: {
       read: {
