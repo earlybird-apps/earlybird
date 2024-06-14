@@ -4,6 +4,7 @@ import { z } from "zod";
 import { useTransactions } from "@/hooks/useTransactions";
 import { Heading, Subheading } from "@/components/ui/heading";
 import { TransactionTable } from "@/components/TransactionTable";
+import { Currency } from "@/components/Currency";
 
 export const Route = createFileRoute("/account/$id")({
   parseParams: (params) => ({
@@ -26,7 +27,13 @@ function Account() {
 
   return (
     <div className="p-2 flex flex-col gap-6">
-      <Heading>{account.name}</Heading>
+      <div className="flex flex-col gap-y-2">
+        <Heading>{account.name}</Heading>
+        <div className="text-xs text-gray-700">
+          <span className="uppercase">Balance:</span>{" "}
+          <Currency value={account.balance} />
+        </div>
+      </div>
       <div className="flex flex-col gap-2">
         <Subheading>Transactions</Subheading>
         <TransactionTable transactions={transactions || []} />
