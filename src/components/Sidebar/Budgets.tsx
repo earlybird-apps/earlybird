@@ -14,7 +14,7 @@ import { FolderIcon } from "@heroicons/react/24/outline";
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 
 export const Budgets = () => {
-  const { results = [], fetching } = useBudgets();
+  const { results: budgets, fetching } = useBudgets();
   const { budget } = useCurrentBudget();
   return (
     <Dropdown>
@@ -32,15 +32,12 @@ export const Budgets = () => {
       </DropdownButton>
       <DropdownMenu className="min-w-80 lg:min-w-64" anchor="bottom start">
         {/* TODO: Display something when there are no options */}
-        {Array.from(results?.values() || []).map((option) => (
-          <DropdownItem
-            key={option.id}
-            href="/$budgetId"
-            params={{ budgetId: option.id }}
-          >
-            <DropdownLabel>{option.name}</DropdownLabel>
-          </DropdownItem>
-        ))}
+        {budgets &&
+          Array.from(budgets).map(([id, budget]) => (
+            <DropdownItem key={id} href="/$budgetId" params={{ budgetId: id }}>
+              <DropdownLabel>{budget.name}</DropdownLabel>
+            </DropdownItem>
+          ))}
         <DropdownDivider />
         <DropdownItem>
           {/* TODO: Make this do something */}
