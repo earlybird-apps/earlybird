@@ -18,9 +18,21 @@ function Accounts() {
     () => results && Array.from(results?.values()),
     [results]
   );
+
+  const totalBalance = accounts?.reduce(
+    (total, account) => total + account.balance,
+    0
+  );
+
   return (
     <div className="space-y-4 flex flex-col">
-      <Heading>Accounts</Heading>
+      <div className="flex flex-col gap-y-2">
+        <Heading>Accounts</Heading>
+        <div className="text-sm text-gray-700">
+          <span className="uppercase">Total Balance:</span>{" "}
+          <Currency value={totalBalance || 0} />
+        </div>
+      </div>
       <ul role="list">
         {accounts?.length === 0 && (
           <EmptyState
