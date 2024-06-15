@@ -2,7 +2,8 @@ import { TableRow, TableCell } from "./ui/table";
 import { Currency } from "./Currency";
 import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
 import { Button } from "./ui/button";
-import { ArrowsRightLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
+import { CategoryNameInput } from "./CategoryNameInput";
 
 export function CategoryRow({
   categoryName,
@@ -27,12 +28,10 @@ export function CategoryRow({
   return (
     <TableRow>
       <TableCell className="group">
-        <div className="gap-x-2 flex items-center min-h-10 justify-between">
-          <span>{categoryName}</span>
-          <Button plain>
-            <PencilIcon className="w-2 h-2 group-hover:block hidden" />
-          </Button>
-        </div>
+        <CategoryNameInput
+          categoryName={categoryName}
+          categoryId={categoryId}
+        />
       </TableCell>
       <TableCell className="group">
         <div className="gap-x-2 flex items-center mx-auto min-h-10 justify-between">
