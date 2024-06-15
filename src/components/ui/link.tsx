@@ -11,10 +11,11 @@ import { Link as TanStackLink, type LinkProps } from "@tanstack/react-router";
 import React from "react";
 
 export const Link = React.forwardRef(function Link(
-  props: { href: LinkProps["to"]; className: string; tabIndex: number } & Omit<
-    LinkProps,
-    "to"
-  >,
+  props: {
+    href: LinkProps["to"];
+    className?: string;
+    tabIndex?: number;
+  } & Omit<LinkProps, "to">,
   ref: React.ForwardedRef<HTMLAnchorElement>
 ) {
   return (

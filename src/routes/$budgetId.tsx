@@ -6,7 +6,7 @@ import { z } from "zod";
 import { Heading } from "@/components/ui/heading";
 import { CategoryTable } from "@/components/CategoryTable";
 import { useCategories } from "@/hooks/useCategories";
-import { EmptyCategories } from "@/components/EmptyCategories";
+import { EmptyState } from "@/components/EmptyState";
 import { format, addMonths, isThisMonth } from "date-fns";
 import { MonthNav } from "@/components/MonthNav";
 import clsx from "clsx";
@@ -94,7 +94,13 @@ function Budget() {
         <ReadyToAssign value={snapshot.available} />
       )}
       {snapshot && snapshot.available === 0 && <AllAssigned />}
-      {results && results?.size === 0 && <EmptyCategories />}
+      {results && results?.size === 0 && (
+        <EmptyState
+          title="No categories"
+          description="Get started by creating a new budget category."
+          buttonText="New Category"
+        />
+      )}
       {results && results?.size > 0 && (
         <CategoryTable
           categories={Array.from(results.values())}
