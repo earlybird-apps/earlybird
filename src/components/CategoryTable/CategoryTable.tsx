@@ -1,5 +1,11 @@
 import { CategoryRow } from "./CategoryRow";
-import { Table, TableHead, TableRow, TableHeader, TableBody } from "./ui/table";
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+} from "../ui/table";
 import { Category } from "@db/types";
 
 export function CategoryTable(props: {

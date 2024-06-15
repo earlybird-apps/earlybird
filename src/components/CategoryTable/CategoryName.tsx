@@ -1,6 +1,6 @@
 import { CheckIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { client } from "@db/client";
 
@@ -10,6 +10,7 @@ type CategoryInputProps = {
   onCancel(): void;
   onSave(): void;
 };
+
 const CategoryInput = forwardRef<HTMLInputElement, CategoryInputProps>(
   function CategoryInput(props, ref) {
     return (
@@ -39,17 +40,17 @@ const CategoryInput = forwardRef<HTMLInputElement, CategoryInputProps>(
   }
 );
 
-export function CategoryNameInput({
-  categoryName,
+export function CategoryName({
+  value,
   categoryId,
 }: {
-  categoryName: string;
+  value: string;
   categoryId: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [showInput, setShowInput] = useState(false);
-  const [inputValue, setInputValue] = useState<string>(categoryName);
-  //   TODO: Save on enter & cancel on escape
+  const [inputValue, setInputValue] = useState<string>(value);
+
   useEffect(() => {
     if (showInput === true) {
       inputRef.current?.focus();
@@ -60,7 +61,7 @@ export function CategoryNameInput({
     <div className="gap-x-2 flex items-center min-h-10 justify-between">
       {!showInput && (
         <>
-          <span>{categoryName}</span>
+          <span>{value}</span>
           <Button plain onClick={() => setShowInput(true)}>
             <PencilIcon className="w-2 h-2 group-hover:block hidden" />
           </Button>
@@ -72,12 +73,12 @@ export function CategoryNameInput({
           value={inputValue}
           setValue={setInputValue}
           onCancel={() => {
-            setInputValue(categoryName);
+            setInputValue(value);
             setShowInput(false);
           }}
           onSave={() => {
             setShowInput(false);
-            if (inputValue !== categoryName) {
+            if (inputValue !== value) {
               client.update("categories", categoryId, async (category) => {
                 category.name = inputValue;
               });
