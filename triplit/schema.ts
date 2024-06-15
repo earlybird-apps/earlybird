@@ -16,7 +16,10 @@ export const schema = {
       id: S.Id(),
       name: S.String(),
       user_id: S.String(),
-      user: S.RelationById("users", "$user_id")
+      user: S.RelationById("users", "$user_id"),
+      categories: S.RelationMany("categories", {
+        where: [['budget_id', '=', '$id']],
+      }),
     }),
     rules: {
       read: {
@@ -89,6 +92,9 @@ export const schema = {
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
       assignments: S.RelationMany("assignments", {
+        where: [['category_id', '=', '$id']],
+      }),
+      transactions: S.RelationMany("transactions", {
         where: [['category_id', '=', '$id']],
       })
     }),

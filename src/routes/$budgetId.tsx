@@ -5,7 +5,6 @@ import { client } from "@db/client";
 import { z } from "zod";
 import { Heading } from "@/components/ui/heading";
 import { CategoryTable } from "@/components/CategoryTable";
-import { useCategories } from "@/hooks/useCategories";
 import { EmptyState } from "@/components/EmptyState";
 import { format, addMonths, isThisMonth } from "date-fns";
 import { MonthNav } from "@/components/MonthNav";
@@ -28,7 +27,13 @@ export const Route = createFileRoute("/$budgetId")({
     year: z.number().default(new Date().getFullYear()).parse(search?.year),
   }),
   loader: async ({ params }) => {
-    const budget = await client.fetchById("budgets", params.budgetId);
+    const budget = await client.fetchOne(
+      client
+        .query("budgets")
+        .where("id", "=", params.budgetId)
+        .include("categories")
+        .build()
+    );
     if (!budget) throw notFound();
     return budget;
   },
@@ -38,9 +43,8 @@ export const Route = createFileRoute("/$budgetId")({
 function Budget() {
   const budget = Route.useLoaderData();
   const { month, year } = Route.useSearch();
-  const { setBudget } = useCurrentBudget();
   const navigate = useNavigate();
-  const { results } = useCategories();
+  const { setBudget } = useCurrentBudget();
 
   const selectedMonth = useMemo(() => new Date(year, month, 1), [month, year]);
   const currentDate = useMemo(() => new Date(), []);
@@ -94,16 +98,16 @@ function Budget() {
         <ReadyToAssign value={snapshot.available} />
       )}
       {snapshot && snapshot.available === 0 && <AllAssigned />}
-      {results && results?.size === 0 && (
+      {budget.categories && budget.categories.size === 0 && (
         <EmptyState
           title="No categories"
           description="Get started by creating a new budget category."
           buttonText="New Category"
         />
       )}
-      {results && results?.size > 0 && (
+      {budget.categories && budget.categories.size > 0 && (
         <CategoryTable
-          categories={Array.from(results.values())}
+          categories={Array.from(budget.categories.values())}
           month={month}
           year={year}
           currentDate={currentDate}

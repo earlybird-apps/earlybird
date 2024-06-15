@@ -1,14 +1,11 @@
 import { useQuery } from "@triplit/react";
 import { useTriplitClient } from "./useTriplitClient";
-import { useCurrentBudget } from "./useCurrentBudget";
 
-export const useCategories = () => {
+export const useCategories = ({ budgetId }: { budgetId: string }) => {
   const { client } = useTriplitClient();
-  const { budget } = useCurrentBudget();
 
   return useQuery(
     client,
-    client.query("categories").where("budget_id", "=", budget?.id || "")
-    // TODO: Handle undefined id
+    client.query("categories").where("budget_id", "=", budgetId)
   );
 };
