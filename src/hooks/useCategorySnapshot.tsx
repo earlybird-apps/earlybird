@@ -1,11 +1,8 @@
-import { client } from "@db/client";
 import { useMemo } from "react";
-import { and, or } from "@triplit/db";
-
 import { computeAssigned } from "@/lib/computeAssigned";
 import { computeActivity } from "@/lib/computeActivity";
 import { useTransactions } from "./useTransactions";
-import { useQuery } from "@triplit/react";
+import { useAssignments } from "./useAssignments";
 
 interface QuerySnapshotProps {
   categoryId: string;
@@ -13,27 +10,6 @@ interface QuerySnapshotProps {
   year: number;
   currentDate: Date;
 }
-
-const useAssignments = (props: {
-  categoryId: string;
-  year: number;
-  month: number;
-}) => {
-  const assignmentQuery = client
-    .query("assignments")
-    .where("category_id", "=", props.categoryId)
-    .where(
-      or([
-        ["year", "<", props.year],
-        and([
-          ["year", "=", props.year],
-          ["month", "<=", props.month],
-        ]),
-      ])
-    );
-
-  return useQuery(client, assignmentQuery);
-};
 
 export const useCategorySnapshot = ({
   month,
