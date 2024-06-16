@@ -2,7 +2,6 @@ import { CheckIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { client } from "@db/client";
 
 type CategoryInputProps = {
   value?: string;
@@ -42,10 +41,10 @@ const CategoryInput = forwardRef<HTMLInputElement, CategoryInputProps>(
 
 export function CategoryName({
   value,
-  categoryId,
+  onSave,
 }: {
   value: string;
-  categoryId: string;
+  onSave: (value: string) => void;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [showInput, setShowInput] = useState(false);
@@ -78,11 +77,7 @@ export function CategoryName({
           }}
           onSave={() => {
             setShowInput(false);
-            if (inputValue !== value) {
-              client.update("categories", categoryId, async (category) => {
-                category.name = inputValue;
-              });
-            }
+            if (inputValue !== value) onSave(inputValue);
           }}
         />
       )}

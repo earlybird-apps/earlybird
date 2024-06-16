@@ -4,20 +4,24 @@ import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
 import { CategoryName } from "./CategoryName";
 import { Button } from "../ui/button";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
+import { useQueryOne } from "@triplit/react";
+import { client } from "@db/client";
 
 export function CategoryRow({
-  categoryName,
   categoryId,
   year,
   month,
   currentDate,
 }: {
-  categoryName: string;
   categoryId: string;
   year: number;
   month: number;
   currentDate: Date;
 }) {
+  const { result: category } = useQueryOne(
+    client,
+    client.query("categories").id(categoryId)
+  );
   const { snapshot } = useCategorySnapshot({
     categoryId,
     month,
@@ -28,7 +32,16 @@ export function CategoryRow({
   return (
     <TableRow>
       <TableCell className="group">
-        <CategoryName value={categoryName} categoryId={categoryId} />
+        {category && (
+          <CategoryName
+            value={category.name}
+            onSave={(value) =>
+              client.update("categories", categoryId, async (category) => {
+                category.name = value;
+              })
+            }
+          />
+        )}
       </TableCell>
       <TableCell className="group">
         <div className="gap-x-2 flex items-center mx-auto min-h-10 justify-between">

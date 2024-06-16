@@ -6,10 +6,9 @@ import {
   TableHeader,
   TableBody,
 } from "../ui/table";
-import { Category } from "@db/types";
 
 export function CategoryTable(props: {
-  categories: Category[];
+  categoryIds: string[];
   month: number;
   year: number;
   currentDate: Date;
@@ -25,11 +24,10 @@ export function CategoryTable(props: {
         </TableRow>
       </TableHead>
       <TableBody>
-        {props.categories.map((category) => (
+        {props.categoryIds.map((id) => (
           <CategoryRow
-            key={category.id}
-            categoryName={category.name}
-            categoryId={category.id}
+            key={id}
+            categoryId={id}
             month={props.month}
             year={props.year}
             currentDate={props.currentDate}

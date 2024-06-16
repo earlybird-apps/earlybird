@@ -107,7 +107,7 @@ function Budget() {
       )}
       {budget.categories && budget.categories.size > 0 && (
         <CategoryTable
-          categories={Array.from(budget.categories.values())}
+          categoryIds={Array.from(budget.categories.keys())}
           month={month}
           year={year}
           currentDate={currentDate}
