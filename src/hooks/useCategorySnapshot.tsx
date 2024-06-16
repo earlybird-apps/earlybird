@@ -1,11 +1,11 @@
 import { client } from "@db/client";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { and, or } from "@triplit/db";
-import { CategorySnapshot } from "@/types";
-import { Assignment, Transaction } from "@db/types";
 
 import { computeAssigned } from "@/lib/computeAssigned";
 import { computeActivity } from "@/lib/computeActivity";
+import { useTransactions } from "./useTransactions";
+import { useQuery } from "@triplit/react";
 
 interface QuerySnapshotProps {
   categoryId: string;
@@ -14,19 +14,7 @@ interface QuerySnapshotProps {
   currentDate: Date;
 }
 
-const fetchTransactions = (props: {
-  categoryId: string;
-  currentDate: Date;
-}) => {
-  const transactionQuery = client
-    .query("transactions")
-    .where("category_id", "=", props.categoryId)
-    .where("date", "<=", props.currentDate);
-
-  return client.fetch(transactionQuery.build());
-};
-
-const fetchAssignments = (props: {
+const useAssignments = (props: {
   categoryId: string;
   year: number;
   month: number;
@@ -44,7 +32,7 @@ const fetchAssignments = (props: {
       ])
     );
 
-  return client.fetch(assignmentQuery.build());
+  return useQuery(client, assignmentQuery);
 };
 
 export const useCategorySnapshot = ({
@@ -53,49 +41,45 @@ export const useCategorySnapshot = ({
   categoryId,
   currentDate,
 }: QuerySnapshotProps) => {
-  const [loading, setLoading] = useState(true);
-  const [snapshot, setSnapshot] = useState<CategorySnapshot | undefined>(
-    undefined
-  );
-  const [transactions, setTransactions] = useState<Transaction[]>();
-  const [assignments, setAssignments] = useState<Assignment[]>();
+  const { results: transactions, fetching: fetchingTransactions } =
+    useTransactions({
+      categoryId,
+      dateRange: { end: currentDate },
+    });
 
-  useEffect(() => {
-    if (!transactions || !assignments || !year || !month || !currentDate)
-      return;
+  const { results: assignments, fetching: fetchingAssignments } =
+    useAssignments({
+      categoryId,
+      year,
+      month,
+    });
 
-    const computedAssignments = computeAssigned(assignments, { year, month });
-    const computedActivity = computeActivity(transactions, {
+  const { givenMonth: activity, total: totalActivity } = useMemo(() => {
+    if (!transactions) return { givenMonth: undefined, total: undefined };
+    return computeActivity(Array.from(transactions.values()), {
       targetYear: year,
       targetMonth: month,
       limitDate: currentDate,
     });
-    setSnapshot({
-      assigned: computedAssignments.givenMonth,
-      activity: computedActivity.givenMonth,
-      available: computedAssignments.total + computedActivity.total,
+  }, [transactions, month, year, currentDate]);
+
+  const { givenMonth: assigned, total: totalAssigned } = useMemo(() => {
+    if (!assignments) return { givenMonth: undefined, total: undefined };
+    return computeAssigned(Array.from(assignments.values()), {
+      year,
+      month,
     });
-    setLoading(false);
-  }, [transactions, assignments, month, year, currentDate]);
-
-  useEffect(() => {
-    if (!year || !month || !currentDate || !categoryId) return;
-
-    setLoading(true);
-
-    const transactionPromise = fetchTransactions({ categoryId, currentDate });
-    const assignmentPromise = fetchAssignments({ categoryId, year, month });
-
-    Promise.all([transactionPromise, assignmentPromise]).then(
-      ([resTransactions, resAssignments]) => {
-        setTransactions(Array.from(resTransactions?.values()));
-        setAssignments(Array.from(resAssignments?.values()));
-      }
-    );
-  }, [categoryId, year, month, currentDate]);
+  }, [assignments, month, year]);
 
   return {
-    loading,
-    snapshot,
+    fetching: fetchingTransactions || fetchingAssignments,
+    snapshot: {
+      assigned: assigned,
+      activity: activity,
+      available:
+        totalActivity && totalAssigned
+          ? totalAssigned + totalActivity
+          : undefined,
+    },
   };
 };

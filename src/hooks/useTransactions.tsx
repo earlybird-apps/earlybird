@@ -6,7 +6,7 @@ interface QueryTransactionsProps {
   budgetId?: string;
   accountIds?: string[];
   dateRange?: {
-    start: Date;
+    start?: Date;
     end: Date;
   };
   includeAccount?: boolean;
@@ -26,7 +26,7 @@ export const useTransactions = (props: QueryTransactionsProps) => {
   if (props.limit) query.limit(props.limit);
   if (props.dateRange)
     query.where(
-      ["date", ">=", props.dateRange.start],
+      ["date", ">=", props.dateRange.start ?? new Date(1700, 1, 1)],
       ["date", "<=", props.dateRange.end]
     );
 
