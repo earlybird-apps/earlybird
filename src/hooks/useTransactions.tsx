@@ -1,7 +1,5 @@
 import { useQuery } from "@triplit/react";
 import { client } from "@db/client";
-import { useMemo } from "react";
-import { Transaction } from "@db/types";
 
 interface QueryTransactionsProps {
   categoryId?: string;
@@ -17,7 +15,10 @@ interface QueryTransactionsProps {
 }
 
 export const useTransactions = (props: QueryTransactionsProps) => {
-  const query = client.query("transactions");
+  const query = client
+    .query("transactions")
+    .include("account")
+    .include("category");
 
   if (props.categoryId) query.where("category_id", "=", props.categoryId);
   if (props.budgetId) query.where("account.budget_id", "=", props.budgetId);
@@ -28,19 +29,6 @@ export const useTransactions = (props: QueryTransactionsProps) => {
       ["date", ">=", props.dateRange.start],
       ["date", "<=", props.dateRange.end]
     );
-  if (props.includeAccount === true) query.include("account");
-  if (props.includeCategory === true) query.include("category");
 
-  const { results, ...rest } = useQuery(client, query);
-
-  const transactions: Transaction[] | undefined = useMemo(
-    () => results && Array.from(results.values()),
-    [results]
-  );
-
-  return {
-    ...rest,
-    results,
-    transactions,
-  };
+  return useQuery(client, query);
 };

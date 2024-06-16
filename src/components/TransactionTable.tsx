@@ -8,8 +8,9 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
-import { Transaction } from "@db/types";
+import { Category, Transaction as BaseTransaction } from "@db/types";
 
+type Transaction = BaseTransaction & { category: Category | null };
 export function TransactionTable(props: { transactions: Transaction[] }) {
   return (
     <Table className="table-auto">
@@ -30,7 +31,7 @@ export function TransactionTable(props: { transactions: Transaction[] }) {
             <TableCell className="group">
               <Currency value={transaction.amount} />
             </TableCell>
-            <TableCell>{transaction.category.name}</TableCell>
+            <TableCell>{transaction.category?.name}</TableCell>
             <TableCell className="text-gray-700 text-sm">
               {transaction.memo}
             </TableCell>

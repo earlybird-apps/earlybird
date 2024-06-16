@@ -20,7 +20,8 @@ export const Route = createFileRoute("/account/$id")({
 
 function Account() {
   const account = Route.useLoaderData();
-  const { transactions } = useTransactions({
+  // TODO: Can I handle this in the route loader?
+  const { results: transactions } = useTransactions({
     accountIds: [account.id],
     includeCategory: true,
   });
@@ -36,7 +37,9 @@ function Account() {
       </div>
       <div className="flex flex-col gap-2">
         <Subheading>Transactions</Subheading>
-        <TransactionTable transactions={transactions || []} />
+        {transactions && (
+          <TransactionTable transactions={Array.from(transactions.values())} />
+        )}
       </div>
     </div>
   );

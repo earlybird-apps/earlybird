@@ -43,6 +43,9 @@ export const schema = {
       balance: S.Number({ default: 0 }),
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
+      transactions: S.RelationMany("transactions", {
+        where: [['account_id', '=', '$id']],
+      }),
     }),
     rules: {
       read: {
