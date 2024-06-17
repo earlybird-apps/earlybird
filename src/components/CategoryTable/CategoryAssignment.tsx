@@ -39,7 +39,7 @@ const CategoryInput = forwardRef<HTMLInputElement, CategoryInputProps>(
   }
 );
 
-export function CategoryName({
+export function CategoryAssignment({
   value,
   onSave,
 }: {

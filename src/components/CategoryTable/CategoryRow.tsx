@@ -1,11 +1,12 @@
 import { TableRow, TableCell } from "../ui/table";
 import { Currency } from "../Currency";
 import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
-import { CategoryName } from "./CategoryName";
 import { Button } from "../ui/button";
 import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { useQueryOne } from "@triplit/react";
 import { client } from "@db/client";
+import { CategoryCell } from "./CategoryCell";
+import { CategoryInput } from "./CategoryInput";
 
 export function CategoryRow({
   categoryId,
@@ -31,18 +32,19 @@ export function CategoryRow({
 
   return (
     <TableRow>
-      <TableCell className="group">
+      <CategoryCell>
         {category && (
-          <CategoryName
+          <CategoryInput
             value={category.name}
-            onSave={(value) =>
+            onSave={(value) => {
+              if (!value || value === category.name) return;
               client.update("categories", categoryId, async (category) => {
                 category.name = value;
-              })
-            }
+              });
+            }}
           />
         )}
-      </TableCell>
+      </CategoryCell>
       <TableCell className="group">
         <div className="gap-x-2 flex items-center mx-auto min-h-10 justify-between">
           <Currency value={snapshot?.assigned || 0} />
