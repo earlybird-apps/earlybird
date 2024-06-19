@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Currency } from "./Currency";
 
 import {
@@ -8,23 +9,53 @@ import {
   TableBody,
   TableCell,
 } from "./ui/table";
-import { Category, Transaction as BaseTransaction } from "@db/types";
+import { Category, Transaction as BaseTransaction, Account } from "@db/types";
 
-type Transaction = BaseTransaction & { category: Category | null };
-export function TransactionTable(props: { transactions: Transaction[] }) {
+type Transaction = BaseTransaction & {
+  category: Category | null;
+  account: Account | null;
+};
+export function TransactionTable(props: {
+  transactions: Transaction[];
+  includeAccount?: boolean;
+}) {
   return (
     <Table className="table-auto">
       <TableHead>
         <TableRow>
-          <TableHeader className="w-[15%]">Date</TableHeader>
-          <TableHeader className="w-[25%]">Amount</TableHeader>
-          <TableHeader className="w-[30%]">Category</TableHeader>
-          <TableHeader className="w-[30%]">Memo</TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[15%]" : "hidden")}
+          >
+            Account
+          </TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[15%]" : "w-[15%]")}
+          >
+            Date
+          </TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[20%]" : "w-[25%]")}
+          >
+            Amount
+          </TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[25%]" : "w-[30%]")}
+          >
+            Category
+          </TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[25%]" : "w-[30%]")}
+          >
+            Memo
+          </TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
         {props.transactions.map((transaction) => (
           <TableRow key={transaction.id}>
+            {props.includeAccount && (
+              <TableCell>{transaction.account?.name}</TableCell>
+            )}
             <TableCell className="group">
               {transaction.date.toLocaleDateString()}
             </TableCell>
