@@ -1,12 +1,11 @@
 import { TableRow, TableCell } from "../ui/table";
 import { Currency } from "../Currency";
 import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
-import { Button } from "../ui/button";
-import { ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 import { useQueryOne } from "@triplit/react";
 import { client } from "@db/client";
 import { CategoryCell } from "./CategoryCell";
 import { CategoryInput } from "./CategoryInput";
+import { useAssignment } from "@/hooks/useAssignment";
 
 export function CategoryRow({
   categoryId,
@@ -23,6 +22,7 @@ export function CategoryRow({
     client,
     client.query("categories").id(categoryId)
   );
+  const { result: assignment } = useAssignment({ categoryId, year, month });
   const { snapshot } = useCategorySnapshot({
     categoryId,
     month,
@@ -39,20 +39,40 @@ export function CategoryRow({
             onSave={(value) => {
               if (!value || value === category.name) return;
               client.update("categories", categoryId, async (category) => {
-                category.name = value;
+                category.name = String(value);
               });
             }}
           />
         )}
       </CategoryCell>
-      <TableCell className="group">
-        <div className="gap-x-2 flex items-center mx-auto min-h-10 justify-between">
-          <Currency value={snapshot?.assigned || 0} />
-          <Button plain>
-            <ArrowsRightLeftIcon className="w-2 h-2 group-hover:block hidden" />
-          </Button>
-        </div>
-      </TableCell>
+      <CategoryCell>
+        {snapshot && (
+          <CategoryInput
+            currency
+            type="number"
+            value={assignment?.amount ?? 0}
+            onSave={(value) => {
+              if (!value || value === assignment?.amount) return;
+              if (assignment) {
+                client.update(
+                  "assignments",
+                  assignment.id,
+                  async (assignment) => {
+                    assignment.amount = Number(value);
+                  }
+                );
+              } else {
+                client.insert("assignments", {
+                  category_id: categoryId,
+                  year,
+                  month,
+                  amount: Number(value),
+                });
+              }
+            }}
+          />
+        )}
+      </CategoryCell>
       <TableCell className="group">
         <Currency value={snapshot?.activity || 0} />
       </TableCell>

@@ -49,7 +49,6 @@ export const CategoryInput = function CategoryInput({
   return showInput ? (
     <>
       <Input
-        {...props}
         ref={inputRef}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
