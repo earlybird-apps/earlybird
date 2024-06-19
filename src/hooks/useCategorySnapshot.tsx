@@ -52,10 +52,7 @@ export const useCategorySnapshot = ({
     snapshot: {
       assigned: assigned,
       activity: activity,
-      available:
-        totalActivity && totalAssigned
-          ? totalAssigned + totalActivity
-          : undefined,
+      available: (totalAssigned ?? 0) + (totalActivity ?? 0),
     },
   };
 };
