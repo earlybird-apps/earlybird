@@ -1,12 +1,13 @@
 import { TableRow, TableCell } from "../ui/table";
 import { Currency } from "../Currency";
 import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
-import { useQueryOne } from "@triplit/react";
 import { client } from "@db/client";
 import { CategoryCell } from "./CategoryCell";
 import { CategoryInput } from "./CategoryInput";
 import { useAssignment } from "@/hooks/useAssignment";
+import { useCategory } from "@/hooks/useCategory";
 
+/* TODO: Handle loading state for each cell*/
 export function CategoryRow({
   categoryId,
   year,
@@ -18,11 +19,9 @@ export function CategoryRow({
   month: number;
   currentDate: Date;
 }) {
-  const { result: category } = useQueryOne(
-    client,
-    client.query("categories").id(categoryId)
-  );
+  const { result: category } = useCategory(categoryId);
   const { result: assignment } = useAssignment({ categoryId, year, month });
+
   const { snapshot } = useCategorySnapshot({
     categoryId,
     month,
@@ -47,9 +46,11 @@ export function CategoryRow({
       </CategoryCell>
       <CategoryCell>
         {snapshot && (
+          // TODO: Edit initially defaults to 0, then returns to the default value if selecting cancel and selecting again
           <CategoryInput
             currency
             type="number"
+            step={5}
             value={assignment?.amount ?? 0}
             onSave={(value) => {
               if (!value || value === assignment?.amount) return;
