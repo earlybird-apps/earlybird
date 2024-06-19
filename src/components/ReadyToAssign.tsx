@@ -11,7 +11,7 @@ export function ReadyToAssign({ value }: { value: number }) {
   return (
     <div
       className={clsx(
-        "flex justify-between rounded-xl p-5 font-medium ",
+        "flex justify-between rounded-lg p-3 font-medium ",
         value > 0 && styles["positive"],
         value < 0 && styles["negative"]
       )}
