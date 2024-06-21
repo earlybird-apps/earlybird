@@ -1,7 +1,8 @@
 import { CheckIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { forwardRef, useEffect, useRef, useState } from "react";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { forwardRef, useEffect, useRef, useState } from "react";
 
 type CategoryInputProps = {
   value?: string;
@@ -28,15 +29,15 @@ const CategoryInput = forwardRef<HTMLInputElement, CategoryInputProps>(
         />
         <div>
           <Button plain onClick={() => props.onCancel()}>
-            <XMarkIcon className="w-2 h-2" />
+            <XMarkIcon className="h-2 w-2" />
           </Button>
           <Button plain onClick={() => props.onSave()}>
-            <CheckIcon className="w-2 h-2" />
+            <CheckIcon className="h-2 w-2" />
           </Button>
         </div>
       </>
     );
-  }
+  },
 );
 
 export function CategoryAssignment({
@@ -57,12 +58,12 @@ export function CategoryAssignment({
   }, [showInput]);
 
   return (
-    <div className="gap-x-2 flex items-center min-h-10 justify-between">
+    <div className="flex min-h-10 items-center justify-between gap-x-2">
       {!showInput && (
         <>
           <span>{value}</span>
           <Button plain onClick={() => setShowInput(true)}>
-            <PencilIcon className="w-2 h-2 group-hover:block hidden" />
+            <PencilIcon className="hidden h-2 w-2 group-hover:block" />
           </Button>
         </>
       )}

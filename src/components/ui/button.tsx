@@ -1,6 +1,7 @@
 import * as Headless from "@headlessui/react";
 import { clsx } from "clsx";
 import React from "react";
+
 import { Link } from "./link";
 
 const styles = {
@@ -169,7 +170,7 @@ type ButtonProps = (
 
 export const Button = React.forwardRef(function Button(
   { color, outline, plain, className, children, ...props }: ButtonProps,
-  ref: React.ForwardedRef<HTMLElement>
+  ref: React.ForwardedRef<HTMLElement>,
 ) {
   const classes = clsx(
     className,
@@ -178,7 +179,7 @@ export const Button = React.forwardRef(function Button(
       ? styles.outline
       : plain
         ? styles.plain
-        : clsx(styles.solid, styles.colors[color ?? "dark/zinc"])
+        : clsx(styles.solid, styles.colors[color ?? "dark/zinc"]),
   );
 
   return "href" in props ? (

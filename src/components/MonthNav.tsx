@@ -1,4 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+
 import { Button } from "./ui/button";
 
 export function MonthNav(props: {
@@ -8,7 +9,7 @@ export function MonthNav(props: {
     <div className="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
       <Button
         outline
-        className="border-r-0 rounded-r-none"
+        className="rounded-r-none border-r-0"
         onClick={() => props.onSelect("previous")}
       >
         <span className="sr-only">Previous week</span>
@@ -16,14 +17,14 @@ export function MonthNav(props: {
       </Button>
       <Button
         outline
-        className="border-x-0 rounded-l-none rounded-r-none"
+        className="rounded-l-none rounded-r-none border-x-0"
         onClick={() => props.onSelect("today")}
       >
         Today
       </Button>
       <Button
         outline
-        className="border-l-0 rounded-l-none"
+        className="rounded-l-none border-l-0"
         onClick={() => props.onSelect("next")}
       >
         <span className="sr-only">Next week</span>

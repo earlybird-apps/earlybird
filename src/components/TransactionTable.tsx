@@ -1,15 +1,16 @@
 import clsx from "clsx";
-import { Currency } from "./Currency";
 
+import { Account, Transaction as BaseTransaction, Category } from "@db/types";
+
+import { Currency } from "./Currency";
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "./ui/table";
-import { Category, Transaction as BaseTransaction, Account } from "@db/types";
 
 type Transaction = BaseTransaction & {
   category: Category | null;
@@ -63,7 +64,7 @@ export function TransactionTable(props: {
               <Currency value={transaction.amount} />
             </TableCell>
             <TableCell>{transaction.category?.name}</TableCell>
-            <TableCell className="text-gray-700 text-sm">
+            <TableCell className="text-sm text-gray-700">
               {transaction.memo}
             </TableCell>
           </TableRow>

@@ -1,3 +1,6 @@
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
+
 import { Currency } from "@/components/Currency";
 import { EmptyState } from "@/components/EmptyState";
 import { TransactionTable } from "@/components/TransactionTable";
@@ -7,8 +10,6 @@ import { Link } from "@/components/ui/link";
 import { useAccounts } from "@/hooks/useAccounts";
 import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useTransactions } from "@/hooks/useTransactions";
-import { createLazyFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
 
 export const Route = createLazyFileRoute("/accounts")({
   component: Accounts,
@@ -23,13 +24,13 @@ function Accounts() {
     return accounts
       ? Array.from(accounts.values())?.reduce(
           (acc, account) => acc + account.balance,
-          0
+          0,
         )
       : undefined;
   }, [accounts]);
 
   return (
-    <div className="gap-y-8 flex flex-col">
+    <div className="flex flex-col gap-y-8">
       <div className="flex flex-col gap-y-2">
         <Heading>Accounts</Heading>
         {totalBalance && (
@@ -49,7 +50,7 @@ function Accounts() {
           <ul role="list">
             {Array.from(accounts).map(([id, account]) => (
               <Link key={id} href="/account/$id" params={{ id }}>
-                <li className="p-3 sm:px-0 flex justify-between">
+                <li className="flex justify-between p-3 sm:px-0">
                   <span>{account.name}</span>
                   <Currency value={account.balance} />
                 </li>

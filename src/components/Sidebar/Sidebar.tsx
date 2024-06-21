@@ -1,20 +1,22 @@
 import { Square3Stack3DIcon, WalletIcon } from "@heroicons/react/24/outline";
+import { useConnectionStatus } from "@triplit/react";
+
+import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+import { useTriplitClient } from "@/hooks/useTriplitClient";
+
+import { Badge } from "../ui/badge";
 import {
   Sidebar as BaseSidebar,
-  SidebarHeader,
-  SidebarSection,
-  SidebarItem,
-  SidebarLabel,
   SidebarBody,
   SidebarFooter,
+  SidebarHeader,
+  SidebarItem,
+  SidebarLabel,
+  SidebarSection,
 } from "../ui/sidebar";
 import { Accounts } from "./Accounts";
 import { Budgets } from "./Budgets";
 import { Profile } from "./Profile";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
-import { useConnectionStatus } from "@triplit/react";
-import { Badge } from "../ui/badge";
-import { useTriplitClient } from "@/hooks/useTriplitClient";
 import { Transactions } from "./Transactions";
 
 export function Sidebar() {

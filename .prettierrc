@@ -1,0 +1,15 @@
+{
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@db/[A-Za-z0-9]+",
+    "^@/[A-Za-z0-9]+",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "plugins": [
+    "prettier-plugin-tailwindcss",
+    "@trivago/prettier-plugin-sort-imports"
+  ]
+}

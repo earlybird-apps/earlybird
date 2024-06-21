@@ -1,11 +1,13 @@
-import { TableRow, TableCell } from "../ui/table";
-import { Currency } from "../Currency";
-import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
 import { client } from "@db/client";
-import { CategoryCell } from "./CategoryCell";
-import { CategoryInput } from "./CategoryInput";
+
 import { useAssignment } from "@/hooks/useAssignment";
 import { useCategory } from "@/hooks/useCategory";
+import { useCategorySnapshot } from "@/hooks/useCategorySnapshot";
+
+import { Currency } from "../Currency";
+import { TableCell, TableRow } from "../ui/table";
+import { CategoryCell } from "./CategoryCell";
+import { CategoryInput } from "./CategoryInput";
 
 /* TODO: Handle loading state for each cell*/
 export function CategoryRow({
@@ -60,7 +62,7 @@ export function CategoryRow({
                   assignment.id,
                   async (assignment) => {
                     assignment.amount = Number(value);
-                  }
+                  },
                 );
               } else {
                 client.insert("assignments", {

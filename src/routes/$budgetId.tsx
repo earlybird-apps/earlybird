@@ -1,17 +1,19 @@
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
+import clsx from "clsx";
+import { addMonths, format, isThisMonth } from "date-fns";
 import { useEffect, useMemo } from "react";
-import { client } from "@db/client";
 import { z } from "zod";
-import { Heading } from "@/components/ui/heading";
+
+import { client } from "@db/client";
+
+import { AllAssigned } from "@/components/AllAssigned";
 import { CategoryTable } from "@/components/CategoryTable";
 import { EmptyState } from "@/components/EmptyState";
-import { format, addMonths, isThisMonth } from "date-fns";
 import { MonthNav } from "@/components/MonthNav";
-import clsx from "clsx";
-import { useSnapshot } from "@/hooks/useSnapshot";
 import { ReadyToAssign } from "@/components/ReadyToAssign";
-import { AllAssigned } from "@/components/AllAssigned";
+import { Heading } from "@/components/ui/heading";
+import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+import { useSnapshot } from "@/hooks/useSnapshot";
 
 export const Route = createFileRoute("/$budgetId")({
   parseParams: (params) => ({
@@ -32,7 +34,7 @@ export const Route = createFileRoute("/$budgetId")({
         .query("budgets")
         .where("id", "=", params.budgetId)
         .include("categories")
-        .build()
+        .build(),
     );
     if (!budget) throw notFound();
     return budget;
@@ -85,8 +87,8 @@ function Budget() {
   };
 
   return (
-    <div className="space-y-4 flex flex-col">
-      <div className="flex justify-between items-center">
+    <div className="flex flex-col space-y-4">
+      <div className="flex items-center justify-between">
         <Heading
           className={clsx(!isThisMonth(selectedMonth) && "!text-gray-500")}
         >

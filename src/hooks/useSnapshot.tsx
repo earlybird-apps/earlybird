@@ -1,12 +1,13 @@
 // TODO: This is veeeery similar to useCategorySnapshot. DRY out some stuff
-import { client } from "@db/client";
-import { useEffect, useState } from "react";
 import { and, or } from "@triplit/db";
-import { CategorySnapshot } from "@/types";
+import { useEffect, useState } from "react";
+
+import { client } from "@db/client";
 import { Assignment, Transaction } from "@db/types";
 
-import { computeAssigned } from "@/lib/computeAssigned";
 import { computeActivity } from "@/lib/computeActivity";
+import { computeAssigned } from "@/lib/computeAssigned";
+import { CategorySnapshot } from "@/types";
 
 interface QuerySnapshotProps {
   month: number;
@@ -41,7 +42,7 @@ const fetchAssignments = (props: {
           ["year", "=", props.year],
           ["month", "<=", props.month],
         ]),
-      ])
+      ]),
     )
     .where("category.budget_id", "=", "$query.budgetId")
     .vars({ budgetId: props.budgetId });
@@ -57,7 +58,7 @@ export const useSnapshot = ({
 }: QuerySnapshotProps) => {
   const [loading, setLoading] = useState(true);
   const [snapshot, setSnapshot] = useState<CategorySnapshot | undefined>(
-    undefined
+    undefined,
   );
   const [transactions, setTransactions] = useState<Transaction[]>();
   const [assignments, setAssignments] = useState<Assignment[]>();
@@ -92,7 +93,7 @@ export const useSnapshot = ({
       ([resTransactions, resAssignments]) => {
         setTransactions(Array.from(resTransactions?.values()));
         setAssignments(Array.from(resAssignments?.values()));
-      }
+      },
     );
   }, [year, month, currentDate, budgetId]);
 

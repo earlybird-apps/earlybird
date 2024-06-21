@@ -32,7 +32,7 @@ function useCurrentBudget() {
   const context = useContext(CurrentBudgetContext);
   if (context === undefined) {
     throw new Error(
-      "useEntityContext must be used within an EntityContextProvider"
+      "useEntityContext must be used within an EntityContextProvider",
     );
   }
   return context;

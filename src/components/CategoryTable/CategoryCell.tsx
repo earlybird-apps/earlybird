@@ -1,4 +1,5 @@
 import { ComponentPropsWithRef } from "react";
+
 import { TableCell } from "../ui/table";
 
 export function CategoryCell({
@@ -7,7 +8,7 @@ export function CategoryCell({
 }: ComponentPropsWithRef<typeof TableCell>) {
   return (
     <TableCell className="group" {...props}>
-      <div className="gap-x-2 flex items-center min-h-10 justify-between">
+      <div className="flex min-h-10 items-center justify-between gap-x-2">
         {children}
       </div>
     </TableCell>

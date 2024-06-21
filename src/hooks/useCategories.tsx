@@ -1,4 +1,5 @@
 import { useQuery } from "@triplit/react";
+
 import { useTriplitClient } from "./useTriplitClient";
 
 export const useCategories = ({ budgetId }: { budgetId: string }) => {
@@ -6,6 +7,6 @@ export const useCategories = ({ budgetId }: { budgetId: string }) => {
 
   return useQuery(
     client,
-    client.query("categories").where("budget_id", "=", budgetId)
+    client.query("categories").where("budget_id", "=", budgetId),
   );
 };

@@ -1,4 +1,5 @@
 import { useQuery } from "@triplit/react";
+
 import { client } from "@db/client";
 
 interface QueryTransactionsProps {
@@ -27,7 +28,7 @@ export const useTransactions = (props: QueryTransactionsProps) => {
   if (props.dateRange)
     query.where(
       ["date", ">=", props.dateRange.start ?? new Date(1700, 1, 1)],
-      ["date", "<=", props.dateRange.end]
+      ["date", "<=", props.dateRange.end],
     );
 
   return useQuery(client, query);

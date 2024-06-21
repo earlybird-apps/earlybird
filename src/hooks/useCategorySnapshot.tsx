@@ -1,8 +1,10 @@
 import { useMemo } from "react";
-import { computeAssigned } from "@/lib/computeAssigned";
+
 import { computeActivity } from "@/lib/computeActivity";
-import { useTransactions } from "./useTransactions";
+import { computeAssigned } from "@/lib/computeAssigned";
+
 import { useAssignments } from "./useAssignments";
+import { useTransactions } from "./useTransactions";
 
 interface QuerySnapshotProps {
   categoryId: string;

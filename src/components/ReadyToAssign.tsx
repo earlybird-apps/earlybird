@@ -1,4 +1,5 @@
 import clsx from "clsx";
+
 import { Currency } from "./Currency";
 import { Subheading } from "./ui/heading";
 
@@ -11,9 +12,9 @@ export function ReadyToAssign({ value }: { value: number }) {
   return (
     <div
       className={clsx(
-        "flex justify-between rounded-lg p-3 font-medium ",
+        "flex justify-between rounded-lg p-3 font-medium",
         value > 0 && styles["positive"],
-        value < 0 && styles["negative"]
+        value < 0 && styles["negative"],
       )}
     >
       <Subheading>Available to Assign</Subheading>

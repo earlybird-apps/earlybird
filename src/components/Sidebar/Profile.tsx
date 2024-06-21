@@ -1,14 +1,15 @@
 import { ChevronUpIcon } from "@heroicons/react/16/solid";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
+
 import { Avatar } from "../ui/avatar";
 import {
   Dropdown,
   DropdownButton,
-  DropdownMenu,
   DropdownItem,
   DropdownLabel,
+  DropdownMenu,
 } from "../ui/dropdown";
 import { SidebarItem } from "../ui/sidebar";
-import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/outline";
 
 export function Profile() {
   return (

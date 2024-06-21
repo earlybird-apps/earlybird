@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react";
+
 import { client } from "@db/client";
 
 const TriplitContext = createContext({ client });
@@ -15,7 +16,7 @@ function useTriplitClient() {
   const context = useContext(TriplitContext);
   if (context === undefined) {
     throw new Error(
-      "useEntityContext must be used within an EntityContextProvider"
+      "useEntityContext must be used within an EntityContextProvider",
     );
   }
   return context;

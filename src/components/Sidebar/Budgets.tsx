@@ -1,17 +1,19 @@
 import { ChevronDownIcon, PlusIcon } from "@heroicons/react/16/solid";
+import { FolderIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+
+import { useBudgets } from "@/hooks/useBudgets";
+import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+
 import {
   Dropdown,
   DropdownButton,
-  DropdownMenu,
+  DropdownDivider,
   DropdownItem,
   DropdownLabel,
-  DropdownDivider,
+  DropdownMenu,
 } from "../ui/dropdown";
 import { SidebarItem, SidebarLabel } from "../ui/sidebar";
-import { useBudgets } from "@/hooks/useBudgets";
-import clsx from "clsx";
-import { FolderIcon } from "@heroicons/react/24/outline";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 
 export const Budgets = () => {
   const { results: budgets, fetching } = useBudgets();

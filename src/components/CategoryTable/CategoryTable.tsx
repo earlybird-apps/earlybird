@@ -1,11 +1,11 @@
-import { CategoryRow } from "./CategoryRow";
 import {
   Table,
-  TableHead,
-  TableRow,
-  TableHeader,
   TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "../ui/table";
+import { CategoryRow } from "./CategoryRow";
 
 export function CategoryTable(props: {
   categoryIds: string[];

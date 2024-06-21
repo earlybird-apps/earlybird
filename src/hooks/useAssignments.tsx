@@ -1,6 +1,7 @@
-import { client } from "@db/client";
 import { and, or } from "@triplit/db";
 import { useQuery } from "@triplit/react";
+
+import { client } from "@db/client";
 
 export const useAssignments = (props: {
   categoryId: string;
@@ -17,7 +18,7 @@ export const useAssignments = (props: {
           ["year", "=", props.year],
           ["month", "<=", props.month],
         ]),
-      ])
+      ]),
     );
 
   return useQuery(client, assignmentQuery);

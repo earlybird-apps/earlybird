@@ -1,14 +1,16 @@
-import { useTransactions } from "@/hooks/useTransactions";
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
+import { PlusIcon } from "@heroicons/react/24/outline";
+
+import { useCurrentBudget } from "@/hooks/useCurrentBudget";
+import { useTransactions } from "@/hooks/useTransactions";
+
+import { Currency } from "../Currency";
 import {
   SidebarHeading,
   SidebarItem,
   SidebarLabel,
   SidebarSection,
 } from "../ui/sidebar";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
-import { Currency } from "../Currency";
-import { PlusIcon } from "@heroicons/react/24/outline";
 
 export function Transactions() {
   const { budget } = useCurrentBudget();
@@ -19,7 +21,7 @@ export function Transactions() {
   });
 
   return (
-    <SidebarSection className="lg:border lg:rounded-xl lg:p-2 lg:bg-slate-50">
+    <SidebarSection className="lg:rounded-xl lg:border lg:bg-slate-50 lg:p-2">
       <SidebarHeading>
         <span className="flex justify-between">
           Recent Transactions{" "}
@@ -33,22 +35,22 @@ export function Transactions() {
             href="/account/$id"
             params={{ id: transaction.account_id }}
           >
-            <div className="flex flex-col justify-between w-full align-middle gap-1">
+            <div className="flex w-full flex-col justify-between gap-1 align-middle">
               <div className="flex flex-row justify-between">
                 <SidebarLabel>{transaction.account?.name}</SidebarLabel>
                 <Currency value={transaction.amount} className="" />
               </div>
-              <span className="text-xs text-gray-600 ms-auto font-light">
+              <span className="ms-auto text-xs font-light text-gray-600">
                 {transaction.date.toLocaleDateString()}
               </span>
             </div>
           </SidebarItem>
         ))}
       <SidebarItem>
-        <SidebarLabel className="text-gray-700 text-xs">
+        <SidebarLabel className="text-xs text-gray-700">
           Add Transaction
         </SidebarLabel>
-        <PlusIcon className="w-3 h-3" />
+        <PlusIcon className="h-3 w-3" />
       </SidebarItem>
     </SidebarSection>
   );

@@ -1,5 +1,6 @@
-import { client } from "@db/client";
 import { useQueryOne } from "@triplit/react";
+
+import { client } from "@db/client";
 
 export const useAssignment = (props: {
   categoryId: string;

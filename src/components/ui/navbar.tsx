@@ -4,6 +4,7 @@ import * as Headless from "@headlessui/react";
 import clsx from "clsx";
 import { LayoutGroup, motion } from "framer-motion";
 import React, { useId } from "react";
+
 import { TouchTarget } from "./button";
 import { Link } from "./link";
 
@@ -68,7 +69,7 @@ export const NavbarItem = React.forwardRef(function NavbarItem(
     | Omit<Headless.ButtonProps, "className">
     | Omit<React.ComponentPropsWithoutRef<typeof Link>, "className">
   ),
-  ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>
+  ref: React.ForwardedRef<HTMLAnchorElement | HTMLButtonElement>,
 ) {
   const classes = clsx(
     // Base
@@ -86,7 +87,7 @@ export const NavbarItem = React.forwardRef(function NavbarItem(
     // Dark mode
     "dark:text-white dark:data-[slot=icon]:*:fill-zinc-400",
     "dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white",
-    "dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white"
+    "dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white",
   );
 
   return (

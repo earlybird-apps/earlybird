@@ -1,6 +1,7 @@
-import { Button } from "./ui/button";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { SquaresPlusIcon } from "@heroicons/react/24/outline";
+
+import { Button } from "./ui/button";
 import { Subheading } from "./ui/heading";
 import { Text } from "./ui/text";
 
@@ -10,8 +11,8 @@ export function EmptyState(props: {
   buttonText: string;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-lg bg-gray-50 border p-6 lg:p-10">
-      <SquaresPlusIcon className="w-10 h-10" />
+    <div className="flex flex-col items-center rounded-lg border bg-gray-50 p-6 lg:p-10">
+      <SquaresPlusIcon className="h-10 w-10" />
       <Subheading>{props.title}</Subheading>
       <Text>{props.description}</Text>
       <div className="mt-6">

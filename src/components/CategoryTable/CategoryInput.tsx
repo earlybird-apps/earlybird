@@ -1,8 +1,9 @@
 import { CheckIcon, PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { ComponentProps, useEffect, useRef, useState } from "react";
+
+import { Currency } from "../Currency";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { ComponentProps, useEffect, useRef, useState } from "react";
-import { Currency } from "../Currency";
 
 interface BaseCategoryInputProps extends ComponentProps<typeof Input> {
   onSave: (value: string | number | undefined) => void;
@@ -63,7 +64,7 @@ export const CategoryInput = function CategoryInput({
       />
       <div>
         <Button plain onClick={() => handleCancel()}>
-          <XMarkIcon className="w-2 h-2" />
+          <XMarkIcon className="h-2 w-2" />
         </Button>
         <Button
           plain
@@ -71,7 +72,7 @@ export const CategoryInput = function CategoryInput({
             handleSave();
           }}
         >
-          <CheckIcon className="w-2 h-2" />
+          <CheckIcon className="h-2 w-2" />
         </Button>
       </div>
     </>
@@ -85,9 +86,9 @@ export const CategoryInput = function CategoryInput({
       <Button
         plain
         onClick={() => setShowInput(true)}
-        className="group-hover:block hidden"
+        className="hidden group-hover:block"
       >
-        <PencilIcon className="w-2 h-2" />
+        <PencilIcon className="h-2 w-2" />
       </Button>
     </>
   );
