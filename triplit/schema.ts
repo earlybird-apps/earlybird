@@ -1,4 +1,4 @@
-import { Schema as S, ClientSchema } from '@triplit/client';
+import { ClientSchema, Schema as S } from "@triplit/client";
 
 /**
  * Define your schema here.
@@ -18,20 +18,20 @@ export const schema = {
       user_id: S.String(),
       user: S.RelationById("users", "$user_id"),
       categories: S.RelationMany("categories", {
-        where: [['budget_id', '=', '$id']],
+        where: [["budget_id", "=", "$id"]],
       }),
     }),
     rules: {
       read: {
-        'owner-is-user': {
-          description: 'Users can only view budgets they own',
-          filter: [['user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only view budgets they own",
+          filter: [["user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
       write: {
-        'owner-is-user': {
-          description: 'Users can only edit their own budgets',
-          filter: [['user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only edit their own budgets",
+          filter: [["user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
     },
@@ -44,20 +44,20 @@ export const schema = {
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
       transactions: S.RelationMany("transactions", {
-        where: [['account_id', '=', '$id']],
+        where: [["account_id", "=", "$id"]],
       }),
     }),
     rules: {
       read: {
-        'owner-is-user': {
-          description: 'Users can only view accounts they own',
-          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only view accounts they own",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
       write: {
-        'owner-is-user': {
-          description: 'Users can only edit their own accounts',
-          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only edit their own accounts",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
     },
@@ -75,15 +75,15 @@ export const schema = {
     }),
     rules: {
       read: {
-        'owner-is-user': {
-          description: 'Users can only view transactions for accounts they own',
-          filter: [['account.budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only view transactions for accounts they own",
+          filter: [["account.budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
       write: {
-        'owner-is-user': {
-          description: 'Users can only edit transactions for accounts they own',
-          filter: [['account.budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only edit transactions for accounts they own",
+          filter: [["account.budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
     },
@@ -95,23 +95,23 @@ export const schema = {
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
       assignments: S.RelationMany("assignments", {
-        where: [['category_id', '=', '$id']],
+        where: [["category_id", "=", "$id"]],
       }),
       transactions: S.RelationMany("transactions", {
-        where: [['category_id', '=', '$id']],
-      })
+        where: [["category_id", "=", "$id"]],
+      }),
     }),
     rules: {
       read: {
-        'owner-is-user': {
-          description: 'Users can only view categories for budgets they own',
-          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only view categories for budgets they own",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
       write: {
-        'owner-is-user': {
-          description: 'Users can only edit categories for budgets they own',
-          filter: [['budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description: "Users can only edit categories for budgets they own",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
         },
       },
     },
@@ -127,17 +127,23 @@ export const schema = {
     }),
     rules: {
       read: {
-        'owner-is-user': {
-          description: 'Users can only view assignments for categories they own',
-          filter: [['category.budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description:
+            "Users can only view assignments for categories they own",
+          filter: [
+            ["category.budget.user_id", "=", "$session.SESSION_USER_ID"],
+          ],
         },
       },
       write: {
-        'owner-is-user': {
-          description: 'Users can only edit assignments for categories they own',
-          filter: [['category.budget.user_id', '=', '$session.SESSION_USER_ID']],
+        "owner-is-user": {
+          description:
+            "Users can only edit assignments for categories they own",
+          filter: [
+            ["category.budget.user_id", "=", "$session.SESSION_USER_ID"],
+          ],
         },
       },
     },
-  }
+  },
 } satisfies ClientSchema;
