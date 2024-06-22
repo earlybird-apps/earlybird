@@ -1,7 +1,6 @@
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useTransactions } from "@/hooks/useTransactions";
 
 import { Currency } from "../Currency";
@@ -13,9 +12,7 @@ import {
 } from "../ui/sidebar";
 
 export function Transactions() {
-  const { budget } = useCurrentBudget();
   const { results, fetching } = useTransactions({
-    budgetId: budget?.id,
     limit: 3,
     includeAccount: true,
   });

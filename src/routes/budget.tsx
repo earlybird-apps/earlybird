@@ -1,7 +1,7 @@
 import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import clsx from "clsx";
 import { addMonths, format, isThisMonth } from "date-fns";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { z } from "zod";
 
 import { client } from "@db/client";
@@ -12,13 +12,9 @@ import { EmptyState } from "@/components/EmptyState";
 import { MonthNav } from "@/components/MonthNav";
 import { ReadyToAssign } from "@/components/ReadyToAssign";
 import { Heading } from "@/components/ui/heading";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useSnapshot } from "@/hooks/useSnapshot";
 
-export const Route = createFileRoute("/$budgetId")({
-  parseParams: (params) => ({
-    budgetId: z.string().parse(params.budgetId),
-  }),
+export const Route = createFileRoute("/budget")({
   validateSearch: (search: Record<string, unknown>) => ({
     month: z
       .number()
@@ -28,13 +24,9 @@ export const Route = createFileRoute("/$budgetId")({
       .parse(search?.month),
     year: z.number().default(new Date().getFullYear()).parse(search?.year),
   }),
-  loader: async ({ params }) => {
+  loader: async () => {
     const budget = await client.fetchOne(
-      client
-        .query("budgets")
-        .where("id", "=", params.budgetId)
-        .include("categories")
-        .build(),
+      client.query("budgets").include("categories").build(),
     );
     if (!budget) throw notFound();
     return budget;
@@ -46,7 +38,6 @@ function Budget() {
   const budget = Route.useLoaderData();
   const { month, year } = Route.useSearch();
   const navigate = useNavigate();
-  const { setBudget } = useCurrentBudget();
 
   const selectedMonth = useMemo(() => new Date(year, month, 1), [month, year]);
   const currentDate = useMemo(() => new Date(), []);
@@ -57,10 +48,6 @@ function Budget() {
     currentDate,
     budgetId: budget.id,
   });
-
-  useEffect(() => {
-    if (budget) setBudget(budget);
-  }, [budget, setBudget]);
 
   const handleDateChange = (action: "next" | "previous" | "today") => {
     let newDate = undefined;

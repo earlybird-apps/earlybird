@@ -1,7 +1,6 @@
 import { Square3Stack3DIcon, WalletIcon } from "@heroicons/react/24/outline";
 import { useConnectionStatus } from "@triplit/react";
 
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useTriplitClient } from "@/hooks/useTriplitClient";
 
 import { Badge } from "../ui/badge";
@@ -15,25 +14,18 @@ import {
   SidebarSection,
 } from "../ui/sidebar";
 import { Accounts } from "./Accounts";
-import { Budgets } from "./Budgets";
 import { Profile } from "./Profile";
 import { Transactions } from "./Transactions";
 
 export function Sidebar() {
-  const { budget } = useCurrentBudget();
   const { client } = useTriplitClient();
   const status = useConnectionStatus(client);
   // TODO: move data fetching out of here
   return (
     <BaseSidebar>
       <SidebarHeader>
-        <Budgets />
         <SidebarSection>
-          <SidebarItem
-            href="/$budgetId"
-            params={{ budgetId: budget?.id }}
-            disabled={!budget}
-          >
+          <SidebarItem href="/budget">
             <WalletIcon />
             <SidebarLabel>Budget</SidebarLabel>
           </SidebarItem>

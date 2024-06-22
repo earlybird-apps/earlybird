@@ -9,6 +9,9 @@ export const schema = {
     schema: S.Schema({
       id: S.Id(),
       name: S.String(),
+      budget: S.RelationOne("budgets", {
+        where: [["user_id", "=", "$id"]],
+      }),
     }),
   },
   budgets: {

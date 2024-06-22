@@ -8,7 +8,6 @@ import { Divider } from "@/components/ui/divider";
 import { Heading, Subheading } from "@/components/ui/heading";
 import { Link } from "@/components/ui/link";
 import { useAccounts } from "@/hooks/useAccounts";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 import { useTransactions } from "@/hooks/useTransactions";
 
 export const Route = createLazyFileRoute("/accounts")({
@@ -16,9 +15,8 @@ export const Route = createLazyFileRoute("/accounts")({
 });
 
 function Accounts() {
-  const { budget } = useCurrentBudget();
-  const { results: accounts } = useAccounts({ budgetId: budget?.id });
-  const { results: transactions } = useTransactions({ budgetId: budget?.id });
+  const { results: accounts } = useAccounts();
+  const { results: transactions } = useTransactions();
 
   const totalBalance = useMemo(() => {
     return accounts

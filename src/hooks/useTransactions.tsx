@@ -15,7 +15,9 @@ interface QueryTransactionsProps {
   limit?: number;
 }
 
-export const useTransactions = (props: QueryTransactionsProps) => {
+export const useTransactions = (
+  props: QueryTransactionsProps | undefined = {},
+) => {
   const query = client
     .query("transactions")
     .include("account")

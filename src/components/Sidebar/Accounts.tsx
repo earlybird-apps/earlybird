@@ -2,7 +2,6 @@ import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 import { useAccounts } from "@/hooks/useAccounts";
-import { useCurrentBudget } from "@/hooks/useCurrentBudget";
 
 import { Currency } from "../Currency";
 import {
@@ -13,8 +12,7 @@ import {
 } from "../ui/sidebar";
 
 export function Accounts() {
-  const { budget } = useCurrentBudget();
-  const { results: accounts, fetching } = useAccounts({ budgetId: budget?.id });
+  const { results: accounts, fetching } = useAccounts();
 
   return (
     <SidebarSection className="lg:rounded-xl lg:border lg:bg-slate-50 lg:p-2">

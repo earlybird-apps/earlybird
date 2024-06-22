@@ -13,7 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as BudgetIdImport } from './routes/$budgetId'
+import { Route as BudgetImport } from './routes/budget'
 import { Route as AccountIdImport } from './routes/account.$id'
 
 // Create Virtual Routes
@@ -28,8 +28,8 @@ const AccountsLazyRoute = AccountsLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/accounts.lazy').then((d) => d.Route))
 
-const BudgetIdRoute = BudgetIdImport.update({
-  path: '/$budgetId',
+const BudgetRoute = BudgetImport.update({
+  path: '/budget',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -54,11 +54,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
-    '/$budgetId': {
-      id: '/$budgetId'
-      path: '/$budgetId'
-      fullPath: '/$budgetId'
-      preLoaderRoute: typeof BudgetIdImport
+    '/budget': {
+      id: '/budget'
+      path: '/budget'
+      fullPath: '/budget'
+      preLoaderRoute: typeof BudgetImport
       parentRoute: typeof rootRoute
     }
     '/accounts': {
@@ -82,7 +82,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  BudgetIdRoute,
+  BudgetRoute,
   AccountsLazyRoute,
   AccountIdRoute,
 })
@@ -96,7 +96,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/$budgetId",
+        "/budget",
         "/accounts",
         "/account/$id"
       ]
@@ -104,8 +104,8 @@ export const routeTree = rootRoute.addChildren({
     "/": {
       "filePath": "index.lazy.tsx"
     },
-    "/$budgetId": {
-      "filePath": "$budgetId.tsx"
+    "/budget": {
+      "filePath": "budget.tsx"
     },
     "/accounts": {
       "filePath": "accounts.lazy.tsx"
