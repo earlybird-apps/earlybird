@@ -23,7 +23,11 @@ export function Accounts() {
       </SidebarHeading>
       {accounts &&
         Array.from(accounts).map(([id, account]) => (
-          <SidebarItem key={id} href="/account/$id" params={{ id: account.id }}>
+          <SidebarItem
+            key={id}
+            href="/accounts/$id"
+            params={{ id: account.id }}
+          >
             <SidebarLabel>{account.name}</SidebarLabel>
             <Currency value={account.balance} className="ms-auto" />
           </SidebarItem>

@@ -29,7 +29,7 @@ export function Transactions() {
         Array.from(results.values()).map((transaction) => (
           <SidebarItem
             key={transaction.id}
-            href="/account/$id"
+            href="/accounts/$id"
             params={{ id: transaction.account_id }}
           >
             <div className="flex w-full flex-col justify-between gap-1 align-middle">

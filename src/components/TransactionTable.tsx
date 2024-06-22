@@ -25,14 +25,14 @@ export function TransactionTable(props: {
       <TableHead>
         <TableRow>
           <TableHeader
-            className={clsx(props.includeAccount ? "w-[15%]" : "hidden")}
-          >
-            Account
-          </TableHeader>
-          <TableHeader
             className={clsx(props.includeAccount ? "w-[15%]" : "w-[15%]")}
           >
             Date
+          </TableHeader>
+          <TableHeader
+            className={clsx(props.includeAccount ? "w-[15%]" : "hidden")}
+          >
+            Account
           </TableHeader>
           <TableHeader
             className={clsx(props.includeAccount ? "w-[20%]" : "w-[25%]")}
@@ -54,12 +54,12 @@ export function TransactionTable(props: {
       <TableBody>
         {props.transactions.map((transaction) => (
           <TableRow key={transaction.id}>
-            {props.includeAccount && (
-              <TableCell>{transaction.account?.name}</TableCell>
-            )}
             <TableCell className="group">
               {transaction.date.toLocaleDateString()}
             </TableCell>
+            {props.includeAccount && (
+              <TableCell>{transaction.account?.name}</TableCell>
+            )}
             <TableCell className="group">
               <Currency value={transaction.amount} />
             </TableCell>

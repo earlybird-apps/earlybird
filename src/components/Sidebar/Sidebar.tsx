@@ -31,7 +31,7 @@ export function Sidebar() {
           </SidebarItem>
           <SidebarItem href="/accounts">
             <Square3Stack3DIcon />
-            <SidebarLabel>All Accounts</SidebarLabel>
+            <SidebarLabel>Accounts</SidebarLabel>
           </SidebarItem>
         </SidebarSection>
       </SidebarHeader>
