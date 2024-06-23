@@ -28,6 +28,7 @@ function Accounts() {
       />
     );
   }
+
   const totalBalance = useMemo(() => {
     return accounts
       ? Array.from(accounts.values())?.reduce(
@@ -40,45 +41,47 @@ function Accounts() {
   return (
     <div className="flex flex-col gap-y-8">
       <nav className="flex flex-col gap-y-2">
-        <nav>
-          <ul className="gap-x-6 font-medium overflow-auto border-b -mb-px flex space-x-8">
-            <li>
-              <Link
-                href="/accounts"
-                activeOptions={{ exact: true }}
-                className={clsx("flex gap-x-4 items-center p-2")}
-                activeProps={{ className: "border-b-2 border-b-slate-500" }}
-              >
-                <span>Total</span>
-                <Badge>
-                  <Currency
-                    className="font-light text-xs"
-                    value={totalBalance || 0}
-                  />
-                </Badge>
-              </Link>
-            </li>
-            {accounts &&
-              Array.from(accounts).map(([id, account]) => (
-                <li key={id}>
-                  <Link
-                    className="flex gap-x-4  items-center p-2"
-                    href="/accounts/$id"
-                    params={{ id }}
-                    activeProps={{ className: "border-b-2 border-b-slate-500" }}
-                  >
-                    <span>{account.name}</span>
-                    <Badge>
-                      <Currency
-                        className="font-light text-xs"
-                        value={account.balance}
-                      />
-                    </Badge>
-                  </Link>
-                </li>
-              ))}
-          </ul>
-        </nav>
+        <ul className="gap-x-6 font-medium overflow-auto border-b -mb-px flex space-x-8">
+          <li>
+            <Link
+              href="/accounts"
+              activeOptions={{ exact: true }}
+              className={clsx("flex gap-x-4 items-center p-2")}
+              activeProps={{
+                className: "font-semibold border-b-2 border-b-slate-500",
+              }}
+            >
+              <span>Total</span>
+              <Badge>
+                <Currency
+                  className="font-light text-xs"
+                  value={totalBalance || 0}
+                />
+              </Badge>
+            </Link>
+          </li>
+          {accounts &&
+            Array.from(accounts).map(([id, account]) => (
+              <li key={id}>
+                <Link
+                  className="flex gap-x-4 items-center p-2"
+                  href="/accounts/$id"
+                  params={{ id }}
+                  activeProps={{
+                    className: "font-semibold border-b-2 border-b-slate-500",
+                  }}
+                >
+                  <span>{account.name}</span>
+                  <Badge>
+                    <Currency
+                      className="font-light text-xs"
+                      value={account.balance}
+                    />
+                  </Badge>
+                </Link>
+              </li>
+            ))}
+        </ul>
       </nav>
       <div>
         {!accounts || accounts.size === 0 ? (

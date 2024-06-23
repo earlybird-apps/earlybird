@@ -119,6 +119,60 @@ export const schema = {
       },
     },
   },
+  categoriesV2: {
+    schema: S.Schema({
+      id: S.Id(),
+      name: S.String(),
+      budget_id: S.String(),
+      budget: S.RelationById("budgets", "$budget_id"),
+      for_now: S.Number({ default: 0 }),
+      for_later: S.Number({ default: 0 }),
+      activity: S.Number({ default: 0 }),
+      last_reset: S.Date({ default: S.Default.now() }),
+      transactions: S.RelationMany("transactions", {
+        where: [["category_id", "=", "$id"]],
+      }),
+    }),
+    rules: {
+      read: {
+        "owner-is-user": {
+          description: "Users can only view categories for budgets they own",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
+        },
+      },
+      write: {
+        "owner-is-user": {
+          description: "Users can only edit categories for budgets they own",
+          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
+        },
+      },
+    },
+  },
+  snapshots: {
+    schema: S.Schema({
+      id: S.Id(),
+      date: S.Date({ default: S.Default.now() }),
+      category_id: S.String(),
+      category: S.RelationById("categories", "$category_id"),
+      for_now: S.Number(),
+      for_later: S.Number(),
+      activity: S.Number(),
+    }),
+    rules: {
+      read: {
+        "owner-is-user": {
+          description: "Users can only view categories for budgets they own",
+          filter: [["category.budget.user_id", "=", "$session.SESSION_USER_ID"]],
+        },
+      },
+      write: {
+        "owner-is-user": {
+          description: "Users can only edit categories for budgets they own",
+          filter: [["category.budget.user_id", "=", "$session.SESSION_USER_ID"]],
+        },
+      },
+    },
+  },
   assignments: {
     schema: S.Schema({
       id: S.Id(),
