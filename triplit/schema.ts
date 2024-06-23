@@ -127,6 +127,7 @@ export const schema = {
       budget: S.RelationById("budgets", "$budget_id"),
       for_now: S.Number({ default: 0 }),
       for_later: S.Number({ default: 0 }),
+      later_goal: S.Optional(S.Number()),
       activity: S.Number({ default: 0 }),
       last_reset: S.Date({ default: S.Default.now() }),
       transactions: S.RelationMany("transactions", {

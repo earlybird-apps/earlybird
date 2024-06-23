@@ -54,11 +54,11 @@ function BudgetNow() {
         <span className="p-1 col-span-1">Category</span>
         <span className="p-1 col-span-1 text-end lg:text-start">Available</span>
       </div>
-      <Divider className="my-2 shadow-sm" />
+      <Divider className="my-2" />
       <ul className="flex flex-col gap-y-2">
         {displayCategories &&
           displayCategories.map((category) => (
-            <li key={category.id} className="border p-4 rounded-lg shadow-sm ">
+            <li key={category.id} className="border p-4 rounded-lg">
               <div className="grid grid-cols-2 lg:grid-cols-4 items-center gap-y-4">
                 <div className="font-medium col-span-1">{category.name}</div>
                 <div className="col-span-1 text-end lg:text-start">

@@ -108,6 +108,7 @@ export default function seed(): BulkInsert<typeof schema> {
         budget_id: "1",
         for_now: 0,
         for_later: 2000,
+        later_goal: 5000,
         activity: 0,
         last_reset: new Date(2024, 0, 1),
       },

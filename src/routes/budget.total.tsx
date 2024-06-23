@@ -21,16 +21,18 @@ function BudgetTotal() {
   //   TODO ^
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 m-2 text-gray-700 text-sm">
+      <div className="grid grid-cols-2 lg:grid-cols-5 m-2 text-gray-700 text-sm">
         <span className="p-1 col-span-1">Category</span>
         <span className="p-1 col-span-1 text-end lg:text-start">Balance</span>
+        <span className="p-1 col-span-1 hidden lg:block">Now</span>
+        <span className="p-1 col-span-1 hidden lg:block">Later</span>
       </div>
-      <Divider className="my-2 shadow-sm" />
+      <Divider className="my-2" />
       <ul className="flex flex-col gap-y-2">
         {categories &&
           Array.from(categories.values()).map((category) => (
-            <li key={category.id} className="border p-4 rounded-lg shadow-sm ">
-              <div className="grid grid-cols-2 lg:grid-cols-4 items-center gap-y-4">
+            <li key={category.id} className="border p-4 rounded-lg">
+              <div className="grid grid-cols-2 lg:grid-cols-5 items-center gap-y-4">
                 <div className="font-medium col-span-1">{category.name}</div>
                 <div className="col-span-1 text-end lg:text-start">
                   <Currency
@@ -40,7 +42,19 @@ function BudgetTotal() {
                     }
                   />
                 </div>
-                <div className="col-span-2 lg:col-span-1 flex gap-x-4 text-xs text-gray-700 justify-between">
+                <div className="hidden lg:col-span-1 lg:flex gap-x-4 text-sm text-gray-700 justify-between">
+                  <Currency
+                    className="font-medium"
+                    value={category.for_now + category.activity}
+                  />
+                </div>
+                <div className="hidden lg:col-span-1 lg:flex gap-x-4 text-sm text-gray-700 justify-between">
+                  <Currency
+                    className="font-medium"
+                    value={category.for_later}
+                  />
+                </div>
+                <div className="col-span-2 lg:hidden flex gap-x-4 text-sm text-gray-700 justify-between">
                   <div className="text-center flex gap-2 lg:flex-col lg:capitalize">
                     <span>
                       <Currency
@@ -48,7 +62,7 @@ function BudgetTotal() {
                         value={category.for_now + category.activity}
                       />
                     </span>
-                    <span>For Now</span>
+                    <span>now</span>
                   </div>
                   <div className="text-center flex gap-2 lg:flex-col lg:capitalize">
                     <span>
@@ -57,7 +71,7 @@ function BudgetTotal() {
                         value={category.for_later}
                       />
                     </span>
-                    <span>For Later</span>
+                    <span>later</span>
                   </div>
                 </div>
                 <div className="hidden lg:col-span-1 lg:flex ms-auto">
