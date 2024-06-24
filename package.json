@@ -20,6 +20,7 @@
     "@triplit/client": "^0.3.59",
     "@triplit/db": "^0.3.45",
     "@triplit/react": "^0.3.62",
+    "@uidotdev/usehooks": "^2.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

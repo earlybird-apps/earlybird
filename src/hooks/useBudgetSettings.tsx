@@ -1,10 +1,5 @@
-import {
-  Dispatch,
-  SetStateAction,
-  createContext,
-  useContext,
-  useState,
-} from "react";
+import { useLocalStorage } from "@uidotdev/usehooks";
+import { Dispatch, SetStateAction, createContext, useContext } from "react";
 
 type BudgetSettingsContext = {
   showEmpty: boolean;
@@ -17,7 +12,7 @@ const BudgetSettings = createContext<BudgetSettingsContext>({
 });
 
 function BudgetSettingsProvider({ children }: { children: React.ReactNode }) {
-  const [showEmpty, setShowEmpty] = useState(false);
+  const [showEmpty, setShowEmpty] = useLocalStorage("showEmpty", false);
   return (
     <BudgetSettings.Provider value={{ showEmpty, setShowEmpty }}>
       {children}
