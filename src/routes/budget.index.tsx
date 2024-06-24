@@ -6,13 +6,12 @@ import {
 import { createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { useMemo, useReducer } from "react";
+import { useMemo } from "react";
 
 import { Currency } from "@/components/Currency";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
-import { Switch } from "@/components/ui/switch";
+import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
 
 export const Route = createFileRoute("/budget/")({
@@ -20,22 +19,14 @@ export const Route = createFileRoute("/budget/")({
 });
 
 function BudgetNow() {
-  const [showUnassigned, toggleUnassigned] = useReducer(
-    (state) => !state,
-    false,
-  );
   const { now, results: categories, fetching } = useCategoriesV2();
-
-  const unassigned = useMemo(() => {
-    if (!now || !categories) return 0;
-    return categories.size - now.length;
-  }, [now, categories]);
+  const { showEmpty } = useBudgetSettings();
 
   const displayCategories = useMemo(() => {
-    if (showUnassigned === true)
+    if (showEmpty === true)
       return categories ? Array.from(categories.values()) : undefined;
-    if (showUnassigned === false) return now;
-  }, [showUnassigned, categories, now]);
+    if (showEmpty === false) return now;
+  }, [showEmpty, categories, now]);
 
   //   TODO: Move this to root level and pass down?
   if (fetching) return <div>Loading...</div>;
@@ -43,13 +34,6 @@ function BudgetNow() {
   //   TODO ^
   return (
     <>
-      <div className="flex py-4 gap-x-4 text-sm text-gray-700 justify-between">
-        <div className="flex gap-x-4 items-center">
-          <Switch checked={showUnassigned} onChange={toggleUnassigned} />
-          <span>Show empty</span>
-          <Badge className="px-2">{unassigned}</Badge>
-        </div>
-      </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 m-2 text-gray-700 text-sm">
         <span className="p-1 col-span-1">Category</span>
         <span className="p-1 col-span-1 text-end lg:text-start">Available</span>

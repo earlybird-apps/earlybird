@@ -4,13 +4,12 @@ import {
   FlagIcon,
 } from "@heroicons/react/24/outline";
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useReducer } from "react";
+import { useMemo } from "react";
 
 import { Currency } from "@/components/Currency";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Divider } from "@/components/ui/divider";
-import { Switch } from "@/components/ui/switch";
+import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
 
 export const Route = createFileRoute("/budget/later")({
@@ -18,22 +17,14 @@ export const Route = createFileRoute("/budget/later")({
 });
 
 function BudgetLater() {
-  const [showUnassigned, toggleUnassigned] = useReducer(
-    (state) => !state,
-    false,
-  );
   const { later, results: categories, fetching } = useCategoriesV2();
-
-  const unassigned = useMemo(() => {
-    if (!later || !categories) return 0;
-    return categories.size - later.length;
-  }, [later, categories]);
+  const { showEmpty } = useBudgetSettings();
 
   const displayCategories = useMemo(() => {
-    if (showUnassigned === true)
+    if (showEmpty === true)
       return categories ? Array.from(categories.values()) : undefined;
-    if (showUnassigned === false) return later;
-  }, [showUnassigned, categories, later]);
+    if (showEmpty === false) return later;
+  }, [showEmpty, categories, later]);
 
   //   TODO: Move this to root level and pass down?
   if (fetching) return <div>Loading...</div>;
@@ -41,13 +32,6 @@ function BudgetLater() {
   //   TODO ^
   return (
     <>
-      <div className="flex py-4 gap-x-4 text-sm text-gray-700 justify-between">
-        <div className="flex gap-x-4 items-center">
-          <Switch checked={showUnassigned} onChange={toggleUnassigned} />
-          <span>Show empty</span>
-          <Badge className="px-2">{unassigned}</Badge>
-        </div>
-      </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 m-2 text-gray-700 text-sm">
         <span className="p-1 col-span-1">Category</span>
         <span className="p-1 col-span-1 text-end lg:text-start">Saved</span>
