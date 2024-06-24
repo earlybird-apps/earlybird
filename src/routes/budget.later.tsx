@@ -8,7 +8,6 @@ import { useMemo } from "react";
 
 import { Currency } from "@/components/Currency";
 import { Button } from "@/components/ui/button";
-import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
 
@@ -36,7 +35,6 @@ function BudgetLater() {
         <span className="p-1 col-span-1">Category</span>
         <span className="p-1 col-span-1 text-end lg:text-start">Saved</span>
       </div>
-      <Divider className="my-2" />
       <ul className="flex flex-col gap-y-2">
         {displayCategories &&
           displayCategories.map((category) => (

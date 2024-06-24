@@ -1,11 +1,26 @@
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { FieldApi, useForm } from "@tanstack/react-form";
 import { LinkProps, Outlet, createFileRoute } from "@tanstack/react-router";
+import { zodValidator } from "@tanstack/zod-form-adapter";
 import { format } from "date-fns";
+import { useState } from "react";
+import { z } from "zod";
+
+import { client } from "@db/client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Field, FieldGroup, Fieldset, Label } from "@/components/ui/fieldset";
 import { Heading, Subheading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
-import { Switch } from "@/components/ui/switch";
+import { Switch, SwitchField } from "@/components/ui/switch";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 
 export const Route = createFileRoute("/budget")({
@@ -27,12 +42,59 @@ const links: { route: LinkProps["to"]; label: string }[] = [
   },
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
+  return (
+    <>
+      {field.state.meta.touchedErrors ? (
+        <span className="text-red-600 text-sm font-medium ">
+          {field.state.meta.touchedErrors}
+        </span>
+      ) : null}
+      {field.state.meta.isValidating ? "Validating..." : null}
+    </>
+  );
+}
+
 function Budget() {
   const { showEmpty, setShowEmpty } = useBudgetSettings();
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const {
+    handleSubmit,
+    Field: TanstackField,
+    Subscribe,
+  } = useForm({
+    defaultValues: {
+      categoryName: "",
+      makeMany: false,
+    },
+    onSubmit: async ({ value, formApi }) => {
+      const budget = await client.fetchOne(client.query("budgets").build());
+      if (!budget) {
+        alert("Error saving category");
+        return;
+      }
+      client
+        .insert("categoriesV2", {
+          name: value.categoryName,
+          budget_id: budget.id,
+        })
+        .then(() => {
+          alert("Category saved");
+          if (value.makeMany) {
+            formApi.setFieldValue("categoryName", "");
+          } else {
+            setShowNewCategory(false);
+          }
+        });
+    },
+    // Add a validator to support Zod usage in Form and Field
+    validatorAdapter: zodValidator(),
+  });
 
   return (
     <div className="flex flex-col space-y-4">
-      <nav className="flex justify-between items-center">
+      <nav className="flex justify-between items-center sticky top-0 h-14 bg-white z-10">
         <Heading className="hidden lg:block">
           {format(new Date(), "MMMM do, yyyy")}
         </Heading>
@@ -57,19 +119,91 @@ function Budget() {
         </ul>
       </nav>
       <div>
-        <div className="flex py-4 gap-x-4 text-sm text-gray-700 justify-between">
+        <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 justify-between sticky top-14 bg-white border-b  z-10">
           <div className="flex gap-x-4 items-center">
             <Switch checked={showEmpty} onChange={setShowEmpty} />
             <span>Show empty</span>
-            {/* <Badge className="px-2">{unassigned}</Badge> */}
           </div>
-          <Button outline>
-            <PlusIcon />
-            Add Category
+          <Button outline onClick={() => setShowNewCategory(true)}>
+            <PencilSquareIcon />
+            <span className="sr-only">Add Category</span>
           </Button>
         </div>
         <Outlet />
       </div>
+      <Dialog open={showNewCategory} onClose={setShowNewCategory}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleSubmit();
+          }}
+        >
+          <DialogTitle>New Category</DialogTitle>
+          <DialogDescription>
+            This will create a new budget category.
+          </DialogDescription>
+          <DialogBody>
+            <Fieldset>
+              <FieldGroup>
+                <TanstackField
+                  name="categoryName"
+                  validators={{
+                    onChange: z
+                      .string()
+                      .trim()
+                      .min(1, "Category name is required"),
+                  }}
+                >
+                  {(field) => (
+                    <Field>
+                      <Label>Name</Label>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        type="text"
+                        autoFocus
+                      />
+                      <FieldInfo field={field} />
+                    </Field>
+                  )}
+                </TanstackField>
+                <TanstackField name="makeMany">
+                  {(field) => (
+                    <SwitchField>
+                      <Label>Create another</Label>
+                      <Switch
+                        id={field.name}
+                        checked={field.state.value}
+                        onChange={field.handleChange}
+                      />
+                    </SwitchField>
+                  )}
+                </TanstackField>
+              </FieldGroup>
+            </Fieldset>
+          </DialogBody>
+          <DialogActions>
+            <Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+            >
+              {([canSubmit, isSubmitting]) => (
+                <>
+                  <Button plain onClick={() => setShowNewCategory(false)}>
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                    Save
+                  </Button>
+                </>
+              )}
+            </Subscribe>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

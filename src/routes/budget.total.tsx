@@ -6,7 +6,6 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Currency } from "@/components/Currency";
 import { Button } from "@/components/ui/button";
-import { Divider } from "@/components/ui/divider";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
 
 export const Route = createFileRoute("/budget/total")({
@@ -27,7 +26,6 @@ function BudgetTotal() {
         <span className="p-1 col-span-1 hidden lg:block">Now</span>
         <span className="p-1 col-span-1 hidden lg:block">Later</span>
       </div>
-      <Divider className="my-2" />
       <ul className="flex flex-col gap-y-2">
         {categories &&
           Array.from(categories.values()).map((category) => (
