@@ -1,13 +1,16 @@
-import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { CheckBadgeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { FieldApi, useForm } from "@tanstack/react-form";
 import { LinkProps, Outlet, createFileRoute } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-form-adapter";
+import clsx from "clsx";
 import { format } from "date-fns";
 import { useState } from "react";
 import { z } from "zod";
 
 import { client } from "@db/client";
 
+import { Currency } from "@/components/Currency";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -22,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
 import { Switch, SwitchField } from "@/components/ui/switch";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
+import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
 export const Route = createFileRoute("/budget")({
   component: Budget,
@@ -53,6 +57,26 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
       ) : null}
       {field.state.meta.isValidating ? "Validating..." : null}
     </>
+  );
+}
+
+function ReadyToBudget() {
+  const { result: readyToBudget, fetching } = useReadyToBudget();
+  if (fetching || readyToBudget === undefined) return null; //TODO: Loading state
+
+  return readyToBudget === 0 ? (
+    <span className="flex items-center gap-x-2 text-xs">
+      <CheckBadgeIcon className="w-4" />
+      All Assigned
+    </span>
+  ) : (
+    <Badge
+      color={readyToBudget > 0 ? "green" : "red"}
+      className={clsx("flex flex-wrap", readyToBudget < 0 && "animate-pulse")}
+    >
+      <Currency value={readyToBudget} />
+      <span>{readyToBudget > 0 ? "ready to budget" : "over budgeted"}</span>
+    </Badge>
   );
 }
 
@@ -119,11 +143,14 @@ function Budget() {
         </ul>
       </nav>
       <div>
-        <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 justify-between sticky top-14 bg-white border-b  z-10">
-          <div className="flex gap-x-4 items-center">
+        <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 sticky top-14 bg-white border-b  z-10">
+          <div className="flex gap-x-4 items-center me=auto">
             <Switch checked={showEmpty} onChange={setShowEmpty} />
             <span>Show empty</span>
           </div>
+          <span className="ms-auto items-center my-auto">
+            <ReadyToBudget />
+          </span>
           <Button outline onClick={() => setShowNewCategory(true)}>
             <PencilSquareIcon />
             <span className="sr-only">Add Category</span>
