@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-import { LaterCategoryItem } from "@/components/CategoryItems";
+import { CategoryItem } from "@/components/CategoryItem";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
@@ -27,14 +27,14 @@ function BudgetLater() {
   //   TODO ^
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 m-2 text-gray-700 text-sm">
-        <span className="p-1 col-span-1">Category</span>
-        <span className="p-1 col-span-1 text-end lg:text-start">Saved</span>
+      <div className="flex justify-between text-gray-700 text-sm m-2">
+        <span className="p-1">Category</span>
+        <span className="p-1">Saved</span>
       </div>
       <ul className="flex flex-col gap-y-2">
         {later?.map((category) => (
           <li key={category.id}>
-            <LaterCategoryItem category={category} />
+            <CategoryItem category={category} display="later" />
           </li>
         ))}
       </ul>
@@ -44,7 +44,7 @@ function BudgetLater() {
           <ul className="flex flex-col gap-y-2">
             {unassigned?.map((category) => (
               <li key={category.id}>
-                <LaterCategoryItem category={category} />
+                <CategoryItem category={category} display="later" />
               </li>
             ))}
           </ul>

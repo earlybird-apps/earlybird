@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { CategoryV2 } from "@db/types";
 
-import { TotalCategoryItem } from "@/components/CategoryItems";
+import { CategoryItem } from "@/components/CategoryItem";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
@@ -34,26 +34,24 @@ function BudgetTotal() {
   //   TODO ^
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-5 m-2 text-gray-700 text-sm">
-        <span className="p-1 col-span-1">Category</span>
-        <span className="p-1 col-span-1 text-end lg:text-start">Balance</span>
-        <span className="p-1 col-span-1 hidden lg:block">Now</span>
-        <span className="p-1 col-span-1 hidden lg:block">Later</span>
+      <div className="flex justify-between text-gray-700 text-sm m-2">
+        <span className="p-1">Category</span>
+        <span className="p-1">Balance</span>
       </div>
-      <ul className="flex flex-col gap-y-2">
+      <ul className="flex flex-col gap-2">
         {assigned?.map((category) => (
           <li key={category.id}>
-            <TotalCategoryItem category={category} />
+            <CategoryItem category={category} display="total" />
           </li>
         ))}
       </ul>
       {showEmpty && (
         <>
           <Divider soft className="my-8" />
-          <ul className="flex flex-col gap-y-2">
+          <ul className="flex flex-col gap-2">
             {unassigned?.map((category) => (
               <li key={category.id}>
-                <TotalCategoryItem category={category} />
+                <CategoryItem category={category} display="total" />
               </li>
             ))}
           </ul>

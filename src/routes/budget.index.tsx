@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-import { NowCategoryItem } from "@/components/CategoryItems";
+import { CategoryItem } from "@/components/CategoryItem";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
@@ -28,14 +28,14 @@ function BudgetNow() {
   //   TODO ^
   return (
     <>
-      <div className="grid grid-cols-2 lg:grid-cols-4 m-2 text-gray-700 text-sm">
-        <span className="p-1 col-span-1">Category</span>
-        <span className="p-1 col-span-1 text-end lg:text-start">Available</span>
+      <div className="flex justify-between text-gray-700 text-sm m-2">
+        <span className="p-1">Category</span>
+        <span className="p-1">Available</span>
       </div>
       <ul className="flex flex-col gap-y-2">
         {now?.map((category) => (
           <li key={category.id}>
-            <NowCategoryItem category={category} />
+            <CategoryItem category={category} display="now" />
           </li>
         ))}
       </ul>
@@ -45,7 +45,7 @@ function BudgetNow() {
           <ul className="flex flex-col gap-y-2">
             {unassigned?.map((category) => (
               <li key={category.id}>
-                <NowCategoryItem category={category} />
+                <CategoryItem category={category} display="now" />
               </li>
             ))}
           </ul>
