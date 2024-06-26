@@ -1,12 +1,11 @@
 import { useMemo } from "react";
 
 import { useAccounts } from "./useAccounts";
-import { useCategoriesV2 } from "./useCategoriesV2";
+import { useCategories } from "./useCategories";
 
 export function useReadyToBudget() {
   const { results: accounts, fetching: fetchingAccounts } = useAccounts();
-  const { results: categories, fetching: fetchingCategories } =
-    useCategoriesV2();
+  const { results: categories, fetching: fetchingCategories } = useCategories();
 
   const result = useMemo(() => {
     if (!accounts || !categories) return;

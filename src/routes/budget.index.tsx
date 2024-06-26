@@ -4,14 +4,14 @@ import { useMemo } from "react";
 import { CategoryItem } from "@/components/CategoryItem";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
-import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
+import { useCategories } from "@/hooks/useCategories";
 
 export const Route = createFileRoute("/budget/")({
   component: BudgetNow,
 });
 
 function BudgetNow() {
-  const { now, results: categories, fetching } = useCategoriesV2();
+  const { now, results: categories, fetching } = useCategories();
   const { showEmpty } = useBudgetSettings();
 
   const unassigned = useMemo(() => {

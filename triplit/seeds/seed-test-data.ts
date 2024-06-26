@@ -71,27 +71,9 @@ export default function seed(): BulkInsert<typeof schema> {
         id: "1",
         name: "Groceries",
         budget_id: "1",
-      },
-      {
-        id: "2",
-        name: "Utilities",
-        budget_id: "1",
-      },
-      {
-        id: "3",
-        name: "Savings",
-        budget_id: "1",
-      },
-    ],
-    categoriesV2: [
-      {
-        id: "1",
-        name: "Groceries",
-        budget_id: "1",
         for_now: 100,
         for_later: 50,
         activity: -27.34,
-        last_reset: new Date(2024, 5, 1),
       },
       {
         id: "2",
@@ -100,7 +82,6 @@ export default function seed(): BulkInsert<typeof schema> {
         for_now: 60,
         for_later: 0,
         activity: 0,
-        last_reset: new Date(2024, 5, 1),
       },
       {
         id: "3",
@@ -108,39 +89,7 @@ export default function seed(): BulkInsert<typeof schema> {
         budget_id: "1",
         for_now: 0,
         for_later: 2000,
-        later_goal: 5000,
         activity: 0,
-        last_reset: new Date(2024, 0, 1),
-      },
-    ],
-    snapshots: [
-      {
-        id: "1",
-        date: new Date(2024, 5, 1),
-        category_id: "1",
-        for_now: 340,
-        for_later: 50,
-        activity: 340,
-      }
-    ],
-    assignments: [
-      {
-        category_id: "1",
-        amount: 80,
-        month: 5,
-        year: 2024,
-      },
-      {
-        category_id: "2",
-        amount: 100,
-        month: 5,
-        year: 2024,
-      },
-      {
-        category_id: "3",
-        amount: 500,
-        month: 5,
-        year: 2024,
       },
     ],
   };

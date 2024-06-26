@@ -1,24 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-import { CategoryV2 } from "@db/types";
+import { Category } from "@db/types";
 
 import { CategoryItem } from "@/components/CategoryItem";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
-import { useCategoriesV2 } from "@/hooks/useCategoriesV2";
+import { useCategories } from "@/hooks/useCategories";
 
 export const Route = createFileRoute("/budget/total")({
   component: BudgetTotal,
 });
 function BudgetTotal() {
-  const { results: categories, fetching } = useCategoriesV2();
+  const { results: categories, fetching } = useCategories();
   const { showEmpty } = useBudgetSettings();
 
   const { unassigned, assigned } = useMemo(() => {
     if (!categories) return { unassigned: undefined, assigned: undefined };
-    const unassigned: CategoryV2[] = [];
-    const assigned: CategoryV2[] = [];
+    const unassigned: Category[] = [];
+    const assigned: Category[] = [];
     Array.from(categories.values()).forEach((c) => {
       if (c.for_later === 0 && c.for_now === 0) {
         unassigned.push(c);

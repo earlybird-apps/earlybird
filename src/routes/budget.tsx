@@ -99,7 +99,7 @@ function Budget() {
         return;
       }
       client
-        .insert("categoriesV2", {
+        .insert("categories", {
           name: value.categoryName,
           budget_id: budget.id,
         })

@@ -5,21 +5,11 @@ import { ClientSchema, Schema as S } from "@triplit/client";
  * For more information on schemas, see the docs: https://www.triplit.dev/docs/schemas
  */
 export const schema = {
-  users: {
-    schema: S.Schema({
-      id: S.Id(),
-      name: S.String(),
-      budget: S.RelationOne("budgets", {
-        where: [["user_id", "=", "$id"]],
-      }),
-    }),
-  },
   budgets: {
     schema: S.Schema({
       id: S.Id(),
       name: S.String(),
       user_id: S.String(),
-      user: S.RelationById("users", "$user_id"),
       categories: S.RelationMany("categories", {
         where: [["budget_id", "=", "$id"]],
       }),
@@ -97,39 +87,9 @@ export const schema = {
       name: S.String(),
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
-      assignments: S.RelationMany("assignments", {
-        where: [["category_id", "=", "$id"]],
-      }),
-      transactions: S.RelationMany("transactions", {
-        where: [["category_id", "=", "$id"]],
-      }),
-    }),
-    rules: {
-      read: {
-        "owner-is-user": {
-          description: "Users can only view categories for budgets they own",
-          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
-        },
-      },
-      write: {
-        "owner-is-user": {
-          description: "Users can only edit categories for budgets they own",
-          filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
-        },
-      },
-    },
-  },
-  categoriesV2: {
-    schema: S.Schema({
-      id: S.Id(),
-      name: S.String(),
-      budget_id: S.String(),
-      budget: S.RelationById("budgets", "$budget_id"),
       for_now: S.Number({ default: 0 }),
       for_later: S.Number({ default: 0 }),
-      later_goal: S.Optional(S.Number()),
       activity: S.Number({ default: 0 }),
-      last_reset: S.Date({ default: S.Default.now() }),
       transactions: S.RelationMany("transactions", {
         where: [["category_id", "=", "$id"]],
       }),
@@ -145,61 +105,6 @@ export const schema = {
         "owner-is-user": {
           description: "Users can only edit categories for budgets they own",
           filter: [["budget.user_id", "=", "$session.SESSION_USER_ID"]],
-        },
-      },
-    },
-  },
-  snapshots: {
-    schema: S.Schema({
-      id: S.Id(),
-      date: S.Date({ default: S.Default.now() }),
-      category_id: S.String(),
-      category: S.RelationById("categories", "$category_id"),
-      for_now: S.Number(),
-      for_later: S.Number(),
-      activity: S.Number(),
-    }),
-    rules: {
-      read: {
-        "owner-is-user": {
-          description: "Users can only view categories for budgets they own",
-          filter: [["category.budget.user_id", "=", "$session.SESSION_USER_ID"]],
-        },
-      },
-      write: {
-        "owner-is-user": {
-          description: "Users can only edit categories for budgets they own",
-          filter: [["category.budget.user_id", "=", "$session.SESSION_USER_ID"]],
-        },
-      },
-    },
-  },
-  assignments: {
-    schema: S.Schema({
-      id: S.Id(),
-      amount: S.Number({ default: 0 }),
-      month: S.Number(),
-      year: S.Number(),
-      category_id: S.String(),
-      category: S.RelationById("categories", "$category_id"),
-    }),
-    rules: {
-      read: {
-        "owner-is-user": {
-          description:
-            "Users can only view assignments for categories they own",
-          filter: [
-            ["category.budget.user_id", "=", "$session.SESSION_USER_ID"],
-          ],
-        },
-      },
-      write: {
-        "owner-is-user": {
-          description:
-            "Users can only edit assignments for categories they own",
-          filter: [
-            ["category.budget.user_id", "=", "$session.SESSION_USER_ID"],
-          ],
         },
       },
     },

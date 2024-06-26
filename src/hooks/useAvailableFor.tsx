@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 
-import { CategoryV2 } from "@db/types";
+import { Category } from "@db/types";
 
-export function useAvailableFor(category: CategoryV2) {
+export function useAvailableFor(category: Category) {
   return useMemo(() => {
     const now = category.for_now + category.activity;
     const later = category.for_later;

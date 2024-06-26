@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { HTMLProps } from "react";
 
-import { CategoryV2 } from "@db/types";
+import { Category } from "@db/types";
 
 import { useAvailableFor } from "@/hooks/useAvailableFor";
 
@@ -55,7 +55,7 @@ function CategoryCard({ className, ...props }: HTMLProps<HTMLDivElement>) {
 }
 
 interface CategoryItemProps extends HTMLProps<HTMLDivElement> {
-  category: CategoryV2;
+  category: Category;
   display: "now" | "later" | "total";
 }
 

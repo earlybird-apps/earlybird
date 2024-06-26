@@ -1,12 +1,29 @@
 import { useQuery } from "@triplit/react";
+import { useMemo } from "react";
 
-import { useTriplitClient } from "./useTriplitClient";
+import { client } from "@db/client";
 
-export const useCategories = ({ budgetId }: { budgetId: string }) => {
-  const { client } = useTriplitClient();
-
-  return useQuery(
+export function useCategories() {
+  const { results, ...rest } = useQuery(
     client,
-    client.query("categories").where("budget_id", "=", budgetId),
+    client.query("categories").order("name", "ASC"),
   );
-};
+
+  const { now, later } = useMemo(() => {
+    if (!results) return { now: undefined, later: undefined };
+    const now = [];
+    const later = [];
+    for (const category of results.values()) {
+      if (category.for_now !== 0) {
+        now.push(category);
+      }
+      if (category.for_later !== 0) {
+        later.push(category);
+      }
+    }
+
+    return { now, later };
+  }, [results]);
+
+  return { results, now, later, ...rest };
+}
