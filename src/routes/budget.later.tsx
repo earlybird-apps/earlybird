@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-import { CategoryItem } from "@/components/CategoryItem";
+import { CategoryItemList } from "@/components/CategoryItem";
+import { NoCategories } from "@/components/NoCategories";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategories } from "@/hooks/useCategories";
@@ -11,43 +12,33 @@ export const Route = createFileRoute("/budget/later")({
 });
 
 function BudgetLater() {
-  const { later, results: categories, fetching } = useCategories();
   const { showEmpty } = useBudgetSettings();
-  const unassigned = useMemo(() => {
-    return categories
-      ? Array.from(categories.values()).filter(
-          (c) => !later?.some((lc) => lc.id === c.id),
-        )
-      : undefined;
-  }, [categories, later]);
+  const { later, results: categories, fetching } = useCategories();
+  const unassigned = useMemo(
+    () =>
+      Array.from(categories?.values() || []).filter(
+        (c) => !later?.some((lc) => lc.id === c.id),
+      ),
+    [categories, later],
+  );
 
-  //   TODO: Move this to root level and pass down?
   if (fetching) return <div>Loading...</div>;
-  if (!categories || categories.size === 0) return <div>No categories</div>;
-  //   TODO ^
+
   return (
     <>
       <div className="flex justify-between text-gray-700 text-sm m-2">
         <span className="p-1">Category</span>
         <span className="p-1 me-14 lg:me-12">Saved</span>
       </div>
-      <ul className="flex flex-col gap-y-2">
-        {later?.map((category) => (
-          <li key={category.id}>
-            <CategoryItem category={category} display="later" />
-          </li>
-        ))}
-      </ul>
+      {later.length > 0 ? (
+        <CategoryItemList categories={later} display="later" />
+      ) : (
+        <NoCategories />
+      )}
       {showEmpty && (
         <>
           <Divider soft className="my-8" />
-          <ul className="flex flex-col gap-y-2">
-            {unassigned?.map((category) => (
-              <li key={category.id}>
-                <CategoryItem category={category} display="later" />
-              </li>
-            ))}
-          </ul>
+          <CategoryItemList categories={unassigned} display="later" />
         </>
       )}
     </>

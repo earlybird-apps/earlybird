@@ -61,7 +61,7 @@ const addMoneySchema = z
     },
   );
 
-export function AddMoneyDialog({
+export function MoveMoneyDialog({
   onClose,
   categoryId,
   display,
@@ -113,8 +113,11 @@ export function AddMoneyDialog({
     exit();
   };
 
-  if (fetching) return null;
-  if (!category || !rtbBalance) return null;
+  if (fetching) return <div>Loading...</div>;
+  if (!category || !rtbBalance) {
+    console.error("Category or RTB balance not found");
+    return null;
+  }
 
   return (
     <Dialog onClose={exit} {...props}>
@@ -130,8 +133,9 @@ export function AddMoneyDialog({
                 <Label>Amount</Label>
                 <Input
                   {...register("amount")}
-                  type="number"
                   autoFocus
+                  type="number"
+                  step={0.01}
                   invalid={!!errors?.amount}
                 />
                 {errors?.amount && (

@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import { useState } from "react";
 import { z } from "zod";
 
-import { AddMoneyDialog } from "@/components/AddMoneyDialog";
 import { Currency } from "@/components/Currency";
+import { MoveMoneyDialog } from "@/components/MoveMoneyDialog";
 import { NewCategoryDialog } from "@/components/NewCategoryDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,11 @@ const links: { route: LinkProps["to"]; label: string }[] = [
 
 function ReadyToBudget() {
   const { result: readyToBudget, fetching } = useReadyToBudget();
-  if (fetching || readyToBudget === undefined) return null; //TODO: Loading state
+  if (fetching) return <div>Loading...</div>;
+  if (readyToBudget === undefined) {
+    console.error("readyToBudget is undefined");
+    return null;
+  }
 
   return readyToBudget === 0 ? (
     <span className="flex items-center gap-x-2 text-xs">
@@ -112,7 +116,7 @@ function Budget() {
         <Outlet />
       </div>
       <NewCategoryDialog open={showNewCategory} onClose={setShowNewCategory} />
-      <AddMoneyDialog
+      <MoveMoneyDialog
         display={view!} //TODO handle ! better
         open={showAddMoney === true}
         categoryId={categoryId!} //TODO handle ! better

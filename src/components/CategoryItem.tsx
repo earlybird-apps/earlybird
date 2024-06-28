@@ -125,3 +125,23 @@ export function CategoryItem({
     </CategoryCard>
   );
 }
+
+export function CategoryItemList(props: {
+  categories: Category[];
+  display: "now" | "later" | "total";
+  disableActions?: boolean;
+}) {
+  return (
+    <ul className="flex flex-col gap-y-2">
+      {props.categories.map((category) => (
+        <li key={category.id}>
+          <CategoryItem
+            category={category}
+            display={props.display}
+            disableActions={props.disableActions || false}
+          />
+        </li>
+      ))}
+    </ul>
+  );
+}

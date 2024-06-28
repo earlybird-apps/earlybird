@@ -3,7 +3,8 @@ import { useMemo } from "react";
 
 import { Category } from "@db/types";
 
-import { CategoryItem } from "@/components/CategoryItem";
+import { CategoryItemList } from "@/components/CategoryItem";
+import { NoCategories } from "@/components/NoCategories";
 import { Divider } from "@/components/ui/divider";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useCategories } from "@/hooks/useCategories";
@@ -16,10 +17,9 @@ function BudgetTotal() {
   const { showEmpty } = useBudgetSettings();
 
   const { unassigned, assigned } = useMemo(() => {
-    if (!categories) return { unassigned: undefined, assigned: undefined };
     const unassigned: Category[] = [];
     const assigned: Category[] = [];
-    Array.from(categories.values()).forEach((c) => {
+    Array.from(categories?.values() || []).forEach((c) => {
       if (c.for_later === 0 && c.for_now === 0) {
         unassigned.push(c);
       } else {
@@ -29,10 +29,8 @@ function BudgetTotal() {
     return { unassigned, assigned };
   }, [categories]);
 
-  //   TODO: Move this to root level and pass down?
   if (fetching) return <div>Loading...</div>;
-  if (!categories || categories.size === 0) return <div>No categories</div>;
-  //   TODO ^
+
   return (
     <>
       <div className="flex justify-between text-gray-700 text-sm m-2">
@@ -40,26 +38,24 @@ function BudgetTotal() {
         <span className="p-1">Balance</span>
       </div>
       <ul className="flex flex-col gap-2">
-        {assigned?.map((category) => (
-          <li key={category.id}>
-            <CategoryItem category={category} display="total" disableActions />
-          </li>
-        ))}
+        {assigned.length > 0 ? (
+          <CategoryItemList
+            categories={assigned}
+            display="total"
+            disableActions
+          />
+        ) : (
+          <NoCategories />
+        )}
       </ul>
       {showEmpty && (
         <>
           <Divider soft className="my-8" />
-          <ul className="flex flex-col gap-2">
-            {unassigned?.map((category) => (
-              <li key={category.id}>
-                <CategoryItem
-                  category={category}
-                  display="total"
-                  disableActions
-                />
-              </li>
-            ))}
-          </ul>
+          <CategoryItemList
+            categories={unassigned}
+            display="total"
+            disableActions
+          />
         </>
       )}
     </>
