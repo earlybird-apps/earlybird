@@ -12,15 +12,15 @@ export const Route = createFileRoute("/budget/")({
 });
 
 function BudgetNow() {
-  const { now, results: categories, fetching } = useCategories();
+  const { funded, results: categories, fetching } = useCategories();
   const { showEmpty } = useBudgetSettings();
 
   const unassigned = useMemo(
     () =>
       Array.from(categories?.values() || []).filter(
-        (c) => !now?.some((nc) => nc.id === c.id),
+        (c) => !funded?.some((nc) => nc.id === c.id),
       ),
-    [categories, now],
+    [categories, funded],
   );
 
   if (fetching) return <div>Loading...</div>;
@@ -31,15 +31,15 @@ function BudgetNow() {
         <span className="p-1">Category</span>
         <span className="p-1 me-14 lg:me-12">Available</span>
       </div>
-      {now.length > 0 ? (
-        <CategoryItemList categories={now} display="now" />
+      {funded.length > 0 ? (
+        <CategoryItemList categories={funded} />
       ) : (
         <NoCategories />
       )}
       {showEmpty && (
         <>
           <Divider soft className="my-8" />
-          <CategoryItemList categories={unassigned} display="now" />
+          <CategoryItemList categories={unassigned} />
         </>
       )}
     </>

@@ -1,5 +1,5 @@
 import { CheckBadgeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-import { LinkProps, Outlet, createFileRoute } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { useState } from "react";
@@ -11,7 +11,6 @@ import { NewCategoryDialog } from "@/components/NewCategoryDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heading, Subheading } from "@/components/ui/heading";
-import { Link } from "@/components/ui/link";
 import { Switch } from "@/components/ui/switch";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
@@ -21,27 +20,26 @@ export const Route = createFileRoute("/budget")({
   validateSearch: (search) =>
     z
       .object({
-        view: z.union([z.literal("now"), z.literal("later")]).optional(),
         showAddMoney: z.boolean().optional(),
         categoryId: z.string().optional(),
       })
       .parse(search),
 });
 
-const links: { route: LinkProps["to"]; label: string }[] = [
-  {
-    route: "/budget",
-    label: "Now",
-  },
-  {
-    route: "/budget/later",
-    label: "Later",
-  },
-  {
-    route: "/budget/total",
-    label: "Total",
-  },
-];
+// const links: { route: LinkProps["to"]; label: string }[] = [
+//   {
+//     route: "/budget",
+//     label: "Now",
+//   },
+//   {
+//     route: "/budget/later",
+//     label: "Later",
+//   },
+//   {
+//     route: "/budget/total",
+//     label: "Total",
+//   },
+// ];
 
 function ReadyToBudget() {
   const { result: readyToBudget, fetching } = useReadyToBudget();
@@ -70,7 +68,7 @@ function ReadyToBudget() {
 function Budget() {
   const { showEmpty, setShowEmpty } = useBudgetSettings();
   const [showNewCategory, setShowNewCategory] = useState(false);
-  const { showAddMoney, categoryId, view } = Route.useSearch();
+  const { showAddMoney, categoryId } = Route.useSearch();
   const navigate = Route.useNavigate();
 
   return (
@@ -82,7 +80,7 @@ function Budget() {
         <Subheading className="lg:hidden">
           {format(new Date(), "MMMM, yyyy")}
         </Subheading>
-        <ul className="gap-x-4 text-sm font-medium overflow-auto -mb-px flex border rounded-full p-1 bg-gray-50 items-center">
+        {/* <ul className="gap-x-4 text-sm font-medium overflow-auto -mb-px flex border rounded-full p-1 bg-gray-50 items-center">
           {links.map((item) => (
             <li key={item.route}>
               <Link
@@ -97,7 +95,7 @@ function Budget() {
               </Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </nav>
       <div>
         <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 sticky top-14 bg-white border-b  z-10">
@@ -116,16 +114,17 @@ function Budget() {
         <Outlet />
       </div>
       <NewCategoryDialog open={showNewCategory} onClose={setShowNewCategory} />
-      <MoveMoneyDialog
-        display={view!} //TODO handle ! better
-        open={showAddMoney === true}
-        categoryId={categoryId!} //TODO handle ! better
-        onClose={() =>
-          navigate({
-            search: { showAddMoney: undefined, categoryId: undefined },
-          })
-        }
-      />
+      {categoryId && (
+        <MoveMoneyDialog
+          open={showAddMoney === true}
+          categoryId={categoryId}
+          onClose={() =>
+            navigate({
+              search: { showAddMoney: undefined, categoryId: undefined },
+            })
+          }
+        />
+      )}
     </div>
   );
 }

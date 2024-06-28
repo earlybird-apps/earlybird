@@ -17,8 +17,6 @@ import { Route as BudgetImport } from './routes/budget'
 import { Route as AccountsImport } from './routes/accounts'
 import { Route as BudgetIndexImport } from './routes/budget.index'
 import { Route as AccountsIndexImport } from './routes/accounts.index'
-import { Route as BudgetTotalImport } from './routes/budget.total'
-import { Route as BudgetLaterImport } from './routes/budget.later'
 import { Route as AccountsIdImport } from './routes/accounts.$id'
 
 // Create Virtual Routes
@@ -50,16 +48,6 @@ const BudgetIndexRoute = BudgetIndexImport.update({
 const AccountsIndexRoute = AccountsIndexImport.update({
   path: '/',
   getParentRoute: () => AccountsRoute,
-} as any)
-
-const BudgetTotalRoute = BudgetTotalImport.update({
-  path: '/total',
-  getParentRoute: () => BudgetRoute,
-} as any)
-
-const BudgetLaterRoute = BudgetLaterImport.update({
-  path: '/later',
-  getParentRoute: () => BudgetRoute,
 } as any)
 
 const AccountsIdRoute = AccountsIdImport.update({
@@ -99,20 +87,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountsIdImport
       parentRoute: typeof AccountsImport
     }
-    '/budget/later': {
-      id: '/budget/later'
-      path: '/later'
-      fullPath: '/budget/later'
-      preLoaderRoute: typeof BudgetLaterImport
-      parentRoute: typeof BudgetImport
-    }
-    '/budget/total': {
-      id: '/budget/total'
-      path: '/total'
-      fullPath: '/budget/total'
-      preLoaderRoute: typeof BudgetTotalImport
-      parentRoute: typeof BudgetImport
-    }
     '/accounts/': {
       id: '/accounts/'
       path: '/'
@@ -138,11 +112,7 @@ export const routeTree = rootRoute.addChildren({
     AccountsIdRoute,
     AccountsIndexRoute,
   }),
-  BudgetRoute: BudgetRoute.addChildren({
-    BudgetLaterRoute,
-    BudgetTotalRoute,
-    BudgetIndexRoute,
-  }),
+  BudgetRoute: BudgetRoute.addChildren({ BudgetIndexRoute }),
 })
 
 /* prettier-ignore-end */
@@ -171,22 +141,12 @@ export const routeTree = rootRoute.addChildren({
     "/budget": {
       "filePath": "budget.tsx",
       "children": [
-        "/budget/later",
-        "/budget/total",
         "/budget/"
       ]
     },
     "/accounts/$id": {
       "filePath": "accounts.$id.tsx",
       "parent": "/accounts"
-    },
-    "/budget/later": {
-      "filePath": "budget.later.tsx",
-      "parent": "/budget"
-    },
-    "/budget/total": {
-      "filePath": "budget.total.tsx",
-      "parent": "/budget"
     },
     "/accounts/": {
       "filePath": "accounts.index.tsx",

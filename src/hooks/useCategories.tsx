@@ -10,31 +10,33 @@ export function useCategories({ includeSystem = false } = {}) {
   const { results, ...rest } = useQuery(client, query);
 
   const computedFields = useMemo(() => {
-    const now = [];
-    const later = [];
-    const fundedCategories = [];
-    const underfundedCategories = [];
-    const emptyCategories = [];
-    const systemCategories = [];
+    const all = [];
+    const assigned = [];
+    const funded = [];
+    const underfunded = [];
+    const empty = [];
+    const system = [];
 
     for (const category of results?.values() || []) {
-      if (category.for_now !== 0) now.push(category);
-      if (category.for_later !== 0) later.push(category);
-      if (category.for_now > category.activity) fundedCategories.push(category);
-      if (category.for_now < category.activity)
-        underfundedCategories.push(category);
-      if (category.for_now === category.activity || category.for_now === 0)
-        emptyCategories.push(category);
-      if (category.system_code) systemCategories.push(category);
+      all.push(category);
+      if (category.system_code !== null) {
+        system.push(category);
+        continue;
+      }
+      if (category.assigned !== 0) assigned.push(category);
+      if (category.assigned > category.activity) funded.push(category);
+      if (category.assigned < category.activity) underfunded.push(category);
+      if (category.assigned === category.activity || category.assigned === 0)
+        empty.push(category);
     }
 
     return {
-      now,
-      later,
-      fundedCategories,
-      underfundedCategories,
-      emptyCategories,
-      systemCategories,
+      all,
+      assigned,
+      funded,
+      underfunded,
+      empty,
+      system,
     };
   }, [results]);
 

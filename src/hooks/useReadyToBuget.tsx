@@ -14,7 +14,7 @@ export function useReadyToBudget() {
       0,
     );
     const categoriesTotalAssigned = Array.from(categories.values()).reduce(
-      (acc, category) => acc + category.for_now + category.for_later,
+      (acc, category) => acc + category.assigned,
       0,
     );
 

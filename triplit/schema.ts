@@ -87,8 +87,7 @@ export const schema = {
       name: S.String(),
       budget_id: S.String(),
       budget: S.RelationById("budgets", "$budget_id"),
-      for_now: S.Number({ default: 0 }),
-      for_later: S.Number({ default: 0 }),
+      assigned: S.Number({ default: 0 }),
       activity: S.Number({ default: 0 }),
       system_code: S.String({ nullable: true, default: null }),
       transactions: S.RelationMany("transactions", {

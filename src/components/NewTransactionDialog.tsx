@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { client } from "@db/client";
-import { Income } from "@db/constants";
 
+import { SystemCategories } from "@/constants";
 import { useCategories } from "@/hooks/useCategories";
 import { useMutateTransaction } from "@/hooks/useMutateTransaction";
 
@@ -50,10 +50,10 @@ export function NewTransactionDialog({
     client.query("accounts"),
   );
   const {
-    fundedCategories,
-    underfundedCategories,
-    emptyCategories,
-    systemCategories,
+    funded,
+    underfunded,
+    empty,
+    system,
     fetching: fetchingCategories,
   } = useCategories({ includeSystem: true });
 
@@ -135,19 +135,23 @@ export function NewTransactionDialog({
                   invalid={!!errors?.category_id}
                   disabled={fetchingCategories}
                 >
-                  {fundedCategories.length > 0 && (
+                  {funded.length > 0 && (
                     <optgroup label="Funded">
-                      {fundedCategories.map((category) => (
+                      {funded.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
                       ))}
                     </optgroup>
                   )}
-                  {systemCategories.length > 0 && (
+                  {system.length > 0 && (
                     <optgroup label="System">
-                      {systemCategories
-                        .filter((c) => c.system_code == Income.system_code)
+                      {system
+                        .filter(
+                          (c) =>
+                            c.system_code ==
+                            SystemCategories.Income.system_code,
+                        )
                         .map((category) => (
                           <option key={category.id} value={category.id}>
                             {category.name}
@@ -155,18 +159,18 @@ export function NewTransactionDialog({
                         ))}
                     </optgroup>
                   )}
-                  {underfundedCategories.length && (
+                  {underfunded.length && (
                     <optgroup label="Underfunded">
-                      {underfundedCategories.map((category) => (
+                      {underfunded.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
                       ))}
                     </optgroup>
                   )}
-                  {emptyCategories.length && (
+                  {empty.length && (
                     <optgroup label="Empty">
-                      {emptyCategories.map((category) => (
+                      {empty.map((category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>

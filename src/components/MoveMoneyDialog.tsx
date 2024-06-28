@@ -25,35 +25,19 @@ import {
   Fieldset,
   Label,
 } from "./ui/fieldset";
+import { Subheading } from "./ui/heading";
 import { Input } from "./ui/input";
-import { Select } from "./ui/select";
 
 const addMoneySchema = z
   .object({
     amount: z.coerce
       .number()
       .positive({ message: "Amount must be greater than 0" }),
-    laterBalance: z.coerce.number(),
-    rtbBalance: z.coerce.number(),
     availableBalance: z.coerce.number(),
-    fromPocket: z.union([
-      z.literal("RTB"),
-      z.literal("LATER"),
-      z.literal("NOW"),
-    ]),
   })
   .refine(
     (data) => {
-      if (data.fromPocket === "LATER" && data.amount > data.laterBalance) {
-        return false;
-      }
-      if (data.fromPocket === "RTB" && data.amount > data.rtbBalance) {
-        return false;
-      }
-      if (data.fromPocket === "NOW" && data.amount > data.availableBalance) {
-        return false;
-      }
-      return true;
+      return data.amount <= data.availableBalance;
     },
     {
       message: "Cannot assign more money than you have available.",
@@ -64,18 +48,17 @@ const addMoneySchema = z
 export function MoveMoneyDialog({
   onClose,
   categoryId,
-  display,
   ...props
 }: Omit<ComponentProps<typeof Dialog>, "children"> & {
   categoryId: string;
-  display: "now" | "later" | "total";
 }) {
   const mutate = useMutateCategory();
   const { result: category, fetching } = useQueryOne(
     client,
     client.query("categories").id(categoryId),
   );
-  const { result: rtbBalance } = useReadyToBudget();
+  const { result: availableBalance } = useReadyToBudget();
+
   const {
     register,
     handleSubmit,
@@ -97,24 +80,18 @@ export function MoveMoneyDialog({
       mutate.addMoney({
         amount: data.amount,
         categoryId: categoryId,
-        fromPocket: data.fromPocket,
-        toPocket: display === "now" ? "NOW" : "LATER",
       }),
       {
         loading: "Saving...",
-        success:
-          data.fromPocket === "RTB" ? "Added from unasigned." : "Moved money.",
-        error:
-          data.fromPocket === "RTB"
-            ? "Failed to add money"
-            : "Failed to move money",
+        success: `Added $${data.amount} to ${category?.name}`,
+        error: `Failed to add money to ${category?.name}`,
       },
     );
     exit();
   };
 
   if (fetching) return <div>Loading...</div>;
-  if (!category || !rtbBalance) {
+  if (!category || !availableBalance) {
     console.error("Category or RTB balance not found");
     return null;
   }
@@ -123,10 +100,10 @@ export function MoveMoneyDialog({
     <Dialog onClose={exit} {...props}>
       <form onSubmit={handleSubmit(addMoney)}>
         <DialogTitle>{category.name}</DialogTitle>
-        <DialogDescription>
-          Add money to {category.name} for {display}
-        </DialogDescription>
+        <DialogDescription>Adding money to {category.name}</DialogDescription>
         <DialogBody>
+          {/* TODO Use Currency */}
+          <Subheading>Available to Budget: ${availableBalance}</Subheading>
           <Fieldset>
             <FieldGroup>
               <Field>
@@ -136,6 +113,7 @@ export function MoveMoneyDialog({
                   autoFocus
                   type="number"
                   step={0.01}
+                  min={0}
                   invalid={!!errors?.amount}
                 />
                 {errors?.amount && (
@@ -144,49 +122,11 @@ export function MoveMoneyDialog({
                   </ErrorMessage>
                 )}
               </Field>
-              <Field>
-                <Label>From</Label>
-                <Select {...register("fromPocket")}>
-                  <option value="RTB" disabled={rtbBalance <= 0}>
-                    Ready to Budget: ${rtbBalance}
-                  </option>
-                  {display === "now" && (
-                    <option value="LATER" disabled={category.for_later <= 0}>
-                      Later: ${category.for_later}
-                    </option>
-                  )}
-                  {display === "later" && (
-                    <option
-                      value="NOW"
-                      disabled={category.for_now + category.activity <= 0}
-                    >
-                      Now: ${category.for_now + category.activity}
-                    </option>
-                  )}
-                </Select>
-                {errors?.fromPocket && (
-                  <ErrorMessage>
-                    {errors.fromPocket.message?.toString()}
-                  </ErrorMessage>
-                )}
-              </Field>
-              <Input
-                className="hidden"
-                {...register("laterBalance")}
-                hidden
-                value={category.for_later}
-              />
-              <Input
-                className="hidden"
-                {...register("rtbBalance")}
-                hidden
-                value={rtbBalance}
-              />
               <Input
                 className="hidden"
                 {...register("availableBalance")}
                 hidden
-                value={category.for_now + category.activity}
+                value={availableBalance}
               />
             </FieldGroup>
           </Fieldset>
