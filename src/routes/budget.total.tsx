@@ -28,6 +28,7 @@ function BudgetTotal() {
     });
     return { unassigned, assigned };
   }, [categories]);
+
   //   TODO: Move this to root level and pass down?
   if (fetching) return <div>Loading...</div>;
   if (!categories || categories.size === 0) return <div>No categories</div>;
@@ -41,7 +42,7 @@ function BudgetTotal() {
       <ul className="flex flex-col gap-2">
         {assigned?.map((category) => (
           <li key={category.id}>
-            <CategoryItem category={category} display="total" />
+            <CategoryItem category={category} display="total" disableActions />
           </li>
         ))}
       </ul>
@@ -51,7 +52,11 @@ function BudgetTotal() {
           <ul className="flex flex-col gap-2">
             {unassigned?.map((category) => (
               <li key={category.id}>
-                <CategoryItem category={category} display="total" />
+                <CategoryItem
+                  category={category}
+                  display="total"
+                  disableActions
+                />
               </li>
             ))}
           </ul>

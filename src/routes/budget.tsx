@@ -3,7 +3,9 @@ import { LinkProps, Outlet, createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { useState } from "react";
+import { z } from "zod";
 
+import { AddMoneyDialog } from "@/components/AddMoneyDialog";
 import { Currency } from "@/components/Currency";
 import { NewCategoryDialog } from "@/components/NewCategoryDialog";
 import { Badge } from "@/components/ui/badge";
@@ -16,6 +18,14 @@ import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
 export const Route = createFileRoute("/budget")({
   component: Budget,
+  validateSearch: (search) =>
+    z
+      .object({
+        view: z.union([z.literal("now"), z.literal("later")]).optional(),
+        showAddMoney: z.boolean().optional(),
+        categoryId: z.string().optional(),
+      })
+      .parse(search),
 });
 
 const links: { route: LinkProps["to"]; label: string }[] = [
@@ -56,6 +66,8 @@ function ReadyToBudget() {
 function Budget() {
   const { showEmpty, setShowEmpty } = useBudgetSettings();
   const [showNewCategory, setShowNewCategory] = useState(false);
+  const { showAddMoney, categoryId, view } = Route.useSearch();
+  const navigate = Route.useNavigate();
 
   return (
     <div className="flex flex-col space-y-4">
@@ -100,6 +112,16 @@ function Budget() {
         <Outlet />
       </div>
       <NewCategoryDialog open={showNewCategory} onClose={setShowNewCategory} />
+      <AddMoneyDialog
+        display={view!} //TODO handle ! better
+        open={showAddMoney === true}
+        categoryId={categoryId!} //TODO handle ! better
+        onClose={() =>
+          navigate({
+            search: { showAddMoney: undefined, categoryId: undefined },
+          })
+        }
+      />
     </div>
   );
 }

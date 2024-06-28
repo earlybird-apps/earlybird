@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 import { CategoryItem } from "@/components/CategoryItem";
@@ -30,7 +30,7 @@ function BudgetNow() {
     <>
       <div className="flex justify-between text-gray-700 text-sm m-2">
         <span className="p-1">Category</span>
-        <span className="p-1">Available</span>
+        <span className="p-1 me-14 lg:me-12">Available</span>
       </div>
       <ul className="flex flex-col gap-y-2">
         {now?.map((category) => (

@@ -1,3 +1,8 @@
+import {
+  ArrowDownTrayIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/react/16/solid";
+import { useNavigate } from "@tanstack/react-router";
 import clsx from "clsx";
 import { HTMLProps } from "react";
 
@@ -6,6 +11,13 @@ import { Category } from "@db/types";
 import { useAvailableFor } from "@/hooks/useAvailableFor";
 
 import { Currency } from "./Currency";
+import {
+  Dropdown,
+  DropdownButton,
+  DropdownItem,
+  DropdownLabel,
+  DropdownMenu,
+} from "./ui/dropdown";
 
 function CategoryAvailable({ value }: { value: number }) {
   return (
@@ -57,13 +69,16 @@ function CategoryCard({ className, ...props }: HTMLProps<HTMLDivElement>) {
 interface CategoryItemProps extends HTMLProps<HTMLDivElement> {
   category: Category;
   display: "now" | "later" | "total";
+  disableActions?: boolean;
 }
 
 export function CategoryItem({
   category,
   display,
+  disableActions = false,
   ...props
 }: CategoryItemProps) {
+  const navigate = useNavigate();
   const { now, later, total } = useAvailableFor(category);
   let available;
   switch (display) {
@@ -80,7 +95,33 @@ export function CategoryItem({
   return (
     <CategoryCard {...props}>
       <CategoryName name={category.name} available={available} />
-      <CategoryAvailable value={available} />
+      <div className="flex gap-x-2 items-center">
+        <CategoryAvailable value={available} />
+        {!disableActions && (
+          <Dropdown>
+            <DropdownButton plain>
+              <EllipsisVerticalIcon />
+            </DropdownButton>
+            <DropdownMenu anchor="bottom end">
+              <DropdownItem
+                onClick={() => {
+                  if (display === "total") return;
+                  navigate({
+                    search: {
+                      showAddMoney: true,
+                      categoryId: category.id,
+                      view: display,
+                    },
+                  });
+                }}
+              >
+                <ArrowDownTrayIcon />
+                <DropdownLabel>Add Money</DropdownLabel>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        )}
+      </div>
     </CategoryCard>
   );
 }
