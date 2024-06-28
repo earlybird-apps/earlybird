@@ -40,6 +40,9 @@ export function NewCategoryDialog({
     formState: { errors },
     ...form
   } = useForm<z.infer<typeof newCategorySchema>>({
+    defaultValues: {
+      createAnother: false,
+    },
     resolver: zodResolver(newCategorySchema),
   });
 

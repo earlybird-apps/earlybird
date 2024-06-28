@@ -9,21 +9,31 @@ export function useCategories() {
     client.query("categories").order("name", "ASC"),
   );
 
-  const { now, later } = useMemo(() => {
-    if (!results) return { now: undefined, later: undefined };
+  const computedFields = useMemo(() => {
     const now = [];
     const later = [];
-    for (const category of results.values()) {
-      if (category.for_now !== 0) {
-        now.push(category);
-      }
-      if (category.for_later !== 0) {
-        later.push(category);
-      }
+    const fundedCategories = [];
+    const underfundedCategories = [];
+    const emptyCategories = [];
+
+    for (const category of results?.values() || []) {
+      if (category.for_now !== 0) now.push(category);
+      if (category.for_later !== 0) later.push(category);
+      if (category.for_now > category.activity) fundedCategories.push(category);
+      if (category.for_now < category.activity)
+        underfundedCategories.push(category);
+      if (category.for_now === category.activity || category.for_now === 0)
+        emptyCategories.push(category);
     }
 
-    return { now, later };
+    return {
+      now,
+      later,
+      fundedCategories,
+      underfundedCategories,
+      emptyCategories,
+    };
   }, [results]);
 
-  return { results, now, later, ...rest };
+  return { results, ...computedFields, ...rest };
 }
