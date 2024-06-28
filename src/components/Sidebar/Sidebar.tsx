@@ -20,7 +20,6 @@ import { Transactions } from "./Transactions";
 export function Sidebar() {
   const { client } = useTriplitClient();
   const status = useConnectionStatus(client);
-  // TODO: move data fetching out of here
   return (
     <BaseSidebar>
       <SidebarHeader>

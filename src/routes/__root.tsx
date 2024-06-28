@@ -1,4 +1,5 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { Toaster } from "sonner";
 
 import { Sidebar } from "@/components/Sidebar";
 import { Navbar } from "@/components/ui/navbar";
@@ -9,6 +10,7 @@ import { TriplitContextProvider } from "@/hooks/useTriplitClient";
 export const Route = createRootRoute({
   component: () => (
     <TriplitContextProvider>
+      <Toaster />
       <SidebarLayout sidebar={<Sidebar />} navbar={<Navbar></Navbar>}>
         <Outlet />
       </SidebarLayout>

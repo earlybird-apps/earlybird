@@ -9,7 +9,6 @@ const user = {
 
 export default function seed(): BulkInsert<typeof schema> {
   return {
-    users: [user],
     budgets: [
       {
         id: "1",

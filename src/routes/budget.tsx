@@ -1,29 +1,16 @@
 import { CheckBadgeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
-import { FieldApi, useForm } from "@tanstack/react-form";
 import { LinkProps, Outlet, createFileRoute } from "@tanstack/react-router";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 import clsx from "clsx";
 import { format } from "date-fns";
 import { useState } from "react";
-import { z } from "zod";
-
-import { client } from "@db/client";
 
 import { Currency } from "@/components/Currency";
+import { NewCategoryDialog } from "@/components/NewCategoryDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogActions,
-  DialogBody,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Field, FieldGroup, Fieldset, Label } from "@/components/ui/fieldset";
 import { Heading, Subheading } from "@/components/ui/heading";
-import { Input } from "@/components/ui/input";
 import { Link } from "@/components/ui/link";
-import { Switch, SwitchField } from "@/components/ui/switch";
+import { Switch } from "@/components/ui/switch";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
@@ -45,20 +32,6 @@ const links: { route: LinkProps["to"]; label: string }[] = [
     label: "Total",
   },
 ];
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
-  return (
-    <>
-      {field.state.meta.touchedErrors ? (
-        <span className="text-red-600 text-sm font-medium ">
-          {field.state.meta.touchedErrors}
-        </span>
-      ) : null}
-      {field.state.meta.isValidating ? "Validating..." : null}
-    </>
-  );
-}
 
 function ReadyToBudget() {
   const { result: readyToBudget, fetching } = useReadyToBudget();
@@ -83,38 +56,6 @@ function ReadyToBudget() {
 function Budget() {
   const { showEmpty, setShowEmpty } = useBudgetSettings();
   const [showNewCategory, setShowNewCategory] = useState(false);
-  const {
-    handleSubmit,
-    Field: TanstackField,
-    Subscribe,
-  } = useForm({
-    defaultValues: {
-      categoryName: "",
-      makeMany: false,
-    },
-    onSubmit: async ({ value, formApi }) => {
-      const budget = await client.fetchOne(client.query("budgets").build());
-      if (!budget) {
-        alert("Error saving category");
-        return;
-      }
-      client
-        .insert("categories", {
-          name: value.categoryName,
-          budget_id: budget.id,
-        })
-        .then(() => {
-          alert("Category saved");
-          if (value.makeMany) {
-            formApi.setFieldValue("categoryName", "");
-          } else {
-            setShowNewCategory(false);
-          }
-        });
-    },
-    // Add a validator to support Zod usage in Form and Field
-    validatorAdapter: zodValidator(),
-  });
 
   return (
     <div className="flex flex-col space-y-4">
@@ -158,79 +99,7 @@ function Budget() {
         </div>
         <Outlet />
       </div>
-      <Dialog open={showNewCategory} onClose={setShowNewCategory}>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            handleSubmit();
-          }}
-        >
-          <DialogTitle>New Category</DialogTitle>
-          <DialogDescription>
-            This will create a new budget category.
-          </DialogDescription>
-          <DialogBody>
-            <Fieldset>
-              <FieldGroup>
-                <TanstackField
-                  name="categoryName"
-                  validators={{
-                    onChange: z
-                      .string()
-                      .trim()
-                      .min(1, "Category name is required"),
-                  }}
-                >
-                  {(field) => (
-                    <Field>
-                      <Label>Name</Label>
-                      <Input
-                        id={field.name}
-                        name={field.name}
-                        value={field.state.value}
-                        onBlur={field.handleBlur}
-                        onChange={(e) => field.handleChange(e.target.value)}
-                        type="text"
-                        autoFocus
-                      />
-                      <FieldInfo field={field} />
-                    </Field>
-                  )}
-                </TanstackField>
-                <TanstackField name="makeMany">
-                  {(field) => (
-                    <SwitchField>
-                      <Label>Create another</Label>
-                      <Switch
-                        id={field.name}
-                        checked={field.state.value}
-                        onChange={field.handleChange}
-                      />
-                    </SwitchField>
-                  )}
-                </TanstackField>
-              </FieldGroup>
-            </Fieldset>
-          </DialogBody>
-          <DialogActions>
-            <Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {([canSubmit, isSubmitting]) => (
-                <>
-                  <Button plain onClick={() => setShowNewCategory(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={!canSubmit || isSubmitting}>
-                    Save
-                  </Button>
-                </>
-              )}
-            </Subscribe>
-          </DialogActions>
-        </form>
-      </Dialog>
+      <NewCategoryDialog open={showNewCategory} onClose={setShowNewCategory} />
     </div>
   );
 }
