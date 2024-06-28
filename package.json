@@ -9,6 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "db:push": "triplit schema push",
+    "db:seed": "triplit seed run --all",
     "test": "vitest",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"

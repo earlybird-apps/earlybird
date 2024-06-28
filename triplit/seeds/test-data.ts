@@ -15,11 +15,6 @@ export default function seed(): BulkInsert<typeof schema> {
         name: "Slow Growth",
         user_id: user.id,
       },
-      {
-        id: "2",
-        name: "Empty",
-        user_id: user.id,
-      },
     ],
     accounts: [
       {
@@ -66,6 +61,9 @@ export default function seed(): BulkInsert<typeof schema> {
       },
     ],
     categories: [
+      { budget_id: "1", for_later: 0, for_now: 0, id: "INCOME", activity: 0, system_code: "INCOME", name: "Income" },
+      { budget_id: "1", for_later: 0, for_now: 0, id: "ADJUSTMENT", activity: 0, system_code: "ADJUSTMENT", name: "Adjustment" },
+      { budget_id: "1", for_later: 0, for_now: 0, id: "STARTING_BALANCE", activity: 0, system_code: "STARTING_BALANCE", name: "Starting Balance" },
       {
         id: "1",
         name: "Groceries",

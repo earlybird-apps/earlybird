@@ -3,11 +3,11 @@ import { useMemo } from "react";
 
 import { client } from "@db/client";
 
-export function useCategories() {
-  const { results, ...rest } = useQuery(
-    client,
-    client.query("categories").order("name", "ASC"),
-  );
+export function useCategories({ includeSystem = false } = {}) {
+  const query = client.query("categories").order("name", "ASC");
+  if (!includeSystem) query.where("system_code", "=", null);
+
+  const { results, ...rest } = useQuery(client, query);
 
   const computedFields = useMemo(() => {
     const now = [];
@@ -15,6 +15,7 @@ export function useCategories() {
     const fundedCategories = [];
     const underfundedCategories = [];
     const emptyCategories = [];
+    const systemCategories = [];
 
     for (const category of results?.values() || []) {
       if (category.for_now !== 0) now.push(category);
@@ -24,6 +25,7 @@ export function useCategories() {
         underfundedCategories.push(category);
       if (category.for_now === category.activity || category.for_now === 0)
         emptyCategories.push(category);
+      if (category.system_code) systemCategories.push(category);
     }
 
     return {
@@ -32,6 +34,7 @@ export function useCategories() {
       fundedCategories,
       underfundedCategories,
       emptyCategories,
+      systemCategories,
     };
   }, [results]);
 

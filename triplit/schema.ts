@@ -90,6 +90,7 @@ export const schema = {
       for_now: S.Number({ default: 0 }),
       for_later: S.Number({ default: 0 }),
       activity: S.Number({ default: 0 }),
+      system_code: S.String({ nullable: true, default: null }),
       transactions: S.RelationMany("transactions", {
         where: [["category_id", "=", "$id"]],
       }),

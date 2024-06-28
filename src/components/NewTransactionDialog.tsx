@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { client } from "@db/client";
+import { Income } from "@db/constants";
 
 import { useCategories } from "@/hooks/useCategories";
 import { useMutateTransaction } from "@/hooks/useMutateTransaction";
@@ -52,8 +53,9 @@ export function NewTransactionDialog({
     fundedCategories,
     underfundedCategories,
     emptyCategories,
+    systemCategories,
     fetching: fetchingCategories,
-  } = useCategories();
+  } = useCategories({ includeSystem: true });
 
   const {
     register,
@@ -140,6 +142,17 @@ export function NewTransactionDialog({
                           {category.name}
                         </option>
                       ))}
+                    </optgroup>
+                  )}
+                  {systemCategories.length > 0 && (
+                    <optgroup label="System">
+                      {systemCategories
+                        .filter((c) => c.system_code == Income.system_code)
+                        .map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
                     </optgroup>
                   )}
                   {underfundedCategories.length && (
