@@ -91,6 +91,7 @@ export function MoveMoneyDialog({
         <DialogDescription>Loading category...</DialogDescription>
       </Dialog>
     );
+
   if (!category) {
     //TODO: Think about error handling. Throw on not found? Add error boundary?
     console.error("Category not found");

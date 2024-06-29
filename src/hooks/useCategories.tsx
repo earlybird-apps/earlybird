@@ -19,15 +19,15 @@ export function useCategories({ includeSystem = false } = {}) {
 
     for (const category of results?.values() || []) {
       all.push(category);
+      const available = category.activity + category.assigned;
       if (category.system_code !== null) {
         system.push(category);
         continue;
       }
       if (category.assigned !== 0) assigned.push(category);
-      if (category.assigned > category.activity) funded.push(category);
-      if (category.assigned < category.activity) underfunded.push(category);
-      if (category.assigned === category.activity || category.assigned === 0)
-        empty.push(category);
+      if (available > 0) funded.push(category);
+      if (available < 0) underfunded.push(category);
+      if (available === 0) empty.push(category);
     }
 
     return {

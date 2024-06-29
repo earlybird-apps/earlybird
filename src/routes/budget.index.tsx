@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
 
 import { CategoryItemList } from "@/components/CategoryItem";
 import { NoCategories } from "@/components/NoCategories";
@@ -12,16 +11,8 @@ export const Route = createFileRoute("/budget/")({
 });
 
 function BudgetNow() {
-  const { funded, results: categories, fetching } = useCategories();
+  const { funded, fetching, empty } = useCategories();
   const { showEmpty } = useBudgetSettings();
-
-  const unassigned = useMemo(
-    () =>
-      Array.from(categories?.values() || []).filter(
-        (c) => !funded?.some((nc) => nc.id === c.id),
-      ),
-    [categories, funded],
-  );
 
   if (fetching) return <div>Loading...</div>;
 
@@ -39,7 +30,7 @@ function BudgetNow() {
       {showEmpty && (
         <>
           <Divider soft className="my-8" />
-          <CategoryItemList categories={unassigned} />
+          <CategoryItemList categories={empty} />
         </>
       )}
     </>
