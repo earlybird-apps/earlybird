@@ -1,4 +1,6 @@
-import { useTriplitClient } from "./useTriplitClient";
+import { useQueryOne } from "@triplit/react";
+
+import { useTriplitClient } from "../useTriplitClient";
 
 type MoveMoneyPayload = {
   amount: number;
@@ -8,6 +10,7 @@ type MoveMoneyPayload = {
 
 export function useMutateCategory() {
   const { client } = useTriplitClient();
+  const { result: budget } = useQueryOne(client, client.query("budgets"));
 
   const moveMoney = async (data: MoveMoneyPayload) => {
     await client.transact(async (tx) => {
@@ -22,5 +25,13 @@ export function useMutateCategory() {
     });
   };
 
-  return { addMoney: moveMoney };
+  const insert = async (data: { name: string }) => {
+    await client.insert("categories", {
+      name: data.name,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
+      budget_id: budget?.id!, // ! = Let this fail and throw an error if budget is undefined
+    });
+  };
+
+  return { moveMoney, insert };
 }

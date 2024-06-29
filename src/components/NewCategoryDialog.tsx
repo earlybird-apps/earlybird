@@ -4,7 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-import { client } from "@db/client";
+import { useMutateCategory } from "@/hooks/categories";
 
 import { Button } from "./ui/button";
 import {
@@ -45,26 +45,18 @@ export function NewCategoryDialog({
     },
     resolver: zodResolver(newCategorySchema),
   });
-
+  const mutateCategory = useMutateCategory();
   const exit = () => {
     form.reset();
     onClose(false);
   };
 
   const insertCatgory = async (data: z.infer<typeof newCategorySchema>) => {
-    const budget = await client.fetchOne(client.query("budgets").build());
-
-    await toast.promise(
-      client.insert("categories", {
-        name: data.categoryName,
-        budget_id: budget?.id!, // Let this fail if budget is undefined, present error to the user
-      }),
-      {
-        loading: "Saving...",
-        success: "Category created",
-        error: "Failed to create category",
-      },
-    );
+    await toast.promise(mutateCategory.insert({ name: data.categoryName }), {
+      loading: "Saving...",
+      success: "Category created",
+      error: "Failed to create category",
+    });
 
     if (data.createAnother) {
       form.resetField("categoryName");

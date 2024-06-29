@@ -1,7 +1,7 @@
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
-import { useAccounts } from "@/hooks/useAccounts";
+import { useAccounts } from "@/hooks/accounts";
 
 import { Currency } from "../Currency";
 import {

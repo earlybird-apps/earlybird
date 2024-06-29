@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 
-import { useAccounts } from "./useAccounts";
-import { useCategories } from "./useCategories";
+import { useAccounts } from "./accounts/useAccounts";
+import { useCategories } from "./categories/useCategories";
 
 export function useReadyToBudget() {
   const { results: accounts, fetching: fetchingAccounts } = useAccounts();

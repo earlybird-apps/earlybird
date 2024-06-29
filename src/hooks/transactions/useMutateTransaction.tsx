@@ -1,6 +1,6 @@
 import { Transaction } from "@db/types";
 
-import { useTriplitClient } from "./useTriplitClient";
+import { useTriplitClient } from "../useTriplitClient";
 
 export function useMutateTransaction() {
   const { client } = useTriplitClient();

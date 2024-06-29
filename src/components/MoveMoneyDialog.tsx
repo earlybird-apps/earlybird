@@ -7,8 +7,7 @@ import { z } from "zod";
 
 import { client } from "@db/client";
 
-import { useCategories } from "@/hooks/useCategories";
-import { useMutateCategory } from "@/hooks/useMutateCategory";
+import { useCategories, useMutateCategory } from "@/hooks/categories";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
 import { Button } from "./ui/button";
@@ -54,7 +53,6 @@ export function MoveMoneyDialog({
   const {
     register,
     handleSubmit,
-    control,
     formState: { errors, isValid },
     ...form
   } = useForm<z.infer<typeof addMoneySchema>>({
@@ -69,7 +67,7 @@ export function MoveMoneyDialog({
 
   const addMoney = async (data: z.infer<typeof addMoneySchema>) => {
     toast.promise(
-      mutate.addMoney({
+      mutate.moveMoney({
         fromCategoryId:
           data.fromCategoryId === "RTB" ? null : data.fromCategoryId,
         amount: data.amount,

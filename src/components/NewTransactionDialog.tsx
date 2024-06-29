@@ -8,8 +8,8 @@ import { z } from "zod";
 import { client } from "@db/client";
 
 import { SystemCategories } from "@/constants";
-import { useCategories } from "@/hooks/useCategories";
-import { useMutateTransaction } from "@/hooks/useMutateTransaction";
+import { useCategories } from "@/hooks/categories";
+import { useMutateTransaction } from "@/hooks/transactions";
 
 import { Button } from "./ui/button";
 import { Dialog, DialogActions, DialogBody, DialogTitle } from "./ui/dialog";

@@ -1,6 +1,6 @@
 import { useQuery } from "@triplit/react";
 
-import { useTriplitClient } from "./useTriplitClient";
+import { useTriplitClient } from "../useTriplitClient";
 
 export function useAccounts(props: { budgetId?: string } = {}) {
   const { client } = useTriplitClient();

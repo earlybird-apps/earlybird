@@ -9,7 +9,7 @@ import { EmptyState } from "@/components/EmptyState";
 import { TransactionTable } from "@/components/TransactionTable";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/components/ui/link";
-import { useTransactions } from "@/hooks/useTransactions";
+import { useTransactions } from "@/hooks/transactions";
 
 export const Route = createFileRoute("/accounts")({
   loader: () => client.fetch(client.query("accounts").build()),

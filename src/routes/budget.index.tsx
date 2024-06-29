@@ -3,8 +3,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { CategoryItemList } from "@/components/CategoryItem";
 import { NoCategories } from "@/components/NoCategories";
 import { Divider } from "@/components/ui/divider";
+import { useCategories } from "@/hooks/categories";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
-import { useCategories } from "@/hooks/useCategories";
 
 export const Route = createFileRoute("/budget/")({
   component: BudgetNow,

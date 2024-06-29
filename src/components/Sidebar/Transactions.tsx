@@ -2,7 +2,7 @@ import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
-import { useTransactions } from "@/hooks/useTransactions";
+import { useTransactions } from "@/hooks/transactions";
 
 import { Currency } from "../Currency";
 import { NewTransactionDialog } from "../NewTransactionDialog";
