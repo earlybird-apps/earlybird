@@ -7,6 +7,7 @@ import { z } from "zod";
 
 import { client } from "@db/client";
 
+import { useCategories } from "@/hooks/useCategories";
 import { useMutateCategory } from "@/hooks/useMutateCategory";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
@@ -25,25 +26,15 @@ import {
   Fieldset,
   Label,
 } from "./ui/fieldset";
-import { Subheading } from "./ui/heading";
 import { Input } from "./ui/input";
+import { Select } from "./ui/select";
 
-const addMoneySchema = z
-  .object({
-    amount: z.coerce
-      .number()
-      .positive({ message: "Amount must be greater than 0" }),
-    availableBalance: z.coerce.number(),
-  })
-  .refine(
-    (data) => {
-      return data.amount <= data.availableBalance;
-    },
-    {
-      message: "Cannot assign more money than you have available.",
-      path: ["amount"],
-    },
-  );
+const addMoneySchema = z.object({
+  amount: z.coerce
+    .number()
+    .positive({ message: "Amount must be greater than 0" }),
+  fromCategoryId: z.string(),
+});
 
 export function MoveMoneyDialog({
   onClose,
@@ -53,11 +44,12 @@ export function MoveMoneyDialog({
   categoryId: string;
 }) {
   const mutate = useMutateCategory();
-  const { result: category, fetching } = useQueryOne(
+  const { result: category, fetching: fetchingCategory } = useQueryOne(
     client,
     client.query("categories").id(categoryId),
   );
-  const { result: availableBalance } = useReadyToBudget();
+  const { result: readyToBudget, fetching: fetchingRTB } = useReadyToBudget();
+  const { all, fetching: fetchingCategories } = useCategories();
 
   const {
     register,
@@ -78,8 +70,10 @@ export function MoveMoneyDialog({
   const addMoney = async (data: z.infer<typeof addMoneySchema>) => {
     toast.promise(
       mutate.addMoney({
+        fromCategoryId:
+          data.fromCategoryId === "RTB" ? null : data.fromCategoryId,
         amount: data.amount,
-        categoryId: categoryId,
+        toCategoryId: categoryId,
       }),
       {
         loading: "Saving...",
@@ -90,10 +84,22 @@ export function MoveMoneyDialog({
     exit();
   };
 
-  if (fetching) return <div>Loading...</div>;
-  if (!category || !availableBalance) {
-    console.error("Category or RTB balance not found");
-    return null;
+  if (fetchingCategory)
+    return (
+      <Dialog onClose={exit} {...props}>
+        <DialogTitle>Loading...</DialogTitle>
+        <DialogDescription>Loading category...</DialogDescription>
+      </Dialog>
+    );
+  if (!category) {
+    //TODO: Think about error handling. Throw on not found? Add error boundary?
+    console.error("Category not found");
+    return (
+      <Dialog onClose={exit} {...props}>
+        <DialogTitle>Oops</DialogTitle>
+        <DialogDescription>Category not found</DialogDescription>
+      </Dialog>
+    );
   }
 
   return (
@@ -102,8 +108,6 @@ export function MoveMoneyDialog({
         <DialogTitle>{category.name}</DialogTitle>
         <DialogDescription>Adding money to {category.name}</DialogDescription>
         <DialogBody>
-          {/* TODO Use Currency */}
-          <Subheading>Available to Budget: ${availableBalance}</Subheading>
           <Fieldset>
             <FieldGroup>
               <Field>
@@ -122,12 +126,25 @@ export function MoveMoneyDialog({
                   </ErrorMessage>
                 )}
               </Field>
-              <Input
-                className="hidden"
-                {...register("availableBalance")}
-                hidden
-                value={availableBalance}
-              />
+              <Field>
+                <Label>From</Label>
+                <Select
+                  {...register("fromCategoryId")}
+                  invalid={!!errors?.fromCategoryId}
+                  disabled={fetchingCategories || fetchingRTB}
+                >
+                  <option value="RTB">Ready to Budget: ${readyToBudget}</option>
+                  <optgroup label="Categories">
+                    {all.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}: $
+                        {category.assigned + category.activity}
+                      </option>
+                    ))}
+                  </optgroup>
+                  all
+                </Select>
+              </Field>
             </FieldGroup>
           </Fieldset>
         </DialogBody>
