@@ -2,11 +2,12 @@ import {
   ArrowDownTrayIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/16/solid";
-import { useNavigate } from "@tanstack/react-router";
 import clsx from "clsx";
 import { HTMLProps, useMemo } from "react";
 
 import { Category } from "@db/types";
+
+import { Dialogs } from "@/constants";
 
 import { Currency } from "./Currency";
 import {
@@ -69,8 +70,6 @@ interface CategoryItemProps extends HTMLProps<HTMLDivElement> {
 }
 
 export function CategoryItem({ category, ...props }: CategoryItemProps) {
-  const navigate = useNavigate();
-
   const available = useMemo(
     () => category.assigned + category.activity,
     [category],
@@ -87,14 +86,12 @@ export function CategoryItem({ category, ...props }: CategoryItemProps) {
           </DropdownButton>
           <DropdownMenu anchor="bottom end">
             <DropdownItem
-              onClick={() => {
-                navigate({
-                  search: {
-                    showAddMoney: true,
-                    categoryId: category.id,
-                  },
-                });
-              }}
+              href=""
+              search={(prev) => ({
+                ...prev,
+                dialog: Dialogs.MoveMoney,
+                category: category.id,
+              })}
             >
               <ArrowDownTrayIcon />
               <DropdownLabel>Add Money</DropdownLabel>

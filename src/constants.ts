@@ -12,3 +12,10 @@ export const SystemCategories = {
         system_code: "ADJUSTMENT"
     }
 }
+
+export enum Dialogs {
+    MoveMoney = "move-money",
+    NewTransaction = "new-transaction",
+    NewAccount = "new-account",
+    NewCategory = "new-category",
+}

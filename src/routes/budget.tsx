@@ -2,28 +2,18 @@ import { CheckBadgeIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import clsx from "clsx";
 import { format } from "date-fns";
-import { useState } from "react";
-import { z } from "zod";
 
 import { Currency } from "@/components/Currency";
-import { MoveMoneyDialog } from "@/components/MoveMoneyDialog";
-import { NewCategoryDialog } from "@/components/NewCategoryDialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heading, Subheading } from "@/components/ui/heading";
 import { Switch } from "@/components/ui/switch";
+import { Dialogs } from "@/constants";
 import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
 export const Route = createFileRoute("/budget")({
   component: Budget,
-  validateSearch: (search) =>
-    z
-      .object({
-        showAddMoney: z.boolean().optional(),
-        categoryId: z.string().optional(),
-      })
-      .parse(search),
 });
 
 // const links: { route: LinkProps["to"]; label: string }[] = [
@@ -67,9 +57,6 @@ function ReadyToBudget() {
 
 function Budget() {
   const { showEmpty, setShowEmpty } = useBudgetSettings();
-  const [showNewCategory, setShowNewCategory] = useState(false);
-  const { showAddMoney, categoryId } = Route.useSearch();
-  const navigate = Route.useNavigate();
 
   return (
     <div className="flex flex-col space-y-4">
@@ -106,25 +93,17 @@ function Budget() {
           <span className="ms-auto items-center my-auto">
             <ReadyToBudget />
           </span>
-          <Button outline onClick={() => setShowNewCategory(true)}>
+          <Button
+            outline
+            href=""
+            search={(prev) => ({ ...prev, dialog: Dialogs.NewCategory })}
+          >
             <PencilSquareIcon />
             <span className="sr-only">Add Category</span>
           </Button>
         </div>
         <Outlet />
       </div>
-      <NewCategoryDialog open={showNewCategory} onClose={setShowNewCategory} />
-      {categoryId && (
-        <MoveMoneyDialog
-          open={showAddMoney === true}
-          categoryId={categoryId}
-          onClose={() =>
-            navigate({
-              search: { showAddMoney: undefined, categoryId: undefined },
-            })
-          }
-        />
-      )}
     </div>
   );
 }
