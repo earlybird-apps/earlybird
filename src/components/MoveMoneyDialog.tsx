@@ -132,10 +132,19 @@ export function MoveMoneyDialog({
                   invalid={!!errors?.fromCategoryId}
                   disabled={fetchingCategories || fetchingRTB}
                 >
-                  <option value="RTB">Ready to Budget: ${readyToBudget}</option>
+                  <option
+                    value="RTB"
+                    disabled={!readyToBudget || readyToBudget <= 0}
+                  >
+                    Ready to Budget: ${readyToBudget}
+                  </option>
                   <optgroup label="Categories">
                     {all.map((category) => (
-                      <option key={category.id} value={category.id}>
+                      <option
+                        key={category.id}
+                        value={category.id}
+                        disabled={category.assigned + category.activity <= 0}
+                      >
                         {category.name}: $
                         {category.assigned + category.activity}
                       </option>

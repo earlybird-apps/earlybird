@@ -84,26 +84,24 @@ function Budget() {
           ))}
         </ul> */}
       </nav>
-      <div>
-        <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 sticky top-14 bg-white border-b  z-10">
-          <div className="flex gap-x-4 items-center me=auto">
-            <Switch checked={showEmpty} onChange={setShowEmpty} />
-            <span>Show empty</span>
-          </div>
-          <span className="ms-auto items-center my-auto">
-            <ReadyToBudget />
-          </span>
-          <Button
-            outline
-            href=""
-            search={(prev) => ({ ...prev, dialog: Dialogs.NewCategory })}
-          >
-            <PencilSquareIcon />
-            <span className="sr-only">Add Category</span>
-          </Button>
+      <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 sticky top-14 bg-white border-b  z-10">
+        <div className="flex gap-x-4 items-center me=auto">
+          <Switch checked={showEmpty} onChange={setShowEmpty} />
+          <span>Show empty</span>
         </div>
-        <Outlet />
+        <span className="ms-auto items-center my-auto">
+          <ReadyToBudget />
+        </span>
+        <Button
+          outline
+          href=""
+          search={(prev) => ({ ...prev, dialog: Dialogs.NewCategory })}
+        >
+          <PencilSquareIcon />
+          <span className="sr-only">Add Category</span>
+        </Button>
       </div>
+      <Outlet />
     </div>
   );
 }
