@@ -28,7 +28,7 @@ export function useMutateAccounts() {
         budget_id: budget?.id!,
       });
 
-      Promise.all([accountPromise, categoryPromise]).then(
+      await Promise.all([accountPromise, categoryPromise]).then(
         ([account, category]) =>
           tx.insert("transactions", {
             account_id: account.id,

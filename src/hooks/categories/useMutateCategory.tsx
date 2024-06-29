@@ -14,7 +14,7 @@ export function useMutateCategory() {
 
   const moveMoney = async (data: MoveMoneyPayload) => {
     await client.transact(async (tx) => {
-      tx.update("categories", data.toCategoryId, async (category) => {
+      await tx.update("categories", data.toCategoryId, async (category) => {
         category.assigned += data.amount;
       });
       if (data.fromCategoryId) {
