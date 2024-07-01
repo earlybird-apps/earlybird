@@ -1,7 +1,5 @@
 import { ArrowPathIcon } from "@heroicons/react/16/solid";
-import { PlusIcon } from "@heroicons/react/24/outline";
 
-import { Dialogs } from "@/constants";
 import { useTransactions } from "@/hooks/transactions";
 
 import { Currency } from "../Currency";
@@ -44,15 +42,6 @@ export function Transactions() {
             </div>
           </SidebarItem>
         ))}
-      <SidebarItem
-        href=""
-        search={(prev) => ({ ...prev, dialog: Dialogs.NewTransaction })}
-      >
-        <SidebarLabel className="text-xs text-gray-700">
-          Add Transaction
-        </SidebarLabel>
-        <PlusIcon className="h-3 w-3" />
-      </SidebarItem>
     </SidebarSection>
   );
 }

@@ -1,27 +1,19 @@
-import { ArrowPathIcon } from "@heroicons/react/16/solid";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
 import { Dialogs } from "@/constants";
 import { useAccounts } from "@/hooks/accounts";
 
 import { Currency } from "../Currency";
-import {
-  SidebarHeading,
-  SidebarItem,
-  SidebarLabel,
-  SidebarSection,
-} from "../ui/sidebar";
+import { SidebarItem, SidebarLabel, SidebarSection } from "../ui/sidebar";
 
 export function Accounts() {
-  const { results: accounts, fetching } = useAccounts();
+  const { results: accounts } = useAccounts();
 
   return (
     <SidebarSection className="lg:rounded-xl lg:border lg:bg-slate-50 lg:p-2">
-      <SidebarHeading>
-        <span className="flex justify-between">
-          Accounts {fetching && <ArrowPathIcon className="w-3 animate-spin" />}
-        </span>
-      </SidebarHeading>
+      <SidebarItem href="/accounts" activeOptions={{ exact: true }}>
+        <SidebarLabel className="font-semibold">All Accounts</SidebarLabel>
+      </SidebarItem>
       {accounts &&
         Array.from(accounts).map(([id, account]) => (
           <SidebarItem

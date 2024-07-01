@@ -1,12 +1,14 @@
-import { Square3Stack3DIcon, WalletIcon } from "@heroicons/react/24/outline";
+import { PlusCircleIcon, WalletIcon } from "@heroicons/react/20/solid";
 import { useConnectionStatus } from "@triplit/react";
 
+import { Dialogs } from "@/constants";
 import { useTriplitClient } from "@/hooks/useTriplitClient";
 
 import { Badge } from "../ui/badge";
 import {
   Sidebar as BaseSidebar,
   SidebarBody,
+  SidebarDivider,
   SidebarFooter,
   SidebarHeader,
   SidebarItem,
@@ -28,14 +30,18 @@ export function Sidebar() {
             <WalletIcon />
             <SidebarLabel>Budget</SidebarLabel>
           </SidebarItem>
-          <SidebarItem href="/accounts">
-            <Square3Stack3DIcon />
-            <SidebarLabel>Accounts</SidebarLabel>
+          <SidebarItem
+            href=""
+            search={(prev) => ({ ...prev, dialog: Dialogs.NewTransaction })}
+          >
+            <PlusCircleIcon />
+            <SidebarLabel>Transaction</SidebarLabel>
           </SidebarItem>
         </SidebarSection>
       </SidebarHeader>
       <SidebarBody>
         <Accounts />
+        <SidebarDivider />
         <Transactions />
       </SidebarBody>
       <SidebarFooter className="space-y-3">
