@@ -15,7 +15,17 @@ export const transactionFieldGroupSchema = z.object({
   amount: z.coerce.number().refine((value) => value !== 0, {
     message: "An amount must be given for a transaction.",
   }),
-  date: z.string().date(),
+  date: z
+    .string()
+    .date()
+    .refine(
+      (value) => {
+        return new Date(value) <= new Date();
+      },
+      {
+        message: "Transactions can not be on a future date.",
+      },
+    ),
   account_id: z
     .string()
     .min(1, { message: "An account must be chosen for a transaction." }),
@@ -59,7 +69,12 @@ export function TransactionFieldGroup({
       </Field>
       <Field>
         <Label>Date</Label>
-        <Input {...register("date")} type="date" invalid={!!errors?.date} />
+        <Input
+          {...register("date")}
+          type="date"
+          invalid={!!errors?.date}
+          max={new Date().toISOString().split("T")[0]}
+        />
         {errors?.date && (
           <ErrorMessage>{errors.date.message?.toString()}</ErrorMessage>
         )}
