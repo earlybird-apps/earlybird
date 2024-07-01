@@ -77,7 +77,7 @@ export function NewCategoryDialog({
           <Fieldset>
             <FieldGroup>
               <Field>
-                <Label>Name</Label>
+                <Label>Category Name</Label>
                 <Input
                   {...register("categoryName")}
                   type="text"

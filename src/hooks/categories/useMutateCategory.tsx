@@ -4,7 +4,7 @@ import { useTriplitClient } from "../useTriplitClient";
 
 type MoveMoneyPayload = {
   amount: number;
-  toCategoryId: string;
+  toCategoryId: string | null;
   fromCategoryId: string | null;
 };
 
@@ -14,9 +14,11 @@ export function useMutateCategory() {
 
   const moveMoney = async (data: MoveMoneyPayload) => {
     await client.transact(async (tx) => {
-      await tx.update("categories", data.toCategoryId, async (category) => {
-        category.assigned += data.amount;
-      });
+      if (data.toCategoryId) {
+        await tx.update("categories", data.toCategoryId, async (category) => {
+          category.assigned += data.amount;
+        });
+      }
       if (data.fromCategoryId) {
         await tx.update("categories", data.fromCategoryId, async (category) => {
           category.assigned -= data.amount;

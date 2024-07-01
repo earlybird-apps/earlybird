@@ -1,3 +1,4 @@
+// TODO DRY this out with MoveMoneyDialog
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryOne } from "@triplit/react";
 import { ComponentProps } from "react";
@@ -32,10 +33,10 @@ const addMoneySchema = z.object({
   amount: z.coerce
     .number()
     .positive({ message: "Amount must be greater than 0" }),
-  fromCategoryId: z.string(),
+  toCategoryId: z.string(),
 });
 
-export function MoveMoneyDialog({
+export function RemoveMoneyDialog({
   onClose,
   categoryId,
   ...props
@@ -57,7 +58,7 @@ export function MoveMoneyDialog({
     ...form
   } = useForm<z.infer<typeof addMoneySchema>>({
     defaultValues: {
-      fromCategoryId: "RTB",
+      toCategoryId: "RTB",
     },
     resolver: zodResolver(addMoneySchema),
   });
@@ -70,10 +71,9 @@ export function MoveMoneyDialog({
   const addMoney = async (data: z.infer<typeof addMoneySchema>) => {
     toast.promise(
       moveMoney({
-        fromCategoryId:
-          data.fromCategoryId === "RTB" ? null : data.fromCategoryId,
+        toCategoryId: data.toCategoryId === "RTB" ? null : data.toCategoryId,
         amount: data.amount,
-        toCategoryId: categoryId,
+        fromCategoryId: categoryId,
       }),
       {
         loading: "Saving...",
@@ -107,7 +107,9 @@ export function MoveMoneyDialog({
     <Dialog onClose={exit} {...props}>
       <form onSubmit={handleSubmit(addMoney)}>
         <DialogTitle>{category.name}</DialogTitle>
-        <DialogDescription>Adding money to {category.name}</DialogDescription>
+        <DialogDescription>
+          Removing money from {category.name}
+        </DialogDescription>
         <DialogBody>
           <Fieldset>
             <FieldGroup>
@@ -128,10 +130,10 @@ export function MoveMoneyDialog({
                 )}
               </Field>
               <Field>
-                <Label>From</Label>
+                <Label>To</Label>
                 <Select
-                  {...register("fromCategoryId")}
-                  invalid={!!errors?.fromCategoryId}
+                  {...register("toCategoryId")}
+                  invalid={!!errors?.toCategoryId}
                   disabled={fetchingCategories || fetchingRTB}
                 >
                   <option
@@ -144,11 +146,7 @@ export function MoveMoneyDialog({
                     {all
                       .filter((c) => c.id !== categoryId)
                       .map((category) => (
-                        <option
-                          key={category.id}
-                          value={category.id}
-                          disabled={category.assigned + category.activity <= 0}
-                        >
+                        <option key={category.id} value={category.id}>
                           {category.name}: $
                           {category.assigned + category.activity}
                         </option>

@@ -1,5 +1,6 @@
 import {
   ArrowDownTrayIcon,
+  ArrowUpTrayIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/16/solid";
 import clsx from "clsx";
@@ -95,6 +96,17 @@ export function CategoryItem({ category, ...props }: CategoryItemProps) {
             >
               <ArrowDownTrayIcon />
               <DropdownLabel>Add Money</DropdownLabel>
+            </DropdownItem>
+            <DropdownItem
+              href=""
+              search={(prev) => ({
+                ...prev,
+                dialog: Dialogs.RemoveMoney,
+                id: category.id,
+              })}
+            >
+              <ArrowUpTrayIcon />
+              <DropdownLabel>Move Money</DropdownLabel>
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>

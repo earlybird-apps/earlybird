@@ -15,6 +15,7 @@ export const SystemCategories = {
 
 export enum Dialogs {
     MoveMoney = "move-money",
+    RemoveMoney = "remove-money",
     NewTransaction = "new-transaction",
     NewAccount = "new-account",
     NewCategory = "new-category",

@@ -11,6 +11,7 @@ import {
   NewTransactionDialog,
 } from "@/components/dialogs";
 import { DeleteTransactionDialog } from "@/components/dialogs/DeleteTransactionDialog";
+import { RemoveMoneyDialog } from "@/components/dialogs/RemoveMoneyDialog";
 import { Navbar } from "@/components/ui/navbar";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { SidebarLayout } from "@/components/ui/sidebar-layout";
@@ -63,6 +64,11 @@ function AppDialogs() {
         <>
           <MoveMoneyDialog
             open={dialog === Dialogs.MoveMoney}
+            categoryId={id}
+            onClose={closeDialog}
+          />
+          <RemoveMoneyDialog
+            open={dialog === Dialogs.RemoveMoney}
             categoryId={id}
             onClose={closeDialog}
           />
