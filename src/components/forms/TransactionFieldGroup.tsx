@@ -4,7 +4,6 @@ import { z } from "zod";
 
 import { client } from "@db/client";
 
-import { SystemCategories } from "@/constants";
 import { useCategories } from "@/hooks/categories";
 
 import { ErrorMessage, Field, FieldGroup, Label } from "../ui/fieldset";
@@ -76,29 +75,25 @@ export function TransactionFieldGroup({
             <optgroup label="Funded">
               {funded.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name}
+                  {category.name}: ${category.assigned + category.activity}
                 </option>
               ))}
             </optgroup>
           )}
           {system.length > 0 && (
             <optgroup label="System">
-              {system
-                .filter(
-                  (c) => c.system_code == SystemCategories.Income.system_code,
-                )
-                .map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
+              {system.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
             </optgroup>
           )}
           {underfunded.length && (
             <optgroup label="Underfunded">
               {underfunded.map((category) => (
                 <option key={category.id} value={category.id}>
-                  {category.name}
+                  {category.name}: ${category.assigned + category.activity}
                 </option>
               ))}
             </optgroup>

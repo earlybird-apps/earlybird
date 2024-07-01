@@ -9,7 +9,7 @@ import { useMutateTransaction } from "@/hooks/transactions";
 import {
   TransactionFieldGroup,
   transactionFieldGroupSchema,
-} from "./forms/transaction-fieldgroup";
+} from "./forms/TransactionFieldGroup";
 import { Button } from "./ui/button";
 import { Dialog, DialogActions, DialogBody, DialogTitle } from "./ui/dialog";
 import { FieldGroup, Fieldset, Label } from "./ui/fieldset";
