@@ -21,7 +21,8 @@ export const useTransactions = (
   const query = client
     .query("transactions")
     .include("account")
-    .include("category");
+    .include("category")
+    .order("date", "DESC");
 
   if (props.categoryId) query.where("category_id", "=", props.categoryId);
   if (props.budgetId) query.where("account.budget_id", "=", props.budgetId);

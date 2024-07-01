@@ -1,20 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@triplit/react";
-
-import { client } from "@db/client";
 
 import { EmptyState } from "@/components/EmptyState";
 import { TransactionTable } from "@/components/TransactionTable";
+import { useTransactions } from "@/hooks/transactions";
 
 export const Route = createFileRoute("/accounts/")({
   component: AllAccounts,
 });
 
 function AllAccounts() {
-  const { results: transactions, fetching } = useQuery(
-    client,
-    client.query("transactions").include("account").include("category"),
-  );
+  const { results: transactions, fetching } = useTransactions();
 
   if (fetching) return <div>Loading...</div>;
 

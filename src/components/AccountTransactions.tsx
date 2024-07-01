@@ -1,19 +1,12 @@
-import { useQuery } from "@triplit/react";
-
-import { client } from "@db/client";
+import { useTransactions } from "@/hooks/transactions";
 
 import { EmptyState } from "./EmptyState";
 import { TransactionTable } from "./TransactionTable";
 
 export function AccountTransactions(props: { id: string }) {
-  const { results: transactions, fetching } = useQuery(
-    client,
-    client
-      .query("transactions")
-      .include("account")
-      .include("category")
-      .where("account_id", "=", props.id),
-  );
+  const { results: transactions, fetching } = useTransactions({
+    accountIds: [props.id],
+  });
 
   if (fetching) return <div>Loading...</div>;
 
