@@ -11,7 +11,7 @@ export const Route = createFileRoute("/budget/")({
 });
 
 function BudgetNow() {
-  const { funded, fetching, empty } = useCategories();
+  const { funded, underfunded, fetching, empty } = useCategories();
   const { showEmpty } = useBudgetSettings();
 
   if (fetching) return <div>Loading...</div>;
@@ -22,8 +22,11 @@ function BudgetNow() {
         <span className="p-1">Category</span>
         <span className="p-1 me-14 lg:me-12">Available</span>
       </div>
-      {funded.length > 0 ? (
-        <CategoryItemList categories={funded} />
+      {funded.length > 0 || underfunded.length > 0 ? (
+        <>
+          <CategoryItemList categories={underfunded} />
+          <CategoryItemList categories={funded} />
+        </>
       ) : (
         <NoCategories />
       )}
