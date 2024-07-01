@@ -33,7 +33,7 @@ export function NewTransactionDialog({
     ...form
   } = useForm<z.infer<typeof newTransactionSchema>>({
     defaultValues: {
-      date: new Date(),
+      date: new Date().toISOString().split("T")[0],
       createAnother: false,
     },
     resolver: zodResolver(newTransactionSchema),
@@ -47,13 +47,20 @@ export function NewTransactionDialog({
   const insertTransaction = async (
     data: z.infer<typeof newTransactionSchema>,
   ) => {
-    delete data.createAnother;
-    // TODO: Need to update categories!
-    await toast.promise(transaction.insert(data), {
-      loading: "Saving...",
-      success: "Transaction created",
-      error: "Failed to create transaction",
-    });
+    toast.promise(
+      transaction.insert({
+        date: new Date(data.date),
+        amount: data.amount,
+        memo: data.memo,
+        category_id: data.category_id,
+        account_id: data.account_id,
+      }),
+      {
+        loading: "Saving...",
+        success: "Transaction created",
+        error: "Failed to create transaction",
+      },
+    );
 
     if (data.createAnother) {
       form.resetField("amount");

@@ -1,8 +1,18 @@
+import { EllipsisVerticalIcon, PencilIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 import { Account, Transaction as BaseTransaction, Category } from "@db/types";
 
+import { Dialogs } from "@/constants";
+
 import { Currency } from "./Currency";
+import {
+  Dropdown,
+  DropdownButton,
+  DropdownItem,
+  DropdownLabel,
+  DropdownMenu,
+} from "./ui/dropdown";
 import {
   Table,
   TableBody,
@@ -49,6 +59,9 @@ export function TransactionTable(props: {
           >
             Memo
           </TableHeader>
+          <TableHeader>
+            <span className="sr-only">Actions</span>
+          </TableHeader>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -66,6 +79,27 @@ export function TransactionTable(props: {
             <TableCell>{transaction.category?.name}</TableCell>
             <TableCell className="text-sm text-gray-700">
               {transaction.memo}
+            </TableCell>
+            <TableCell className="text-sm text-gray-700">
+              <Dropdown>
+                <DropdownButton plain>
+                  <span className="sr-only">Actions</span>
+                  <EllipsisVerticalIcon />
+                </DropdownButton>
+                <DropdownMenu>
+                  <DropdownItem
+                    href=""
+                    search={(prev) => ({
+                      ...prev,
+                      dialog: Dialogs.EditTransaction,
+                      id: transaction.id,
+                    })}
+                  >
+                    <DropdownLabel>Edit</DropdownLabel>
+                    <PencilIcon className="w-2" />
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </TableCell>
           </TableRow>
         ))}

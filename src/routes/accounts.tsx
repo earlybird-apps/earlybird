@@ -41,7 +41,7 @@ function Accounts() {
   return (
     <div className="flex flex-col gap-y-8">
       <nav className="flex flex-col gap-y-2">
-        <ul className="gap-x-6 font-medium overflow-auto border-b -mb-px flex space-x-8">
+        <ul className="gap-x-6 font-medium overflow-x-auto border-b -mb-px flex space-x-8">
           <li>
             <Link
               href="/accounts"

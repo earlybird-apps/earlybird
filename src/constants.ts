@@ -18,4 +18,5 @@ export enum Dialogs {
     NewTransaction = "new-transaction",
     NewAccount = "new-account",
     NewCategory = "new-category",
+    EditTransaction = "edit-transaction",
 }

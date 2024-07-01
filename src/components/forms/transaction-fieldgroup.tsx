@@ -16,7 +16,7 @@ export const transactionFieldGroupSchema = z.object({
   amount: z.coerce.number().refine((value) => value !== 0, {
     message: "An amount must be given for a transaction.",
   }),
-  date: z.coerce.date({ message: "Date is required" }),
+  date: z.string().date(),
   account_id: z
     .string()
     .min(1, { message: "An account must be chosen for a transaction." }),
