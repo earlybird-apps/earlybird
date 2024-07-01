@@ -46,5 +46,22 @@ export function useMutateTransaction() {
       }
     });
 
-  return { insert, update };
+  const deleteOne = async (id: string) => {
+    await client.transact(async (tx) => {
+      const transaction = await tx.fetchById("transactions", id);
+      await tx.delete("transactions", id);
+
+      if (transaction?.category_id) {
+        await tx.update(
+          "categories",
+          transaction.category_id,
+          async (category) => {
+            category.activity = category.activity - transaction.amount;
+          },
+        );
+      }
+    });
+  };
+
+  return { insert, update, deleteOne };
 }

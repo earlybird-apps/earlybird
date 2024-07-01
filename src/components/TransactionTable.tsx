@@ -1,4 +1,8 @@
-import { EllipsisVerticalIcon, PencilIcon } from "@heroicons/react/24/outline";
+import {
+  EllipsisVerticalIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
 import clsx from "clsx";
 
 import { Account, Transaction as BaseTransaction, Category } from "@db/types";
@@ -86,7 +90,7 @@ export function TransactionTable(props: {
                   <span className="sr-only">Actions</span>
                   <EllipsisVerticalIcon />
                 </DropdownButton>
-                <DropdownMenu>
+                <DropdownMenu anchor="bottom end">
                   <DropdownItem
                     href=""
                     search={(prev) => ({
@@ -95,8 +99,20 @@ export function TransactionTable(props: {
                       id: transaction.id,
                     })}
                   >
+                    <PencilIcon />
                     <DropdownLabel>Edit</DropdownLabel>
-                    <PencilIcon className="w-2" />
+                  </DropdownItem>
+                  <DropdownItem
+                    href=""
+                    search={(prev) => ({
+                      ...prev,
+                      dialog: Dialogs.DeleteTransaction,
+                      id: transaction.id,
+                    })}
+                    color="red"
+                  >
+                    <DropdownLabel>Delete</DropdownLabel>
+                    <TrashIcon />
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>

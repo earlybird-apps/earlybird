@@ -46,7 +46,7 @@ export function NewAccountDialog({
     },
     resolver: zodResolver(newAccountSchema),
   });
-  const mutateAccount = useMutateAccounts();
+  const { insert } = useMutateAccounts();
   const exit = () => {
     form.reset();
     onClose(false);
@@ -54,7 +54,7 @@ export function NewAccountDialog({
 
   const insertCatgory = async (data: z.infer<typeof newAccountSchema>) => {
     await toast.promise(
-      mutateAccount.insert({
+      insert({
         name: data.accountName,
         balance: data.accountBalance,
       }),

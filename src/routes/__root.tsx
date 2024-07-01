@@ -10,6 +10,7 @@ import {
   NewCategoryDialog,
   NewTransactionDialog,
 } from "@/components/dialogs";
+import { DeleteTransactionDialog } from "@/components/dialogs/DeleteTransactionDialog";
 import { Navbar } from "@/components/ui/navbar";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { SidebarLayout } from "@/components/ui/sidebar-layout";
@@ -69,6 +70,11 @@ function AppDialogs() {
             transactionId={id}
             onClose={closeDialog}
             open={dialog === Dialogs.EditTransaction}
+          />
+          <DeleteTransactionDialog
+            transactionId={id}
+            onClose={closeDialog}
+            open={dialog === Dialogs.DeleteTransaction}
           />
         </>
       )}

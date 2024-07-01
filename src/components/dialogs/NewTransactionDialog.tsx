@@ -23,7 +23,7 @@ export function NewTransactionDialog({
   onClose,
   ...props
 }: Omit<ComponentProps<typeof Dialog>, "children">) {
-  const transaction = useMutateTransaction();
+  const { insert } = useMutateTransaction();
 
   const {
     register,
@@ -48,7 +48,7 @@ export function NewTransactionDialog({
     data: z.infer<typeof newTransactionSchema>,
   ) => {
     toast.promise(
-      transaction.insert({
+      insert({
         date: new Date(data.date),
         amount: data.amount,
         memo: data.memo,

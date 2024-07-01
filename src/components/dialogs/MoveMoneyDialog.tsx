@@ -42,7 +42,7 @@ export function MoveMoneyDialog({
 }: Omit<ComponentProps<typeof Dialog>, "children"> & {
   categoryId: string;
 }) {
-  const mutate = useMutateCategory();
+  const { moveMoney } = useMutateCategory();
   const { result: category, fetching: fetchingCategory } = useQueryOne(
     client,
     client.query("categories").id(categoryId),
@@ -67,7 +67,7 @@ export function MoveMoneyDialog({
 
   const addMoney = async (data: z.infer<typeof addMoneySchema>) => {
     toast.promise(
-      mutate.moveMoney({
+      moveMoney({
         fromCategoryId:
           data.fromCategoryId === "RTB" ? null : data.fromCategoryId,
         amount: data.amount,
