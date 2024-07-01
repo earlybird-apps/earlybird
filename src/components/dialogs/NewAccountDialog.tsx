@@ -6,23 +6,23 @@ import { z } from "zod";
 
 import { useMutateAccounts } from "@/hooks/accounts";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogActions,
   DialogBody,
   DialogDescription,
   DialogTitle,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import {
   ErrorMessage,
   Field,
   FieldGroup,
   Fieldset,
   Label,
-} from "./ui/fieldset";
-import { Input } from "./ui/input";
-import { Switch, SwitchField } from "./ui/switch";
+} from "../ui/fieldset";
+import { Input } from "../ui/input";
+import { Switch, SwitchField } from "../ui/switch";
 
 const newAccountSchema = z.object({
   accountName: z.string().min(1, "Account name is required"),

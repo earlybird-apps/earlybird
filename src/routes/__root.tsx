@@ -2,12 +2,14 @@ import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { Toaster } from "sonner";
 import { z } from "zod";
 
-import { EditTransactionDialog } from "@/components/EditTransactionDialog";
-import { MoveMoneyDialog } from "@/components/MoveMoneyDialog";
-import { NewAccountDialog } from "@/components/NewAccountDialog";
-import { NewCategoryDialog } from "@/components/NewCategoryDialog";
-import { NewTransactionDialog } from "@/components/NewTransactionDialog";
 import { Sidebar } from "@/components/Sidebar";
+import {
+  EditTransactionDialog,
+  MoveMoneyDialog,
+  NewAccountDialog,
+  NewCategoryDialog,
+  NewTransactionDialog,
+} from "@/components/dialogs";
 import { Navbar } from "@/components/ui/navbar";
 // import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 import { SidebarLayout } from "@/components/ui/sidebar-layout";

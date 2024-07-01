@@ -9,11 +9,11 @@ import { useMutateTransaction } from "@/hooks/transactions";
 import {
   TransactionFieldGroup,
   transactionFieldGroupSchema,
-} from "./forms/TransactionFieldGroup";
-import { Button } from "./ui/button";
-import { Dialog, DialogActions, DialogBody, DialogTitle } from "./ui/dialog";
-import { FieldGroup, Fieldset, Label } from "./ui/fieldset";
-import { Switch, SwitchField } from "./ui/switch";
+} from "../forms/TransactionFieldGroup";
+import { Button } from "../ui/button";
+import { Dialog, DialogActions, DialogBody, DialogTitle } from "../ui/dialog";
+import { FieldGroup, Fieldset, Label } from "../ui/fieldset";
+import { Switch, SwitchField } from "../ui/switch";
 
 const newTransactionSchema = transactionFieldGroupSchema.extend({
   createAnother: z.boolean().optional(),

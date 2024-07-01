@@ -12,10 +12,10 @@ import { useMutateTransaction } from "@/hooks/transactions";
 import {
   TransactionFieldGroup,
   transactionFieldGroupSchema,
-} from "./forms/TransactionFieldGroup";
-import { Button } from "./ui/button";
-import { Dialog, DialogActions, DialogBody, DialogTitle } from "./ui/dialog";
-import { Fieldset } from "./ui/fieldset";
+} from "../forms/TransactionFieldGroup";
+import { Button } from "../ui/button";
+import { Dialog, DialogActions, DialogBody, DialogTitle } from "../ui/dialog";
+import { Fieldset } from "../ui/fieldset";
 
 export function EditTransactionDialog({
   onClose,

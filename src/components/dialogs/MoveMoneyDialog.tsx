@@ -10,23 +10,23 @@ import { client } from "@db/client";
 import { useCategories, useMutateCategory } from "@/hooks/categories";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogActions,
   DialogBody,
   DialogDescription,
   DialogTitle,
-} from "./ui/dialog";
+} from "../ui/dialog";
 import {
   ErrorMessage,
   Field,
   FieldGroup,
   Fieldset,
   Label,
-} from "./ui/fieldset";
-import { Input } from "./ui/input";
-import { Select } from "./ui/select";
+} from "../ui/fieldset";
+import { Input } from "../ui/input";
+import { Select } from "../ui/select";
 
 const addMoneySchema = z.object({
   amount: z.coerce
