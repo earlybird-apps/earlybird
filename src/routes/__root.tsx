@@ -29,7 +29,6 @@ export const Route = createRootRoute({
     z
       .object({
         dialog: z.nativeEnum(Dialogs).optional(),
-        category: z.string().optional(),
         id: z.string().optional(),
       })
       .parse(search),
@@ -37,10 +36,10 @@ export const Route = createRootRoute({
 
 function AppDialogs() {
   const navigate = Route.useNavigate();
-  const { dialog, category, id } = Route.useSearch();
+  const { dialog, id } = Route.useSearch();
 
   const closeDialog = (fields = {}) => {
-    navigate({ search: { dialog: undefined, ...fields } });
+    navigate({ search: { dialog: undefined, id: undefined, ...fields } });
   };
 
   return (
@@ -57,19 +56,19 @@ function AppDialogs() {
         open={dialog === Dialogs.NewCategory}
         onClose={closeDialog}
       />
-      {category && (
-        <MoveMoneyDialog
-          open={dialog === Dialogs.MoveMoney}
-          categoryId={category}
-          onClose={() => closeDialog({ category: undefined })}
-        />
-      )}
       {id && (
-        <EditTransactionDialog
-          transactionId={id}
-          onClose={() => closeDialog({ id: undefined })}
-          open={dialog === Dialogs.EditTransaction}
-        />
+        <>
+          <MoveMoneyDialog
+            open={dialog === Dialogs.MoveMoney}
+            categoryId={id}
+            onClose={closeDialog}
+          />
+          <EditTransactionDialog
+            transactionId={id}
+            onClose={closeDialog}
+            open={dialog === Dialogs.EditTransaction}
+          />
+        </>
       )}
     </>
   );

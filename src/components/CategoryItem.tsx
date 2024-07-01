@@ -90,7 +90,7 @@ export function CategoryItem({ category, ...props }: CategoryItemProps) {
               search={(prev) => ({
                 ...prev,
                 dialog: Dialogs.MoveMoney,
-                category: category.id,
+                id: category.id,
               })}
             >
               <ArrowDownTrayIcon />
