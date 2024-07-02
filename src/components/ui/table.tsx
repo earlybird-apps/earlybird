@@ -83,10 +83,12 @@ export function TableBody(props: React.ComponentPropsWithoutRef<"tbody">) {
 
 const TableRowContext = createContext<{
   href?: LinkProps["to"];
+  search?: LinkProps["search"];
   target?: string;
   title?: string;
 }>({
   href: undefined,
+  search: undefined,
   target: undefined,
   title: undefined,
 });
@@ -96,9 +98,11 @@ export function TableRow({
   target,
   title,
   className,
+  search,
   ...props
 }: {
   href?: LinkProps["to"];
+  search?: LinkProps["search"];
   target?: string;
   title?: string;
 } & React.ComponentPropsWithoutRef<"tr">) {
@@ -107,18 +111,22 @@ export function TableRow({
   return (
     <TableRowContext.Provider
       value={
-        { href, target, title } as React.ContextType<typeof TableRowContext>
+        { href, target, title, search } as React.ContextType<
+          typeof TableRowContext
+        >
       }
     >
       <tr
         {...props}
         className={clsx(
           className,
-          href &&
+          href !== undefined &&
             "has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%]",
           striped && "even:bg-zinc-950/[2.5%] dark:even:bg-white/[2.5%]",
-          href && striped && "hover:bg-zinc-950/5 dark:hover:bg-white/5",
-          href &&
+          href !== undefined &&
+            striped &&
+            "hover:bg-zinc-950/5 dark:hover:bg-white/5",
+          href !== undefined &&
             !striped &&
             "hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]",
         )}
@@ -153,7 +161,7 @@ export function TableCell({
   ...props
 }: React.ComponentPropsWithoutRef<"td">) {
   const { bleed, dense, grid, striped } = useContext(TableContext);
-  const { href, target, title } = useContext(TableRowContext);
+  const { href, target, title, search } = useContext(TableRowContext);
   const [cellRef, setCellRef] = useState<HTMLElement | null>(null);
 
   return (
@@ -170,10 +178,11 @@ export function TableCell({
         !bleed && "sm:first:pl-1 sm:last:pr-1",
       )}
     >
-      {href && (
+      {href !== undefined && (
         <Link
           data-row-link
           href={href}
+          search={search}
           target={target}
           aria-label={title}
           tabIndex={cellRef?.previousElementSibling === null ? 0 : -1}
