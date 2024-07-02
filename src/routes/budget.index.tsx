@@ -68,7 +68,7 @@ function BudgetNow() {
             key={category.id}
             {...getViewportDependentProps(category.id)}
           >
-            <TableCell>{category.name}</TableCell>
+            <TableCell className="font-medium">{category.name}</TableCell>
             <TableCell className="text-end lg:text-start">
               <Currency value={category.assigned + category.activity} />
             </TableCell>
