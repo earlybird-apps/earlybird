@@ -10,6 +10,7 @@ import {
   NewCategoryDialog,
   NewTransactionDialog,
 } from "@/components/dialogs";
+import { CategoryDetailDialog } from "@/components/dialogs/CategoryDetailDialog";
 import { DeleteTransactionDialog } from "@/components/dialogs/DeleteTransactionDialog";
 import { RemoveMoneyDialog } from "@/components/dialogs/RemoveMoneyDialog";
 import { Navbar } from "@/components/ui/navbar";
@@ -81,6 +82,11 @@ function AppDialogs() {
             transactionId={id}
             onClose={closeDialog}
             open={dialog === Dialogs.DeleteTransaction}
+          />
+          <CategoryDetailDialog
+            categoryId={id}
+            onClose={closeDialog}
+            open={dialog === Dialogs.CategoryDetail}
           />
         </>
       )}

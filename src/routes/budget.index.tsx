@@ -3,7 +3,8 @@ import {
   ArrowUpTrayIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/20/solid";
-import { createFileRoute } from "@tanstack/react-router";
+import { LinkProps, createFileRoute } from "@tanstack/react-router";
+import { useMediaQuery } from "@uidotdev/usehooks";
 
 import { Currency } from "@/components/Currency";
 import { NoCategories } from "@/components/NoCategories";
@@ -31,6 +32,22 @@ export const Route = createFileRoute("/budget/")({
 
 function BudgetNow() {
   const { all, fetching } = useCategories();
+  const desktop = useMediaQuery("(min-width: 1024px)");
+
+  const getViewportDependentProps = (id: string) => {
+    if (desktop) return {};
+    return {
+      href: "" as LinkProps["to"],
+      search: (prev: {
+        id?: string | undefined;
+        dialog?: Dialogs | undefined;
+      }) => ({
+        ...prev,
+        dialog: Dialogs.CategoryDetail,
+        id,
+      }),
+    };
+  };
 
   if (fetching) return <div>Loading...</div>;
 
@@ -47,7 +64,10 @@ function BudgetNow() {
       </TableHead>
       <TableBody>
         {all.map((category) => (
-          <TableRow key={category.id}>
+          <TableRow
+            key={category.id}
+            {...getViewportDependentProps(category.id)}
+          >
             <TableCell>{category.name}</TableCell>
             <TableCell className="text-end lg:text-start">
               <Currency value={category.assigned + category.activity} />
