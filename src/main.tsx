@@ -4,7 +4,6 @@ import ReactDOM from "react-dom/client";
 
 import { client } from "@db/client";
 
-import { BudgetSettingsProvider } from "./hooks/useBudgetSettings";
 import "./index.css";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
@@ -27,8 +26,6 @@ declare module "@tanstack/react-router" {
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BudgetSettingsProvider>
-      <RouterProvider router={router} />
-    </BudgetSettingsProvider>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );

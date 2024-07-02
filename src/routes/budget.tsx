@@ -7,9 +7,7 @@ import { Currency } from "@/components/Currency";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heading, Subheading } from "@/components/ui/heading";
-import { Switch } from "@/components/ui/switch";
 import { Dialogs } from "@/constants";
-import { useBudgetSettings } from "@/hooks/useBudgetSettings";
 import { useReadyToBudget } from "@/hooks/useReadyToBuget";
 
 export const Route = createFileRoute("/budget")({
@@ -56,8 +54,6 @@ function ReadyToBudget() {
 }
 
 function Budget() {
-  const { showEmpty, setShowEmpty } = useBudgetSettings();
-
   return (
     <div className="flex flex-col space-y-4">
       <nav className="flex justify-between items-center sticky top-0 h-14 bg-white z-10">
@@ -84,12 +80,8 @@ function Budget() {
           ))}
         </ul> */}
       </nav>
-      <div className="flex mb-5 py-4 gap-x-4 text-sm text-gray-700 sticky top-14 bg-white border-b  z-10">
-        <div className="flex gap-x-4 items-center me=auto">
-          <Switch checked={showEmpty} onChange={setShowEmpty} />
-          <span>Show empty</span>
-        </div>
-        <span className="ms-auto items-center my-auto">
+      <div className="flex gap-x-4 text-sm text-gray-700 sticky top-14 bg-white z-10 justify-between">
+        <span className="items-center my-auto">
           <ReadyToBudget />
         </span>
         <Button
